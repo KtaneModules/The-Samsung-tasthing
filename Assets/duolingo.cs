@@ -1,0 +1,89 @@
+public static class duolingo
+{
+	public static readonly string[][] numberwords = new string[10][]
+	{
+		new string[21]
+		{
+			"Cero", "Uno", "Dos", "Tres", "Cuatro", "Cinco", "Seis", "Siete", "Ocho", "Nueve", "Diez", "Once", "Doce", "Trece", "Catorce", "Quince", "Dieciséis", "Diecisiete", "Dieciocho", "Diecinueve", "Veinte"
+		},
+		new string[21]
+		{
+			"Zero", "Uno", "Duo", "Tre", "Quattro", "Cinque", "Sei", "Sette", "Otto", "Nove", "Dieci", "Undici", "Dodici", "Tredici", "Quattórdici", "Quindici", "Sedici", "Diciassette", "Diciotto", "Diciannove", "Venti"
+		},
+		new string[21]
+		{
+			"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "十二"
+		},
+		new string[21]
+		{
+			"french0", "french1", "french2", "french3", "french4", "french5", "french6", "french7", "french8", "french9", "french10", "french11", "french12", "french13", "french14", "french15", "french16", "french17", "french18", "french19", "french20"
+		},
+		new string[21]
+		{
+			"Nul", "Een", "Twee", "Drie", "Vier", "Vyf", "Ses", "Sewe", "Agt", "Nege", "Tien", "Elf", "Twaalf", "Dertien", "Veertien", "Vyftien", "Sestien", "Sewentien", "Agtien", "Negantien", "Twintig"
+		},
+		new string[21]
+		{
+			"Sufuri", "Moja", "Mbili", "Tatu", "Nne", "Tano", "Sita", "Saba", "Nane", "Tisa", "Kumi", "Kumi na Moja", "Kumi na Mbili", "Kumi na Tatu", "Kumi na Nne", "Kumi na Tano", "Kumi na Sita", "Kumi na Saba", "Kumi na Nane", "Kumi na Tisa", "Ishirini"
+		},
+		new string[21]
+		{
+			"ゼロ", "一", "二", "三", "四", "五", "六", "セ", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十セ", "十八", "十九", "二十"
+		},
+		new string[21]
+		{
+			"제로", "하나", "두", "세", "네", "다섯", "육", "일곱", "여덟", "아홉", "십", "열한", "열 두번째", "열셋", "십사", "열 다섯", "열 여섯", "십칠", "십팔", "십구", "스물"
+		},
+		new string[21]
+		{
+			"Тэг", "Нэг нь", "Хоёр", "Гурав", "Дөрөв", "Тав", "Зургаа", "Долоо", "Найм", "Есөн", "Арав", "Арван нэг", "Арван Хоёр", "Арван Гурав", "Арван Дөрөв", "Арван таван", "Арван Зургаа", "Арван Долоо", "Арван Найм", "Арван Ес", "Хорин"
+		},
+		new string[21]
+		{
+			"សូន", "មួយ", "ពីរ", "បី", "បួន", "ប្រាំ", "ប្រាំមួយ", "ប្រាំពីរ", "ប្រាំបី", "ប្រាំបួន", "ដប់", "ដប់មួយ", "ដប់ពីរ", "ដប់បី", "ដប់បួន", "ដប់ប្រាំ", "ដប់ប្រាំមួយ", "ដប់ប្រាំបី", "ដប់ប្រាំបី", "ដប់ប្រាំមួយ", "ម្ភៃ"
+		}
+	};
+	public static readonly string[][] operatorwords = new string[10][]
+	{
+		new string[4]
+		{
+			"Más", "Menos", "Por", "Dividido por"
+		},
+		new string[4]
+		{
+			"Plu", "Meno", "Moltiplicare", "Dividere"
+		},
+		new string[4]
+		{
+			"加", "减", "乘", "除"
+		},
+		new string[4]
+		{
+			"french+", "french-", "french*", "french/"
+		},
+		new string[4]
+		{
+			"Plus", "Minus", "Vermeeder", "Verdeel"
+		},
+		new string[4]
+		{
+			"Pamoja", "Kasoro", "Kuzidisha", "Gawanya"
+		},
+		new string[4]
+		{
+			"プラス", "マイナス", "かける", "割る"
+		},
+		new string[4]
+		{
+			"을 더한", "마이너스", "곱하다", "나누기"
+		},
+		new string[4]
+		{
+			"Дээрээс нь", "Хасах", "Үржүүлэх", "Хуваана"
+		},
+		new string[4]
+		{
+			"បូក", "ដក", "គុណ", "ចែក"
+		}
+	};
+}
