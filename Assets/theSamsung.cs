@@ -20,6 +20,7 @@ public class theSamsung : MonoBehaviour
 	public KMSelectable clearbutton;
 	public KMSelectable submitbutton;
 	public TextMesh answertext;
+	private static readonly string[] eastereggs = new string[] { "43556629", "82784464", "36725463" };
 
 	// Duolingo
 	private int languageindex;
@@ -42,16 +43,26 @@ public class theSamsung : MonoBehaviour
 	private bool isplaying;
 
 	// Google Arts & Culture
+	private int artistindex;
 	private static readonly int[][] artyears = new int[4][] {
 		new int[8] { 1, 9, 4, 2, 1, 9, 9, 5, },
 		new int[8] { 1, 8, 8, 1, 1, 9, 7, 3, },
 		new int[8] { 1, 4, 5, 2, 1, 5, 1, 9, },
 		new int[8] { 1, 8, 5, 3, 1, 8, 0, 0, }
 	};
-	private int artistindex;
+	private static readonly string[] artistnames = new string[5] { "Bob Ross", "Picasso", "Da Vinci", "Van Gogh", "Misc artist" };
+	public Renderer painting;
+	public TextMesh artisttext;
+	public Texture[] bobross;
+	public Texture[] picasso;
+	public Texture[] davinci;
+	public Texture[] vangogh;
+	public Texture[] otherpaintings;
+	private List<Texture[]> paintings = new List<Texture[]>();
+
 
 	private int currentappindex;
-	private int[] solution = new int[7];
+	private int[] solution = new int[8];
 	private string solutionstring = "";
 	private List<string> enteredsolution = new List<string>();
 	private int enteringstage;
@@ -126,7 +137,7 @@ public class theSamsung : MonoBehaviour
         float scalar = transform.lossyScale.x;
         solvedlight.range *= scalar;
         halfpoint = bomb.GetTime() / 2f;
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 8; i++)
             solution[i] = rnd.Range(0,10);
 		// Duolingo
 		languageindex = rnd.Range(0,10);
@@ -178,60 +189,78 @@ public class theSamsung : MonoBehaviour
 				dtext.text = duolingo.numberwords[languageindex][duolingonumbers[1]];
 		}
 		// Google Arts & Culture
-		artistindex = rnd.Range(0,4);
-		switch (positionnumbers.IndexOf(6))
+		paintings.Add(bobross);
+		paintings.Add(picasso);
+		paintings.Add(davinci);
+		paintings.Add(vangogh);
+		artistindex = rnd.Range(0,5);
+		int gacsolution;
+		bool lying = rnd.Range(0,2) == 0;
+		if (artistindex == 4)
 		{
-			case 0:
-				solution[6] = artyears[artistindex][0];
-				break;
-			case 1:
-				solution[6] = artyears[artistindex][1];
-				break;
-			case 2:
-				solution[6] = artyears[artistindex][2];
-				break;
-			case 3:
-				solution[6] = artyears[artistindex][3];
-				break;
-			case 5:
-				solution[6] = artyears[artistindex][4];
-				break;
-			case 6:
-				solution[6] = artyears[artistindex][5];
-				break;
-			case 7:
-				solution[6] = artyears[artistindex][6];
-				break;
-			default:
-				solution[6] = artyears[artistindex][7];
-				break;
+			gacsolution = bomb.GetSerialNumber()[5] - '0';
+			painting.material.mainTexture = otherpaintings.PickRandom();
 		}
+		else
+		{
+			switch (positionnumbers[6])
+			{
+				case 0:
+					gacsolution = artyears[artistindex][0];
+					break;
+				case 1:
+					gacsolution = artyears[artistindex][1];
+					break;
+				case 2:
+					gacsolution = artyears[artistindex][2];
+					break;
+				case 3:
+					gacsolution = artyears[artistindex][3];
+					break;
+				case 5:
+					gacsolution = artyears[artistindex][4];
+					break;
+				case 6:
+					gacsolution = artyears[artistindex][5];
+					break;
+				case 7:
+					gacsolution = artyears[artistindex][6];
+					break;
+				default:
+					gacsolution = artyears[artistindex][7];
+					break;
+			}
+			int paintingindex = rnd.Range(0,5);
+			var n1 = new int[] { 0, 2, 4, 6, 8 };
+			var n2 = new int[] { 1, 3, 5, 7, 9 };
+			gacsolution += (!lying ? n1[paintingindex] : n2[paintingindex]);
+			gacsolution %= 10;
+			painting.material.mainTexture = paintings[artistindex][paintingindex];
+		}
+		artisttext.text = !lying ? artistnames[artistindex] : artistnames.Where(x => Array.IndexOf(artistnames, x) != artistindex).PickRandom();
+		solution[6] = gacsolution;
 		// Solution
-		var solutionlist = new List<int>();
-		var nondiscordnumbers = positionnumbers.Where(x => );
-		for (int i = 0; i < 7; i++)
-			solutionlist.Add(solution[positionnumbers[i]]);
-		int startingdirection;
+		int startingoffset;
 		var ser = bomb.GetSerialNumber();
 		if (Char.IsLetter(ser[0]) && Char.IsLetter(ser[1]))
-			startingdirection = 0;
+			startingoffset = 1;
 		else if (Char.IsLetter(ser[0]) && !Char.IsLetter(ser[1]))
-			startingdirection = 2;
+			startingoffset = 3;
 		else if (!Char.IsLetter(ser[0]) && Char.IsLetter(ser[1]))
-			startingdirection = 4;
+			startingoffset = 5;
 		else
-			startingdirection = 6;
+			startingoffset = 7;
 		if (bomb.GetPortCount(Port.Parallel) > 0)
-			startingdirection--;
+			startingoffset--;
 		else if (bomb.GetPortCount(Port.Serial) > 0)
-			startingdirection++;
-		if (startingdirection == 8 || startingdirection == -1)
-			startingdirection = (startingdirection == 8 ? 0 : 7);
-		var splice = solutionlist.Take(startingdirection).ToList();
-		solutionlist = solutionlist.Skip(startingdirection + 1).ToList();
-		solutionlist.AddRange(splice);
-		//solutionstring = solution[0].ToString() + solution[1].ToString() + solution[2].ToString() + solution[3].ToString() + solution[4].ToString() + solution[5].ToString() + solution[6].ToString();
-        Debug.LogFormat("[The Samsung #{0}] The solution is {1}.", moduleId, solutionstring);
+			startingoffset++;
+		//
+		var solutionlist = new List<int>();
+		var clockwiseorder = new int[] { 0, 1, 2, 5, 8, 7, 6, 3 };
+		for (int i = 0; i < 8; i++)
+			solutionlist.Add(solution[positionnumbers.IndexOf(clockwiseorder[(i + startingoffset) % clockwiseorder.Length])] );
+		solutionstring = solutionlist.Join("");
+		Debug.LogFormat("[The Samsung #{0}] The solution is {1}.", moduleId, solutionstring);
         StartCoroutine(DisableStuff());
         StartCoroutine(Authenticator());
     }
@@ -279,7 +308,7 @@ public class theSamsung : MonoBehaviour
 
     void PressSettingsButton(KMSelectable button)
     {
-        if (enteringstage > 6)
+        if (enteringstage > 7)
             return;
         Audio.PlaySoundAtTransform("keyClick", button.transform);
         var numbers = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
@@ -299,24 +328,29 @@ public class theSamsung : MonoBehaviour
     void PressSubmitButton()
     {
         Audio.PlaySoundAtTransform("keyClick", submitbutton.transform);
-        var enteredsolutionstring = enteredsolution[0] + enteredsolution[1] + enteredsolution[2] + enteredsolution[3] + enteredsolution[4] + enteredsolution[5] + enteredsolution[6];
+        var enteredsolutionstring = enteredsolution.Join("");
         Debug.LogFormat("[The Samsung #{0}] You submitted {1}.", moduleId, enteredsolution);
-        if (enteredsolutionstring != solutionstring)
-        {
+        if (enteredsolutionstring == solutionstring)
+		{
+			Debug.LogFormat("[The Samsung #{0}] That was correct. Module solved!", moduleId);
+			apps[8].SetActive(false);
+			homebutton.gameObject.SetActive(false);
+			phonescreen.material.mainTexture = wallpapers.Where(w => w != currentwallpaper).PickRandom();
+			GetComponent<KMBombModule>().HandlePass();
+			solvedthingy.material.color = solvedcolor;
+			StopAllCoroutines();
+			solvedlight.enabled = true;
+		}
+		else if (eastereggs.Any(x => x == enteredsolutionstring))
+		{
+			var ix = Array.IndexOf(eastereggs, enteredsolutionstring);
+			Debug.LogFormat("[The Samsung #{0}] You found easter egg {1}.", moduleId, ix + 1);
+		}
+		else
+		{
             Debug.LogFormat("[The Samsung #{0}] That was incorrect. Strike!", moduleId);
             GetComponent<KMBombModule>().HandleStrike();
 			StartCoroutine(Strike());
-        }
-        else
-        {
-            Debug.LogFormat("[The Samsung #{0}] That was correct. Module solved!", moduleId);
-            apps[8].SetActive(false);
-            homebutton.gameObject.SetActive(false);
-            phonescreen.material.mainTexture = wallpapers.Where(w => w != currentwallpaper).PickRandom();
-            GetComponent<KMBombModule>().HandlePass();
-            solvedthingy.material.color = solvedcolor;
-            StopAllCoroutines();
-            solvedlight.enabled = true;
         }
     }
 

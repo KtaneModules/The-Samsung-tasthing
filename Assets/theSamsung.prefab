@@ -624,6 +624,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1307245484938824
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4840885849086562}
+  - component: {fileID: 33476588502079902}
+  - component: {fileID: 64183748078554722}
+  - component: {fileID: 23738900244107078}
+  m_Layer: 0
+  m_Name: painting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1309990282329952
 GameObject:
   m_ObjectHideFlags: 1
@@ -1173,6 +1191,23 @@ GameObject:
   - component: {fileID: 102536457022214708}
   m_Layer: 0
   m_Name: text2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1626663019564492
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4969204402478750}
+  - component: {fileID: 23689581615690110}
+  - component: {fileID: 102318504398050160}
+  m_Layer: 0
+  m_Name: artistname
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2901,6 +2936,19 @@ Transform:
   m_Father: {fileID: 4038263168902344}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!4 &4840885849086562
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1307245484938824}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.0151, z: 0.0113}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_Children: []
+  m_Father: {fileID: 4954473329263096}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4842487611936328
 Transform:
   m_ObjectHideFlags: 1
@@ -3029,7 +3077,9 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4840885849086562}
+  - {fileID: 4969204402478750}
   m_Father: {fileID: 4742697982017958}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3047,6 +3097,19 @@ Transform:
   m_Father: {fileID: 4941325165803576}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4969204402478750
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1626663019564492}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.0133, z: -0.071}
+  m_LocalScale: {x: 0.0015, y: 0.0015, z: 0.0015}
+  m_Children: []
+  m_Father: {fileID: 4954473329263096}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4971876784318734
 Transform:
   m_ObjectHideFlags: 1
@@ -4856,6 +4919,40 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!23 &23689581615690110
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1626663019564492}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 9628295eaa53e364fad5065281dd366d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!23 &23707945425375266
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -4905,6 +5002,40 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 9a4f03907cd5ff743aa4bbeae65600b7, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!23 &23738900244107078
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1307245484938824}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 2af0396757ba5b243aeb9d1e0ab57969, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6004,6 +6135,13 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1289966846296934}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &33476588502079902
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1307245484938824}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &33490508128020692
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -6255,6 +6393,20 @@ MeshCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1875370876657378}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!64 &64183748078554722
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1307245484938824}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -6631,6 +6783,27 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
+--- !u!102 &102318504398050160
+TextMesh:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1626663019564492}
+  m_Text: Van Gogh
+  m_OffsetZ: 0
+  m_CharacterSize: 1
+  m_LineSpacing: 1
+  m_Anchor: 4
+  m_Alignment: 1
+  m_TabSize: 4
+  m_FontSize: 200
+  m_FontStyle: 0
+  m_RichText: 1
+  m_Font: {fileID: 12800000, guid: beb0ef160735e7749acd780f70c4f246, type: 3}
+  m_Color:
+    serializedVersion: 2
+    rgba: 4292908548
 --- !u!102 &102485641593735116
 TextMesh:
   serializedVersion: 3
@@ -7170,6 +7343,40 @@ MonoBehaviour:
   - {fileID: 102997582874865308}
   authenticatorbar: {fileID: 4733111459748438}
   playbutton: {fileID: 114137718574709102}
+  painting: {fileID: 23738900244107078}
+  artisttext: {fileID: 102318504398050160}
+  bobross:
+  - {fileID: 2800000, guid: f44962511aa76794f98da077daa60770, type: 3}
+  - {fileID: 2800000, guid: 2098898432015cf4f9fdbaf4b19ae896, type: 3}
+  - {fileID: 2800000, guid: 0de1e859cdf22c04a908c75fe6107f55, type: 3}
+  - {fileID: 2800000, guid: f839c5bc68637e14096da4632665cf40, type: 3}
+  - {fileID: 2800000, guid: e754707c040fb9c46b4dc13eda2234f6, type: 3}
+  picasso:
+  - {fileID: 2800000, guid: d3a257ab11de4804d8b729907355022a, type: 3}
+  - {fileID: 2800000, guid: df53d02f98e436745a606d22b0524daf, type: 3}
+  - {fileID: 2800000, guid: 55bacecc7d11a624dae17918279eec20, type: 3}
+  - {fileID: 2800000, guid: 6c60f208e2ad3364eacc4e14ad3dcc1f, type: 3}
+  - {fileID: 2800000, guid: 175bfe3739bd3924db00598cfbe693b0, type: 3}
+  davinci:
+  - {fileID: 2800000, guid: bc2f4d236c573364c9c5d8ceb1d6f836, type: 3}
+  - {fileID: 2800000, guid: 4836e3e1aa7bb02488fc15ba5f571afc, type: 3}
+  - {fileID: 2800000, guid: c3590b2e3840cc14a8002195b287c46e, type: 3}
+  - {fileID: 2800000, guid: fdcb951985fb56e4587f23dbb054d83a, type: 3}
+  - {fileID: 2800000, guid: e3d0b676a0844d044a8e54f16fb0743a, type: 3}
+  vangogh:
+  - {fileID: 2800000, guid: d151f157c5cb233418d29f302d06984c, type: 3}
+  - {fileID: 2800000, guid: e140878da8c40d141acdb27f5dedf066, type: 3}
+  - {fileID: 2800000, guid: 84db5be718beb1d4e8ab50dbefad599c, type: 3}
+  - {fileID: 2800000, guid: 971b3d84422cac94186299c462c0aa31, type: 3}
+  - {fileID: 2800000, guid: 5769e86ab79a53e41b8eaca01ae6e37c, type: 3}
+  otherpaintings:
+  - {fileID: 2800000, guid: 25149d01f77646044a5251eb911980a2, type: 3}
+  - {fileID: 2800000, guid: 300c35213610b6d4d9651a4ed2ca44dd, type: 3}
+  - {fileID: 2800000, guid: 47b2d85eb92ea3140a7da5cb422214ca, type: 3}
+  - {fileID: 2800000, guid: 1d50aea45a6415344a47ef5f315f82e3, type: 3}
+  - {fileID: 2800000, guid: c040b5b37e4a2a14eb9fb6d05b6e69e3, type: 3}
+  - {fileID: 2800000, guid: d426188430d56214a8ef85b81b9fdc06, type: 3}
+  - {fileID: 2800000, guid: d63ab20d0baf3294888a1c682f04c6a2, type: 3}
   icons: {fileID: 1459893470049900}
   statusLight: {fileID: 1126011559299838}
   appbackgrounds:

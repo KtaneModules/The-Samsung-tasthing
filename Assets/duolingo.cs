@@ -16,7 +16,7 @@ public static class duolingo
 		},
 		new string[21]
 		{
-			"french0", "french1", "french2", "french3", "french4", "french5", "french6", "french7", "french8", "french9", "french10", "french11", "french12", "french13", "french14", "french15", "french16", "french17", "french18", "french19", "french20"
+			"Zéro", "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "Onze", "Douze", "Treize", "Quatorze", "Quinze", "Seize", "Dix-Sept", "Dix-Huit", "Dix-Neuf", "Vingt"
 		},
 		new string[21]
 		{
@@ -59,7 +59,7 @@ public static class duolingo
 		},
 		new string[4]
 		{
-			"french+", "french-", "french*", "french/"
+			"Plus", "Moins", "Fois", "Divisé par"
 		},
 		new string[4]
 		{
