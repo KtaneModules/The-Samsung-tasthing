@@ -38,8 +38,41 @@ public class theSamsung : MonoBehaviour
 	public TextMesh[] authenticatortexts;
 	public Transform authenticatorbar;
 
+	// Photomath
+	public GameObject hideable;
+	public TextMesh photomathmaintext;
+	public TextMesh photomathstartingtext;
+	public KMSelectable photomathstart;
+	public KMSelectable photomathsubmit;
+	public KMSelectable photomathclear;
+	public KMSelectable[] photomathbuttons;
+	public Renderer[] photomathcircles;
+	public Color[] photomathcolors;
+	private List<Color> photomathusedcolors = new List<Color>();
+	private static readonly Vector3[] startingvaluepositions = new Vector3[] { new Vector3(.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, .0267f), new Vector3(.074f, .0121f, .0267f) };
+	private int startingvalue;
+	private int[] operations = new int[7];
+	private int[] values = new int[7];
+	private List<int> photomathentered = new List<int>();
+	private int photomathsolution;
+	private bool photomathdone;
+	private List<string> mathsymbols = new List<string>() { "Σ", "ℝ", "≜", "!", "δ", "∞", "⋰", "∝", "∴", "¬" };
+	private static readonly int[][] keypadgrids = new int[10][] {
+		new int[10] { 7, 3, 4, 6, 2, 0, 9, 8, 5, 1 },
+		new int[10] { 3, 7, 1, 4, 6, 9, 8, 2, 5, 0 },
+		new int[10] { 6, 2, 1, 5, 8, 3, 7, 0, 4, 9 },
+		new int[10] { 5, 4, 6, 9, 3, 0, 2, 8, 7, 1 },
+		new int[10] { 3, 1, 7, 4, 0, 8, 2, 6, 9, 5 },
+		new int[10] { 8, 2, 6, 0, 9, 4, 7, 5, 3, 1 },
+		new int[10] { 9, 3, 5, 4, 2, 1, 7, 8, 6, 0 },
+		new int[10] { 7, 9, 6, 3, 1, 5, 0, 2, 4, 8 },
+		new int[10] { 0, 4, 8, 7, 5, 3, 1, 2, 9, 6 },
+		new int[10] { 2, 5, 4, 8, 6, 3, 9, 0, 1, 7 }
+ 	};
+
 	// Spotify
 	public KMSelectable playbutton;
+	private static readonly string[] adnames = new string[5] { "ad1", "ad2", "ad3", "ad4", "ad5" };
 	private bool isplaying;
 
 	// Google Arts & Culture
@@ -120,6 +153,11 @@ public class theSamsung : MonoBehaviour
             appbutton.OnInteract += delegate () { PressAppButton(appbutton); return false; };
         foreach (KMSelectable button in settingsbuttons)
             button.OnInteract += delegate () { PressSettingsButton(button); return false; };
+		photomathclear.OnInteract += delegate () { PressPhotomathClearButton(); return false; };
+		photomathsubmit.OnInteract += delegate () { PressPhotomathSubmitButton(); return false; };
+		photomathstart.OnInteract += delegate () { StartCoroutine(PhotomathCycle()); return false;};
+		foreach (KMSelectable button in photomathbuttons)
+			button.OnInteract += delegate () { PressPhotomathButton(button); return false; };
         clearbutton.OnInteract += delegate () { PressClearButton(); return false; };
         submitbutton.OnInteract += delegate () { PressSubmitButton(); return false; };
         // </Selectables>
@@ -188,6 +226,42 @@ public class theSamsung : MonoBehaviour
 			else
 				dtext.text = duolingo.numberwords[languageindex][duolingonumbers[1]];
 		}
+		// Photomath
+		mathsymbols.Shuffle();
+		startingvalue = rnd.Range(1,10);
+		photomathusedcolors = photomathcolors.ToList().Shuffle();
+		for (int i = 0; i < 4; i++)
+			photomathcircles[i].material.color = photomathusedcolors[i];
+		for (int i = 0; i < 7; i++)
+		{
+			operations[i] = rnd.Range(0,4);
+			values[i] = rnd.Range(1,10);
+		}
+		for (int i = 0; i < 7; i++)
+		{
+			var x = i == 0 ? startingvalue : photomathsolution;
+			switch (operations[i])
+			{
+				case 0:
+					photomathsolution += x;
+					break;
+				case 1:
+					photomathsolution -= x;
+					break;
+				case 2:
+					photomathsolution *= x;
+					break;
+				default:
+					if (x == 0)
+						x = 1;
+					photomathsolution /= x;
+					break;
+			}
+		}
+		if (photomathsolution < 0)
+			photomathsolution *= -1;
+		photomathsolution += operations.Count(x => x == 0 || x == 2);
+		Debug.LogFormat("[The Samsung #{0}] The solution for Photomath is {1}.", moduleId, photomathsolution);
 		// Google Arts & Culture
 		paintings.Add(bobross);
 		paintings.Add(picasso);
@@ -271,6 +345,8 @@ public class theSamsung : MonoBehaviour
         homebutton.gameObject.SetActive(false);
 		foreach (GameObject app in apps)
 			app.SetActive(false);
+		hideable.SetActive(false);
+		photomathmaintext.text = "";
     }
 
     void PressAppButton(KMSelectable button)
@@ -304,6 +380,57 @@ public class theSamsung : MonoBehaviour
 		isplaying = true;
 		yield return new WaitForSeconds(.1f);
 		isplaying = false;
+	}
+
+	void PressPhotomathClearButton()
+	{
+		Audio.PlaySoundAtTransform("keyClick", photomathclear.transform);
+	}
+
+	void PressPhotomathSubmitButton()
+	{
+		Audio.PlaySoundAtTransform("keyClick", photomathsubmit.transform);
+		var photomathans = photomathentered.Join("");
+		if (photomathans != photomathsolution.ToString())
+		{
+			GetComponent<KMBombModule>().HandleStrike();
+		}
+		else
+		{
+			hideable.SetActive(false);
+			photomathstart.gameObject.SetActive(false);
+			photomathmaintext.text = mathsymbols[solution[4]];
+			photomathmaintext.color = photomathcolors[2];
+		}
+	}
+
+	void PressPhotomathButton(KMSelectable button)
+	{
+		Audio.PlaySoundAtTransform("keyClick", button.transform);
+		photomathentered.Add(keypadgrids[bomb.GetSerialNumberNumbers().Last()][Array.IndexOf(photomathbuttons, button)]);
+	}
+
+	private IEnumerator PhotomathCycle()
+	{
+		Audio.PlaySoundAtTransform("keyClick", photomathstart.transform);
+		var show = rnd.Range(0,7);
+		photomathstartingtext.transform.localPosition = startingvaluepositions.PickRandom();
+		photomathstart.gameObject.SetActive(false);
+		hideable.SetActive(false);
+		for (int i = 0; i < 7; i++)
+		{
+			photomathmaintext.text = mathsymbols[values[i]];
+			photomathmaintext.color = photomathusedcolors[operations[i]];
+			if (i == show)
+				photomathstartingtext.text = mathsymbols[startingvalue];
+			else
+				photomathstartingtext.text = "";
+			yield return new WaitForSeconds(.7f);
+		}
+		photomathmaintext.text = "";
+		photomathstartingtext.text = "";
+		photomathstart.gameObject.SetActive(true);
+		hideable.SetActive(true);
 	}
 
     void PressSettingsButton(KMSelectable button)
