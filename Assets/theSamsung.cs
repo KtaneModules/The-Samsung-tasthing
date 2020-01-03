@@ -73,6 +73,12 @@ public class theSamsung : MonoBehaviour
 	// Spotify
 	public KMSelectable playbutton;
 	private static readonly string[] adnames = new string[5] { "ad1", "ad2", "ad3", "ad4", "ad5" };
+	private static readonly float[] adlengths = new float[5] { 13f, 18.5f, 15.25f, 14f, 17.5f };
+	private static readonly string[] songnames = new string[9] { "rightround", "smoothcriminal", "hardwarestore", "beatit", "dangerzone", "tacky", "harderbetterfasterstronger", "drunkensailor", "megalovania" };
+	private static readonly float[] songlengths = new float[9] { 7.5f, 7.5f, 30.5f, 8.5f, 5.5f, 6.5f, 5.5f, 8.5f, 8.5f };
+	private static readonly string[] decoynames = new string[10] { "decoy1", "decoy2", "decoy3", "decoy4", "decoy5", "decoy6", "decoy7", "decoy8", "decoy9", "decoy10" };
+	private static readonly float[] decoylengths = new float[10] { 7.5f, 8.5f, 6.5f, 8.5f, 9.5f, 6.5f, 9.5f, 6.5f, 8.5f, 8.5f, };
+	private int decoyindex;
 	private bool isplaying;
 
 	// Google Arts & Culture
@@ -226,6 +232,9 @@ public class theSamsung : MonoBehaviour
 			else
 				dtext.text = duolingo.numberwords[languageindex][duolingonumbers[1]];
 		}
+		Debug.LogFormat("[The Samsung #{0}] DUOLINGO:", moduleId);
+		Debug.LogFormat("[The Samsung #{0}] The language present is {1}.", moduleId, languagenames[languageindex]);
+		Debug.LogFormat("[The Samsung #{0}] The expression is {1} {2} {3}.", moduleId, englishnumbernames[duolingonumbers[0]], englishoperatornames[operatorindex], englishnumbernames[duolingonumbers[1]]);
 		// Photomath
 		mathsymbols.Shuffle();
 		startingvalue = rnd.Range(1,10);
@@ -262,6 +271,8 @@ public class theSamsung : MonoBehaviour
 			photomathsolution *= -1;
 		photomathsolution += operations.Count(x => x == 0 || x == 2);
 		Debug.LogFormat("[The Samsung #{0}] The solution for Photomath is {1}.", moduleId, photomathsolution);
+		// Spotify
+		decoyindex = rnd.Range(0,10);
 		// Google Arts & Culture
 		paintings.Add(bobross);
 		paintings.Add(picasso);
@@ -378,13 +389,27 @@ public class theSamsung : MonoBehaviour
 	private IEnumerator Spotify()
 	{
 		isplaying = true;
-		yield return new WaitForSeconds(.1f);
+		var adix = rnd.Range(0,5);
+		Audio.PlaySoundAtTransform(adnames[adix], playbutton.transform);
+		yield return new WaitForSeconds(adlengths[adix]);
+		yield return new WaitForSeconds(.5f);
+		if (solution[5] == 9)
+		{
+			Audio.PlaySoundAtTransform(decoynames[decoyindex], playbutton.transform);
+			yield return new WaitForSeconds(decoylengths[decoyindex]);
+		}
+		else
+		{
+			Audio.PlaySoundAtTransform(songnames[solution[5]], playbutton.transform);
+			yield return new WaitForSeconds(songlengths[solution[5]]);
+		}
 		isplaying = false;
 	}
 
 	void PressPhotomathClearButton()
 	{
 		Audio.PlaySoundAtTransform("keyClick", photomathclear.transform);
+		photomathentered.Clear();
 	}
 
 	void PressPhotomathSubmitButton()
