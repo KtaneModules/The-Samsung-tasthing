@@ -172,6 +172,8 @@ public class theSamsung : MonoBehaviour
 		photomathstart.OnInteract += delegate () { StartCoroutine(PhotomathCycle()); return false;};
 		foreach (KMSelectable button in photomathbuttons)
 			button.OnInteract += delegate () { PressPhotomathButton(button); return false; };
+		foreach (KMSelectable button in pfpbuttons)
+			button.OnInteract += delegate () { PressPfpButton(button, Array.IndexOf(pfpbuttons, button)); return false; };
         clearbutton.OnInteract += delegate () { PressClearButton(); return false; };
         submitbutton.OnInteract += delegate () { PressSubmitButton(); return false; };
         // </Selectables>
@@ -345,6 +347,7 @@ public class theSamsung : MonoBehaviour
 			users[i].userid = usernumbers[i];
 			users[i].username = discordnames[usernumbers[i]];
 			pfppositions[i].localPosition = new Vector3(xfs[discordnumbers[i] % 4], .0123f, yfs[discordnumbers[i] / 4]);
+			users[i].position = pfppositions[i].localPosition;
 			pfprenders[i].material.mainTexture = pfpimages[usernumbers[i]];
 		}
 		// Solution
@@ -481,6 +484,11 @@ public class theSamsung : MonoBehaviour
 		hideable.SetActive(true);
 	}
 
+	void PressPfpButton(KMSelectable button, int ix)
+	{
+		stage2.SetActive(true);
+	}
+
     void PressSettingsButton(KMSelectable button)
     {
         if (enteringstage > 7)
@@ -577,6 +585,7 @@ public class theSamsung : MonoBehaviour
 		public int positionnumber;
 		public int userid;
 		public string username;
+		public Vector3 position;
 	}
 
     void Update()
