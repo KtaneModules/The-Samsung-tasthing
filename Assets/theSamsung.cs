@@ -99,6 +99,14 @@ public class theSamsung : MonoBehaviour
 	public Texture[] otherpaintings;
 	private List<Texture[]> paintings = new List<Texture[]>();
 
+	// Discord
+	public GameObject stage2;
+	public Texture[] pfpimages;
+	public Transform[] pfppositions;
+	public KMSelectable[] pfpbuttons;
+	public Renderer[] pfprenders;
+	private User[] users = new User[5];
+	private static readonly string[] discordnames = new string[10] { "TasThing", "Deaf", "Blananas", "Timwi", "Numdegased", "Zefod", "Espik", "Procyon", "eXish", "SillyPuppy" };
 
 	private int currentappindex;
 	private int[] solution = new int[8];
@@ -324,6 +332,21 @@ public class theSamsung : MonoBehaviour
 		}
 		artisttext.text = !lying ? artistnames[artistindex] : artistnames.Where(x => Array.IndexOf(artistnames, x) != artistindex).PickRandom();
 		solution[6] = gacsolution;
+		// Discord
+		stage2.SetActive(false);
+		var usernumbers = Enumerable.Range(0,10).ToList().Shuffle();
+		var discordnumbers = Enumerable.Range(0,16).ToList().Shuffle();
+		var xfs = new float[4] { -.057f, -.0191f, .0188f, .0567f };
+		var yfs = new float[4] { .0462f, .0083f, -.0296f, -.0675f };
+		for (int i = 0; i < 5; i++)
+		{
+			users[i].id = i;
+			users[i].positionnumber = discordnumbers[i];
+			users[i].userid = usernumbers[i];
+			users[i].username = discordnames[usernumbers[i]];
+			pfppositions[i].localPosition = new Vector3(xfs[discordnumbers[i] % 4], .0123f, yfs[discordnumbers[i] / 4]);
+			pfprenders[i].material.mainTexture = pfpimages[usernumbers[i]];
+		}
 		// Solution
 		int startingoffset;
 		var ser = bomb.GetSerialNumber();
@@ -547,6 +570,14 @@ public class theSamsung : MonoBehaviour
         else
             return x % 3 == 0;
     }
+
+	private struct User
+	{
+		public int id;
+		public int positionnumber;
+		public int userid;
+		public string username;
+	}
 
     void Update()
     {
