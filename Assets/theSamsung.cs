@@ -100,12 +100,22 @@ public class theSamsung : MonoBehaviour
 	private List<Texture[]> paintings = new List<Texture[]>();
 
 	// Discord
-	public GameObject stage2;
+	public GameObject call;
+	public Renderer callpfp;
+	public GameObject pfps;
+	public GameObject greencircle;
 	public Texture[] pfpimages;
 	public Transform[] pfppositions;
 	public KMSelectable[] pfpbuttons;
+	public KMSelectable leavebutton;
 	public Renderer[] pfprenders;
 	private User[] users = new User[5];
+	private int discordstage;
+	private int discordactivity;
+	private int discordsymbol;
+	private int discordcolor;
+	private int[] extremes = new int[4];
+	private bool speaking;
 	private static readonly string[] discordnames = new string[10] { "TasThing", "Deaf", "Blananas", "Timwi", "Numdegased", "Zefod", "Espik", "Procyon", "eXish", "SillyPuppy" };
 
 	private int currentappindex;
@@ -174,6 +184,7 @@ public class theSamsung : MonoBehaviour
 			button.OnInteract += delegate () { PressPhotomathButton(button); return false; };
 		foreach (KMSelectable button in pfpbuttons)
 			button.OnInteract += delegate () { PressPfpButton(button, Array.IndexOf(pfpbuttons, button)); return false; };
+		leavebutton.OnInteract += delegate () { PressLeaveButton(); return false; };
         clearbutton.OnInteract += delegate () { PressClearButton(); return false; };
         submitbutton.OnInteract += delegate () { PressSubmitButton(); return false; };
         // </Selectables>
@@ -335,21 +346,31 @@ public class theSamsung : MonoBehaviour
 		artisttext.text = !lying ? artistnames[artistindex] : artistnames.Where(x => Array.IndexOf(artistnames, x) != artistindex).PickRandom();
 		solution[6] = gacsolution;
 		// Discord
-		stage2.SetActive(false);
+		call.SetActive(false);
+		greencircle.SetActive(false);
 		var usernumbers = Enumerable.Range(0,10).ToList().Shuffle();
 		var discordnumbers = Enumerable.Range(0,16).ToList().Shuffle();
 		var xfs = new float[4] { -.057f, -.0191f, .0188f, .0567f };
 		var yfs = new float[4] { .0462f, .0083f, -.0296f, -.0675f };
 		for (int i = 0; i < 5; i++)
 		{
-			users[i].id = i;
-			users[i].positionnumber = discordnumbers[i];
-			users[i].userid = usernumbers[i];
-			users[i].username = discordnames[usernumbers[i]];
+			users[i] = new User { id = i, positionnumber = discordnumbers[i], userid = usernumbers[i], username = discordnames[usernumbers[i]], x = 0f, z = 0f };
 			pfppositions[i].localPosition = new Vector3(xfs[discordnumbers[i] % 4], .0123f, yfs[discordnumbers[i] / 4]);
-			users[i].position = pfppositions[i].localPosition;
+			users[i].x = pfppositions[i].localPosition.x;
+			users[i].z = pfppositions[i].localPosition.z;
 			pfprenders[i].material.mainTexture = pfpimages[usernumbers[i]];
 		}
+		List<User>[] nonselves = new List<User>[5];
+		for (int i = 0; i < 5; i++)
+			nonselves[i] = users.Where(u => u != users[i]).ToList();
+		extremes[0] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).Last());
+		extremes[1] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.x != u.x)).OrderBy(u => u.x).Last());
+		extremes[2] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).First());
+		extremes[3] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.x != u.x)).OrderBy(u => u.x).First());
+		Debug.LogFormat("[The Samsung #{0}] The top-most user is {1}.", moduleId, users[extremes[0]].username);
+		Debug.LogFormat("[The Samsung #{0}] The right-most user is {1}.", moduleId, users[extremes[1]].username);
+		Debug.LogFormat("[The Samsung #{0}] The down-most user is {1}.", moduleId, users[extremes[2]].username);
+		Debug.LogFormat("[The Samsung #{0}] The left-most user is {1}.", moduleId, users[extremes[3]].username);
 		// Solution
 		int startingoffset;
 		var ser = bomb.GetSerialNumber();
@@ -398,7 +419,9 @@ public class theSamsung : MonoBehaviour
 
     void PressHomeButton()
     {
-        Audio.PlaySoundAtTransform("keyClick", homebutton.transform);
+		if (speaking)
+			return;
+		Audio.PlaySoundAtTransform("keyClick", homebutton.transform);
         icons.SetActive(true);
         homebutton.gameObject.SetActive(false);
         phonescreen.material.mainTexture = currentwallpaper;
@@ -486,7 +509,33 @@ public class theSamsung : MonoBehaviour
 
 	void PressPfpButton(KMSelectable button, int ix)
 	{
-		stage2.SetActive(true);
+		callpfp.material.mainTexture = pfpimages[users[ix].userid];
+		call.SetActive(true);
+		pfps.SetActive(false);
+		Audio.PlaySoundAtTransform("join", button.transform);
+		StartCoroutine(DiscordVoice(ix));
+	}
+
+	private IEnumerator DiscordVoice(int ix)
+	{
+		speaking = true;
+		greencircle.SetActive(true);
+		yield return new WaitForSeconds(.75f);
+		Audio.PlaySoundAtTransform(Discord.activitylinenames[3][0], callpfp.transform); // TEMPORARY
+		yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
+		greencircle.SetActive(false);
+		speaking = false;
+	}
+
+	void PressLeaveButton()
+	{
+		if (speaking)
+			return;
+		greencircle.SetActive(false);
+		speaking = false;
+		call.SetActive(false);
+		pfps.SetActive(true);
+		Audio.PlaySoundAtTransform("disconnect", callpfp.transform);
 	}
 
     void PressSettingsButton(KMSelectable button)
@@ -579,13 +628,14 @@ public class theSamsung : MonoBehaviour
             return x % 3 == 0;
     }
 
-	private struct User
+	private class User
 	{
 		public int id;
 		public int positionnumber;
 		public int userid;
 		public string username;
-		public Vector3 position;
+		public float x;
+		public float z;
 	}
 
     void Update()
