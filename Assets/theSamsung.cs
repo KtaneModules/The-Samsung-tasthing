@@ -42,6 +42,7 @@ public class theSamsung : MonoBehaviour
 	public GameObject hideable;
 	public TextMesh photomathmaintext;
 	public TextMesh photomathstartingtext;
+	public TextMesh[] photmathkeypad;
 	public KMSelectable photomathstart;
 	public KMSelectable photomathsubmit;
 	public KMSelectable photomathclear;
@@ -107,7 +108,6 @@ public class theSamsung : MonoBehaviour
 	public Texture[] pfpimages;
 	public Transform[] pfppositions;
 	public KMSelectable[] pfpbuttons;
-	public KMSelectable leavebutton;
 	public KMSelectable mutebutton;
 	public Renderer[] pfprenders;
 	public Renderer cyclingsymbol;
@@ -211,7 +211,6 @@ public class theSamsung : MonoBehaviour
 			button.OnInteract += delegate () { PressPhotomathButton(button); return false; };
 		foreach (KMSelectable button in pfpbuttons)
 			button.OnInteract += delegate () { PressPfpButton(button, Array.IndexOf(pfpbuttons, button)); return false; };
-		leavebutton.OnInteract += delegate () { PressLeaveButton(); return false; };
 		mutebutton.OnInteract += delegate () { PressMuteButton(); return false; };
         clearbutton.OnInteract += delegate () { PressClearButton(); return false; };
         submitbutton.OnInteract += delegate () { PressSubmitButton(); return false; };
@@ -325,6 +324,8 @@ public class theSamsung : MonoBehaviour
 		if (photomathsolution < 0)
 			photomathsolution *= -1;
 		photomathsolution += operations.Count(x => x == 0 || x == 2);
+		for (int i = 0; i < 10; i++)
+			photmathkeypad[i].text = mathsymbols[keypadgrids[bomb.GetSerialNumberNumbers().Last()][i]];
 		string[] colornames = new string[4] { "blue", "purple", "green", "yellow" };
 		Debug.LogFormat("[The Samsung #{0}] PHOTOMATH:", moduleId);
 		Debug.LogFormat("[The Samsung #{0}] The circles on the bottom are colored {1}, {2}, {3}, and then {4}.", moduleId, colornames[Array.IndexOf(photomathcolors, photomathusedcolors[0])], colornames[Array.IndexOf(photomathcolors, photomathusedcolors[1])], colornames[Array.IndexOf(photomathcolors, photomathusedcolors[2])], colornames[Array.IndexOf(photomathcolors, photomathusedcolors[3])]);
@@ -449,7 +450,7 @@ public class theSamsung : MonoBehaviour
 				person1 = bomb.GetPortPlates().Any(x => x.Length == 0) ? extremes[0] : extremes[3];
 				break;
 		}
-		string username2 = checknames[Array.IndexOf(extremes, person1)].Where(s => users.Select(u => u.username).ToArray().Contains(s)).First();
+		string username2 = checknames[Array.IndexOf(extremes, person1)].Where(s => users.Select(u => u.username).ToArray().Contains(s) && !users.Where(u => u.username == s).Select(u => u.id).ToList().Contains(person1)).First();
 		person2 = users.Where(u => u.username == username2).First().id;
 		discordactivity = rnd.Range(0,10);
 		discordcolor = rnd.Range(0,6);
@@ -466,8 +467,8 @@ public class theSamsung : MonoBehaviour
 		Debug.LogFormat("[The Samsung #{0}] The first user to call is {1}.", moduleId, users[person1].username);
 		Debug.LogFormat("[The Samsung #{0}] The second user to call is {1}.", moduleId, users[person2].username);
 		Debug.LogFormat("[The Samsung #{0}] The activity is {1}, which corresponds to {2}.", moduleId, activitynames[discordactivity], discordactivity);
-		Debug.LogFormat("[The Samsung #{0}] The correct symbol is symbol {1}.", moduleId, discordsymbol);
-		Debug.LogFormat("[The Samsung #{0}] The correct color is {1}.", moduleId, discordcolor);
+		Debug.LogFormat("[The Samsung #{0}] The correct symbol is symbol {1}.", moduleId, discordsymbol + 1);
+		Debug.LogFormat("[The Samsung #{0}] The correct color is {1}.", moduleId, discordcolornames[discordcolor]);
 		Debug.LogFormat("[The Samsung #{0}] The solution for Discord is {1}.", moduleId, solution[7]);
 		// Solution
 		string[] directionnames = new string[8] { "north-west", "north", "north-east", "east", "south-east", "south", "south-west", "west" };
@@ -601,6 +602,7 @@ public class theSamsung : MonoBehaviour
 				photomathstartingtext.text = mathsymbols[startingvalue];
 			else
 				photomathstartingtext.text = "";
+			Audio.PlaySoundAtTransform("bass", photomathmaintext.transform);
 			yield return new WaitForSeconds(.7f);
 		}
 		photomathmaintext.text = "";
@@ -670,40 +672,41 @@ public class theSamsung : MonoBehaviour
 			}
 			else
 			{
-				StartCoroutine(SymbolCycle(0));
+				cycling = true;
+				StartCoroutine(SymbolCycle());
 			}
 		}
-		else if (discordstage == 3)
+		else if (discordstage == 4)
 		{
 			Audio.PlaySoundAtTransform(Discord.digitlinenames[ixuser][solution[7]], callpfp.transform);
+			yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
 			cycling = false;
 			endofdiscord = true;
+			cantleave = false;
+			PressLeaveButton();
 		}
 		speaking = false;
 		greencircle.SetActive(false);
 	}
 
-	private IEnumerator SymbolCycle(int stage)
+	private IEnumerator SymbolCycle()
 	{
 		cantleave = true;
-		cycling = true;
+		cyclingsymbol.material.mainTexture = allsymbols[currentsymbol][currentcolor];
 		cyclingsymbol.gameObject.SetActive(true);
+		while (discordstage == 2 && cycling)
+		{
+			currentsymbol = (currentsymbol + 1) % 8;
+			cyclingsymbol.material.mainTexture = allsymbols[currentsymbol][currentcolor];
+			yield return new WaitForSeconds(1f);
+		}
+		yield return new WaitForSeconds(1.5f);
 		while (cycling)
 		{
-			while (discordstage == 2)
-			{
-				cyclingsymbol.material.mainTexture = allsymbols[currentsymbol][currentcolor];
-				yield return new WaitForSeconds(.9f);
-				currentsymbol++;
-			}
-			while (discordstage == 3)
-			{
-				cyclingsymbol.material.mainTexture = allsymbols[currentsymbol][currentcolor];
-				yield return new WaitForSeconds(.9f);
-				currentcolor++;
-			}
+			currentcolor = (currentcolor + 1) % 6;
+			cyclingsymbol.material.mainTexture = allsymbols[currentsymbol][currentcolor];
+			yield return new WaitForSeconds(1f);
 		}
-		yield return new WaitForSeconds(1f);
 	}
 
 	void PressLeaveButton()
@@ -743,7 +746,7 @@ public class theSamsung : MonoBehaviour
 			else
 			{
 				discordstage++;
-				StartCoroutine(SymbolCycle(1));
+				StartCoroutine(SymbolCycle());
 			}
 		}
 		else if (discordstage == 3)
@@ -753,6 +756,8 @@ public class theSamsung : MonoBehaviour
 			else
 			{
 				cantleave = false;
+				cycling = false;
+				discordstage++;
 				StartCoroutine(DiscordVoice(currentixuser, currentixbutton));
 			}
 		}
@@ -760,7 +765,13 @@ public class theSamsung : MonoBehaviour
 
 	private IEnumerator HideDiscord()
 	{
-		yield return new WaitForSeconds(1f);
+		var unhiddenicons = Enumerable.Range(0,5).ToList().Shuffle();
+		for (int i = 0; i < 5; i++)
+		{
+			pfprenders[unhiddenicons[i]].gameObject.SetActive(false);
+			Audio.PlaySoundAtTransform("pop", pfprenders[unhiddenicons[i]].transform);
+			yield return new WaitForSeconds(.1f);
+		}
 	}
 
     void PressSettingsButton(KMSelectable button)
