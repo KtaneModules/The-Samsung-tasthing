@@ -284,6 +284,12 @@ public class theSamsung : MonoBehaviour
 		Debug.LogFormat("[The Samsung #{0}] DUOLINGO:", moduleId);
 		Debug.LogFormat("[The Samsung #{0}] The language present is {1}.", moduleId, languagenames[languageindex]);
 		Debug.LogFormat("[The Samsung #{0}] The expression is {1} {2} {3}.", moduleId, englishnumbernames[duolingonumbers[0]], englishoperatornames[operatorindex], englishnumbernames[duolingonumbers[1]]);
+		Debug.LogFormat("[The Samsung #{0}] The solution for Duolingo is {1}.", moduleId, solution[0]);
+		// Authenticator
+		string[] conditionnames = new string[10] { "a digital root of 8", "an even result when modulod by 3", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "division by 3" };
+		Debug.LogFormat("[The Samsung #{0}] GOOGLE AUTHENTICATOR:", moduleId);
+		Debug.LogFormat("[The Samsung #{0}] Every number shown has {1}.", moduleId, conditionnames[solution[3]]);
+		Debug.LogFormat("[The Samsung #{0}] Therefore, the solution for Google Authenticator is {1}.", moduleId, solution[3]);
 		// Photomath
 		mathsymbols.Shuffle();
 		startingvalue = rnd.Range(1,10);
@@ -319,9 +325,17 @@ public class theSamsung : MonoBehaviour
 		if (photomathsolution < 0)
 			photomathsolution *= -1;
 		photomathsolution += operations.Count(x => x == 0 || x == 2);
+		string[] colornames = new string[4] { "blue", "purple", "green", "yellow" };
+		Debug.LogFormat("[The Samsung #{0}] PHOTOMATH:", moduleId);
+		Debug.LogFormat("[The Samsung #{0}] The circles on the bottom are colored {1}, {2}, {3}, and then {4}.", moduleId, colornames[Array.IndexOf(photomathcolors, photomathusedcolors[0])], colornames[Array.IndexOf(photomathcolors, photomathusedcolors[1])], colornames[Array.IndexOf(photomathcolors, photomathusedcolors[2])], colornames[Array.IndexOf(photomathcolors, photomathusedcolors[3])]);
+		for (int i = 0; i < 10; i++)
+		Debug.LogFormat("[The Samsung #{0}] {1} corresponds to {2}.", moduleId, mathsymbols[i], i);
 		Debug.LogFormat("[The Samsung #{0}] The solution for Photomath is {1}.", moduleId, photomathsolution);
 		// Spotify
 		decoyindex = rnd.Range(0,10);
+		string[] songnames = new string[] { "You Spin Me Right Round", "Smooth Criminal", "Hardware Store", "Beat It", "Danger Zone", "Tacky", "Harder, Better, Faster, Stronger", "Drunken Sailor", "Megalovania", "a song not mentioned" };
+		Debug.LogFormat("[The Samsung #{0}] SPOTIFY:", moduleId);
+		Debug.LogFormat("[The Samsung #{0}] The song being played is {1}, so the solution for Spotify is {2}.", moduleId, songnames[solution[5]], solution[5]);
 		// Google Arts & Culture
 		paintings.Add(bobross);
 		paintings.Add(picasso);
@@ -330,6 +344,7 @@ public class theSamsung : MonoBehaviour
 		artistindex = rnd.Range(0,5);
 		int gacsolution;
 		bool lying = rnd.Range(0,2) == 0;
+		int paintingindex = rnd.Range(0,5);
 		if (artistindex == 4)
 		{
 			gacsolution = bomb.GetSerialNumber()[5] - '0';
@@ -364,7 +379,6 @@ public class theSamsung : MonoBehaviour
 					gacsolution = artyears[artistindex][7];
 					break;
 			}
-			int paintingindex = rnd.Range(0,5);
 			var n1 = new int[] { 0, 2, 4, 6, 8 };
 			var n2 = new int[] { 1, 3, 5, 7, 9 };
 			gacsolution += (!lying ? n1[paintingindex] : n2[paintingindex]);
@@ -372,6 +386,12 @@ public class theSamsung : MonoBehaviour
 			painting.material.mainTexture = paintings[artistindex][paintingindex];
 		}
 		artisttext.text = !lying ? artistnames[artistindex] : artistnames.Where(x => Array.IndexOf(artistnames, x) != artistindex).PickRandom();
+		Debug.LogFormat("[The Samsung #{0}] GOOGLE ARTS & CULTURE:", moduleId);
+		if (artistindex != 4)
+			Debug.LogFormat("[The Samsung #{0}] The art is by {1}. It corresponds to the digit {2}, and the text is {3}.", moduleId, artistnames[artistindex], paintingindex, !lying ? "n't lying" : " lying");
+		else
+			Debug.LogFormat("[The Samsung #{0}] This art is by some other artist. Use the last digit of the serial number.", moduleId);
+		Debug.LogFormat("[The Samsung #{0}] The solution for Google A&C is {1}.", moduleId, gacsolution);
 		solution[6] = gacsolution;
 		// Discord
 		allsymbols.Add(symbol1);
@@ -408,10 +428,6 @@ public class theSamsung : MonoBehaviour
 		for (int i = 0; i < 4; i++)
 			if (nonselves[i].Any(u => ((i == 0 || i ==2) ? u.z : u.x)  == ((i == 0 || i == 2) ? users[extremes[i]].z : users[extremes[i]].x)))
 				goto discordtryagain;
-		Debug.LogFormat("[The Samsung #{0}] The top-most user is {1}.", moduleId, users[extremes[0]].username);
-		Debug.LogFormat("[The Samsung #{0}] The right-most user is {1}.", moduleId, users[extremes[1]].username);
-		Debug.LogFormat("[The Samsung #{0}] The down-most user is {1}.", moduleId, users[extremes[2]].username);
-		Debug.LogFormat("[The Samsung #{0}] The left-most user is {1}.", moduleId, users[extremes[3]].username);
 		switch(Braille(users.Select(u => u.positionnumber).ToArray()))
 		{
 			case "A":
@@ -435,14 +451,27 @@ public class theSamsung : MonoBehaviour
 		}
 		string username2 = checknames[Array.IndexOf(extremes, person1)].Where(s => users.Select(u => u.username).ToArray().Contains(s)).First();
 		person2 = users.Where(u => u.username == username2).First().id;
-		Debug.LogFormat("[The Samsung #{0}] The first user to call is {1}.", moduleId, users[person1].username);
-		Debug.LogFormat("[The Samsung #{0}] The second user to call is {1}.", moduleId, users[person2].username);
 		discordactivity = rnd.Range(0,10);
 		discordcolor = rnd.Range(0,6);
 		discordsymbol = rnd.Range(0,8);
 		currentsymbol = rnd.Range(0,8);
 		currentcolor = rnd.Range(0,6);
+		string[] activitynames = new string[10] { "defusing", "playing Jackbox", "playing Tabletop Simulator", "reacting to a new mod", "complaining about sleep", "experting", "arguing", "talking about food", "being AFK", "something else" };
+		string[] discordcolornames = new string[6] { "red", "orange", "yellow", "green", "blue", "purple" };
+		Debug.LogFormat("[The Samsung #{0}] DISCORD:", moduleId);
+		Debug.LogFormat("[The Samsung #{0}] The top-most user is {1}.", moduleId, users[extremes[0]].username);
+		Debug.LogFormat("[The Samsung #{0}] The right-most user is {1}.", moduleId, users[extremes[1]].username);
+		Debug.LogFormat("[The Samsung #{0}] The down-most user is {1}.", moduleId, users[extremes[2]].username);
+		Debug.LogFormat("[The Samsung #{0}] The left-most user is {1}.", moduleId, users[extremes[3]].username);
+		Debug.LogFormat("[The Samsung #{0}] The first user to call is {1}.", moduleId, users[person1].username);
+		Debug.LogFormat("[The Samsung #{0}] The second user to call is {1}.", moduleId, users[person2].username);
+		Debug.LogFormat("[The Samsung #{0}] The activity is {1}, which corresponds to {2}.", moduleId, activitynames[discordactivity], discordactivity);
+		Debug.LogFormat("[The Samsung #{0}] The correct symbol is symbol {1}.", moduleId, discordsymbol);
+		Debug.LogFormat("[The Samsung #{0}] The correct color is {1}.", moduleId, discordcolor);
+		Debug.LogFormat("[The Samsung #{0}] The solution for Discord is {1}.", moduleId, solution[7]);
 		// Solution
+		string[] directionnames = new string[8] { "north-west", "north", "north-east", "east", "south-east", "south", "south-west", "west" };
+		Debug.LogFormat("[The Samsung #{0}] SETTINGS:", moduleId);
 		int startingoffset;
 		var ser = bomb.GetSerialNumber();
 		if (Char.IsLetter(ser[0]) && Char.IsLetter(ser[1]))
@@ -453,17 +482,19 @@ public class theSamsung : MonoBehaviour
 			startingoffset = 5;
 		else
 			startingoffset = 7;
+		Debug.LogFormat("[The Samsung #{0}] The initial direction is, at first, {1}.", moduleId, directionnames[startingoffset]);
 		if (bomb.GetPortCount(Port.Parallel) > 0)
 			startingoffset--;
 		else if (bomb.GetPortCount(Port.Serial) > 0)
 			startingoffset++;
+		Debug.LogFormat("[The Samsung #{0}] After modifications, the initial direction is {1}.", moduleId, directionnames[startingoffset]);
 		//
 		var solutionlist = new List<int>();
 		var clockwiseorder = new int[] { 0, 1, 2, 5, 8, 7, 6, 3 };
 		for (int i = 0; i < 8; i++)
 			solutionlist.Add(solution[positionnumbers.IndexOf(clockwiseorder[(i + startingoffset) % clockwiseorder.Length])] );
 		solutionstring = solutionlist.Join("");
-		Debug.LogFormat("[The Samsung #{0}] The solution is {1}.", moduleId, solutionstring);
+		Debug.LogFormat("[The Samsung #{0}] The module's solution is {1}.", moduleId, solutionstring);
         StartCoroutine(DisableStuff());
         StartCoroutine(Authenticator());
     }
