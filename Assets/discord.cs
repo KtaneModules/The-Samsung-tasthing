@@ -55,4 +55,6 @@ public static class Discord
 		new string[8] { "exishsymbol1", "exishsymbol2", "exishsymbol3", "exishsymbol4", "exishsymbol5", "exishsymbol6", "exishsymbol7", "exishsymbol8" },
 		new string[8] { "sillysymbol1", "sillysymbol2", "sillysymbol3", "sillysymbol4", "sillysymbol5", "sillysymbol6", "sillysymbol7", "sillysymbol8" }
 	};
+
+	public static readonly string[] busylinenames = new string[10] { "tasbusy", "deafbusy", "blanbusy", "timwibusy", "numbusy", "zefodbusy", "espikbusy", "procyonbusy", "exishbusy", "sillybusy" };
 }

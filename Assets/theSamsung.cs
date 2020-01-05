@@ -108,15 +108,42 @@ public class theSamsung : MonoBehaviour
 	public Transform[] pfppositions;
 	public KMSelectable[] pfpbuttons;
 	public KMSelectable leavebutton;
+	public KMSelectable mutebutton;
 	public Renderer[] pfprenders;
+	public Renderer cyclingsymbol;
+	public Texture[] symbol1;
+	public Texture[] symbol2;
+	public Texture[] symbol3;
+	public Texture[] symbol4;
+	public Texture[] symbol5;
+	public Texture[] symbol6;
+	public Texture[] symbol7;
+	public Texture[] symbol8;
+	private List<Texture[]> allsymbols = new List<Texture[]>();
 	private User[] users = new User[5];
 	private int discordstage;
+	private int person1;
+	private int person2;
 	private int discordactivity;
 	private int discordsymbol;
 	private int discordcolor;
 	private int[] extremes = new int[4];
+	private bool cantleave;
 	private bool speaking;
+	private bool leavingbecausestrike;
+	private bool endofdiscord;
+	private bool cycling;
+	private int currentsymbol;
+	private int currentcolor;
+	private int currentixuser;
+	private int currentixbutton;
 	private static readonly string[] discordnames = new string[10] { "TasThing", "Deaf", "Blananas", "Timwi", "Numdegased", "Zefod", "Espik", "Procyon", "eXish", "SillyPuppy" };
+	private static readonly string[][] checknames = new string[4][] {
+		new string[10] { "TasThing", "Blananas", "Numdegased", "Espik", "eXish", "SillyPuppy", "Deaf", "Timwi", "Zefod", "Procyon" },
+		new string[10] { "Timwi", "eXish", "SillyPuppy", "Zefod", "Procyon", "Numdegased", "Deaf", "Espik", "Blananas", "TasThing" },
+		new string[10] { "Deaf", "Procyon", "Espik", "Zefod", "Blananas", "TasThing", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
+		new string[10] { "Blananas", "TasThing", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Zefod", "Deaf", "SillyPuppy" }
+	};
 
 	private int currentappindex;
 	private int[] solution = new int[8];
@@ -185,6 +212,7 @@ public class theSamsung : MonoBehaviour
 		foreach (KMSelectable button in pfpbuttons)
 			button.OnInteract += delegate () { PressPfpButton(button, Array.IndexOf(pfpbuttons, button)); return false; };
 		leavebutton.OnInteract += delegate () { PressLeaveButton(); return false; };
+		mutebutton.OnInteract += delegate () { PressMuteButton(); return false; };
         clearbutton.OnInteract += delegate () { PressClearButton(); return false; };
         submitbutton.OnInteract += delegate () { PressSubmitButton(); return false; };
         // </Selectables>
@@ -346,8 +374,18 @@ public class theSamsung : MonoBehaviour
 		artisttext.text = !lying ? artistnames[artistindex] : artistnames.Where(x => Array.IndexOf(artistnames, x) != artistindex).PickRandom();
 		solution[6] = gacsolution;
 		// Discord
+		allsymbols.Add(symbol1);
+		allsymbols.Add(symbol2);
+		allsymbols.Add(symbol3);
+		allsymbols.Add(symbol4);
+		allsymbols.Add(symbol5);
+		allsymbols.Add(symbol6);
+		allsymbols.Add(symbol7);
+		allsymbols.Add(symbol8);
+		cyclingsymbol.gameObject.SetActive(false);
 		call.SetActive(false);
 		greencircle.SetActive(false);
+		discordtryagain:
 		var usernumbers = Enumerable.Range(0,10).ToList().Shuffle();
 		var discordnumbers = Enumerable.Range(0,16).ToList().Shuffle();
 		var xfs = new float[4] { -.057f, -.0191f, .0188f, .0567f };
@@ -367,10 +405,43 @@ public class theSamsung : MonoBehaviour
 		extremes[1] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.x != u.x)).OrderBy(u => u.x).Last());
 		extremes[2] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).First());
 		extremes[3] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.x != u.x)).OrderBy(u => u.x).First());
+		for (int i = 0; i < 4; i++)
+			if (nonselves[i].Any(u => ((i == 0 || i ==2) ? u.z : u.x)  == ((i == 0 || i == 2) ? users[extremes[i]].z : users[extremes[i]].x)))
+				goto discordtryagain;
 		Debug.LogFormat("[The Samsung #{0}] The top-most user is {1}.", moduleId, users[extremes[0]].username);
 		Debug.LogFormat("[The Samsung #{0}] The right-most user is {1}.", moduleId, users[extremes[1]].username);
 		Debug.LogFormat("[The Samsung #{0}] The down-most user is {1}.", moduleId, users[extremes[2]].username);
 		Debug.LogFormat("[The Samsung #{0}] The left-most user is {1}.", moduleId, users[extremes[3]].username);
+		switch(Braille(users.Select(u => u.positionnumber).ToArray()))
+		{
+			case "A":
+				person1 = extremes[0];
+				break;
+			case "B":
+				person1 = extremes[1];
+				break;
+			case "C":
+				person1 = extremes[2];
+				break;
+			case "D":
+				person1 = extremes[3];
+				break;
+			case "E":
+				person1 = bomb.GetSerialNumberLetters().Count(x => "AEIOU".Contains(x)) == 0 ? extremes[2] : extremes[1];
+				break;
+			default:
+				person1 = bomb.GetPortPlates().Any(x => x.Length == 0) ? extremes[0] : extremes[3];
+				break;
+		}
+		string username2 = checknames[Array.IndexOf(extremes, person1)].Where(s => users.Select(u => u.username).ToArray().Contains(s)).First();
+		person2 = users.Where(u => u.username == username2).First().id;
+		Debug.LogFormat("[The Samsung #{0}] The first user to call is {1}.", moduleId, users[person1].username);
+		Debug.LogFormat("[The Samsung #{0}] The second user to call is {1}.", moduleId, users[person2].username);
+		discordactivity = rnd.Range(0,10);
+		discordcolor = rnd.Range(0,6);
+		discordsymbol = rnd.Range(0,8);
+		currentsymbol = rnd.Range(0,8);
+		currentcolor = rnd.Range(0,6);
 		// Solution
 		int startingoffset;
 		var ser = bomb.GetSerialNumber();
@@ -419,7 +490,7 @@ public class theSamsung : MonoBehaviour
 
     void PressHomeButton()
     {
-		if (speaking)
+		if (cantleave)
 			return;
 		Audio.PlaySoundAtTransform("keyClick", homebutton.transform);
         icons.SetActive(true);
@@ -467,7 +538,7 @@ public class theSamsung : MonoBehaviour
 		var photomathans = photomathentered.Join("");
 		if (photomathans != photomathsolution.ToString())
 		{
-			GetComponent<KMBombModule>().HandleStrike();
+			StartCoroutine(Strike());
 		}
 		else
 		{
@@ -513,29 +584,152 @@ public class theSamsung : MonoBehaviour
 		call.SetActive(true);
 		pfps.SetActive(false);
 		Audio.PlaySoundAtTransform("join", button.transform);
-		StartCoroutine(DiscordVoice(ix));
+		StartCoroutine(DiscordVoice(users[ix].userid, ix));
 	}
 
-	private IEnumerator DiscordVoice(int ix)
+	private IEnumerator DiscordVoice(int ixuser, int ixbutton)
 	{
+		currentixuser = ixuser;
+		currentixbutton = ixbutton;
+		cantleave = true;
 		speaking = true;
 		greencircle.SetActive(true);
 		yield return new WaitForSeconds(.75f);
-		Audio.PlaySoundAtTransform(Discord.activitylinenames[3][0], callpfp.transform); // TEMPORARY
-		yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
-		greencircle.SetActive(false);
+		if (discordstage == 0)
+		{
+			if (ixbutton != person1)
+			{
+				Audio.PlaySoundAtTransform(Discord.busylinenames[ixuser], callpfp.transform);
+				yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
+				StartCoroutine(Strike());
+				cantleave = false;
+				speaking = false;
+				leavingbecausestrike = true;
+				PressLeaveButton();
+			}
+			else
+			{
+				Audio.PlaySoundAtTransform(Discord.activitylinenames[ixuser][discordactivity], callpfp.transform);
+				yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
+			}
+		}
+		else if (discordstage == 1)
+		{
+			Audio.PlaySoundAtTransform(Discord.symbollinenames[ixuser][discordsymbol], callpfp.transform);
+			yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
+			yield return new WaitForSeconds(.5f);
+			Audio.PlaySoundAtTransform(Discord.colorlinenames[ixuser][discordcolor], callpfp.transform);
+			yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
+			speaking = false;
+			cantleave = false;
+			PressLeaveButton();
+			discordstage++;
+		}
+		else if (discordstage == 2)
+		{
+			if (ixbutton != person2)
+			{
+				Audio.PlaySoundAtTransform(Discord.busylinenames[ixuser], callpfp.transform);
+				yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
+				StartCoroutine(Strike());
+				cantleave = false;
+				speaking = false;
+				leavingbecausestrike = true;
+				PressLeaveButton();
+			}
+			else
+			{
+				StartCoroutine(SymbolCycle(0));
+			}
+		}
+		else if (discordstage == 3)
+		{
+			Audio.PlaySoundAtTransform(Discord.digitlinenames[ixuser][solution[7]], callpfp.transform);
+			cycling = false;
+			endofdiscord = true;
+		}
 		speaking = false;
+		greencircle.SetActive(false);
+	}
+
+	private IEnumerator SymbolCycle(int stage)
+	{
+		cantleave = true;
+		cycling = true;
+		cyclingsymbol.gameObject.SetActive(true);
+		while (cycling)
+		{
+			while (discordstage == 2)
+			{
+				cyclingsymbol.material.mainTexture = allsymbols[currentsymbol][currentcolor];
+				yield return new WaitForSeconds(.9f);
+				currentsymbol++;
+			}
+			while (discordstage == 3)
+			{
+				cyclingsymbol.material.mainTexture = allsymbols[currentsymbol][currentcolor];
+				yield return new WaitForSeconds(.9f);
+				currentcolor++;
+			}
+		}
+		yield return new WaitForSeconds(1f);
 	}
 
 	void PressLeaveButton()
 	{
-		if (speaking)
+		if (cantleave)
 			return;
 		greencircle.SetActive(false);
-		speaking = false;
+		cantleave = false;
 		call.SetActive(false);
 		pfps.SetActive(true);
-		Audio.PlaySoundAtTransform("disconnect", callpfp.transform);
+		Audio.PlaySoundAtTransform(leavingbecausestrike ? "leave" : "disconnect", callpfp.transform);
+		leavingbecausestrike = false;
+		if (endofdiscord)
+			StartCoroutine(HideDiscord());
+	}
+
+	void PressMuteButton()
+	{
+		if (speaking)
+			return;
+		if (discordstage == 0)
+		{
+			if (!(((int) bomb.GetTime()) % 10 == discordactivity))
+			{
+				StartCoroutine(Strike());
+			}
+			else
+			{
+				discordstage++;
+				StartCoroutine(DiscordVoice(currentixuser, currentixbutton));
+			}
+		}
+		else if (discordstage == 2)
+		{
+			if (currentsymbol != discordsymbol)
+				StartCoroutine(Strike());
+			else
+			{
+				discordstage++;
+				StartCoroutine(SymbolCycle(1));
+			}
+		}
+		else if (discordstage == 3)
+		{
+			if (currentcolor != discordcolor)
+				StartCoroutine(Strike());
+			else
+			{
+				cantleave = false;
+				StartCoroutine(DiscordVoice(currentixuser, currentixbutton));
+			}
+		}
+	}
+
+	private IEnumerator HideDiscord()
+	{
+		yield return new WaitForSeconds(1f);
 	}
 
     void PressSettingsButton(KMSelectable button)
@@ -581,7 +775,6 @@ public class theSamsung : MonoBehaviour
 		else
 		{
             Debug.LogFormat("[The Samsung #{0}] That was incorrect. Strike!", moduleId);
-            GetComponent<KMBombModule>().HandleStrike();
 			StartCoroutine(Strike());
         }
     }
@@ -638,6 +831,27 @@ public class theSamsung : MonoBehaviour
 		public float z;
 	}
 
+	private string Braille(int[] g)
+	{
+		bool[] truthgrid = new bool[6];
+		int[] checkgrid = new int[6] { 0, 4, 8, 1, 5, 9 };
+		for (int i = 0; i < 6; i++)
+			if (g.Any(ix => ix == checkgrid[i]))
+				truthgrid[i]= true;
+		if (BrailleArrays.brailleletters[0].Any(a => a.SequenceEqual(truthgrid)))
+			return "A";
+		else if (BrailleArrays.brailleletters[1].Any(a => a.SequenceEqual(truthgrid)))
+			return "B";
+		else if (BrailleArrays.brailleletters[2].Any(a => a.SequenceEqual(truthgrid)))
+			return "C";
+		else if (BrailleArrays.brailleletters[3].Any(a => a.SequenceEqual(truthgrid)))
+			return "D";
+		else if (BrailleArrays.brailleletters[4].Any(a => a.SequenceEqual(truthgrid)))
+			return "E";
+		else
+			return "F";
+	}
+
     void Update()
     {
         timeremaining = bomb.GetTime();
@@ -660,6 +874,7 @@ public class theSamsung : MonoBehaviour
 
 	private IEnumerator Strike()
 	{
+		GetComponent<KMBombModule>().HandleStrike();
 		var defaultcolor = solvedthingy.material.color;
 		solvedthingy.material.color = strikecolor;
 		solvedlight.enabled = true;
