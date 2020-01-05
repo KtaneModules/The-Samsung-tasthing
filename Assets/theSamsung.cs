@@ -650,7 +650,9 @@ public class theSamsung : MonoBehaviour
 		{
 			Audio.PlaySoundAtTransform(Discord.symbollinenames[ixuser][discordsymbol], callpfp.transform);
 			yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
-			yield return new WaitForSeconds(.5f);
+			greencircle.SetActive(false);
+			yield return new WaitForSeconds(.75f);
+			greencircle.SetActive(true);
 			Audio.PlaySoundAtTransform(Discord.colorlinenames[ixuser][discordcolor], callpfp.transform);
 			yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
 			speaking = false;
