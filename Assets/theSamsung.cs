@@ -120,7 +120,7 @@ public class theSamsung : MonoBehaviour
 	public Texture[] symbol7;
 	public Texture[] symbol8;
 	private List<Texture[]> allsymbols = new List<Texture[]>();
-	private User[] users = new User[5];
+	private User[] users = new User[6];
 	private int discordstage;
 	private int person1;
 	private int person2;
@@ -402,7 +402,7 @@ public class theSamsung : MonoBehaviour
 		var discordnumbers = Enumerable.Range(0,16).ToList().Shuffle();
 		var xfs = new float[4] { -.057f, -.0191f, .0188f, .0567f };
 		var yfs = new float[4] { .0462f, .0083f, -.0296f, -.0675f };
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			users[i] = new User { id = i, positionnumber = discordnumbers[i], userid = usernumbers[i], username = discordnames[usernumbers[i]], x = 0f, z = 0f };
 			pfppositions[i].localPosition = new Vector3(xfs[discordnumbers[i] % 4], .0123f, yfs[discordnumbers[i] / 4]);
@@ -410,8 +410,8 @@ public class theSamsung : MonoBehaviour
 			users[i].z = pfppositions[i].localPosition.z;
 			pfprenders[i].material.mainTexture = pfpimages[usernumbers[i]];
 		}
-		List<User>[] nonselves = new List<User>[5];
-		for (int i = 0; i < 5; i++)
+		List<User>[] nonselves = new List<User>[6];
+		for (int i = 0; i < 6; i++)
 			nonselves[i] = users.Where(u => u != users[i]).ToList();
 		extremes[0] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).Last());
 		extremes[1] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.x != u.x)).OrderBy(u => u.x).Last());
@@ -765,7 +765,7 @@ public class theSamsung : MonoBehaviour
 	private IEnumerator HideDiscord()
 	{
 		var unhiddenicons = Enumerable.Range(0,5).ToList().Shuffle();
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			pfprenders[unhiddenicons[i]].gameObject.SetActive(false);
 			Audio.PlaySoundAtTransform("pop", pfprenders[unhiddenicons[i]].transform);
