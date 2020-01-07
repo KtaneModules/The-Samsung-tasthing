@@ -20,7 +20,7 @@ public class theSamsung : MonoBehaviour
 	public KMSelectable clearbutton;
 	public KMSelectable submitbutton;
 	public TextMesh answertext;
-	private static readonly string[] eastereggs = new string[] { "43556629", "82784464", "36725463" };
+	private static readonly string[] eastereggs = new string[] { "43556629", "82784464", "36725463", "69", "420", "666" };
 
 	// Duolingo
 	private int languageindex;
@@ -144,6 +144,7 @@ public class theSamsung : MonoBehaviour
 		new string[10] { "Deaf", "Procyon", "Espik", "Zefod", "Blananas", "TasThing", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
 		new string[10] { "Blananas", "TasThing", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Zefod", "Deaf", "SillyPuppy" }
 	};
+	private static readonly string[] busyexcuses = new string[10] { "she's not really into you...", "deafexcuse", "he's busy modding.", "he's at the badminton club.", "numexcuse", "zefodexcuse", "espikexcuse", "procyonexcuse", "exishexcuse", "he's in the middle of something. (or someone?)"  };
 
 	private int currentappindex;
 	private int[] solution = new int[8];
@@ -195,9 +196,9 @@ public class theSamsung : MonoBehaviour
         volumestatus.material.mainTexture = volumeicons.PickRandom();
         var statusnumbers = Enumerable.Range(0, 5).ToList();
         statusnumbers.Shuffle();
+		foreach (Renderer statusicon in miscstatus)
+			statusicon.material.mainTexture = miscicons[statusnumbers[Array.IndexOf(miscstatus, statusicon)]];
         // <Selectables>
-        foreach (Renderer statusicon in miscstatus)
-            statusicon.material.mainTexture = miscicons[statusnumbers[Array.IndexOf(miscstatus, statusicon)]];
         homebutton.OnInteract += delegate () { PressHomeButton(); return false; };
 		playbutton.OnInteract += delegate () { PressPlayButton(); return false; };
         foreach (KMSelectable appbutton in appbuttons)
@@ -338,10 +339,7 @@ public class theSamsung : MonoBehaviour
 		Debug.LogFormat("[The Samsung #{0}] SPOTIFY:", moduleId);
 		Debug.LogFormat("[The Samsung #{0}] The song being played is {1}, so the solution for Spotify is {2}.", moduleId, songnames[solution[5]], solution[5]);
 		// Google Arts & Culture
-		paintings.Add(bobross);
-		paintings.Add(picasso);
-		paintings.Add(davinci);
-		paintings.Add(vangogh);
+		paintings = new List<Texture[]> { bobross, picasso, davinci, vangogh };
 		artistindex = rnd.Range(0,5);
 		int gacsolution;
 		bool lying = rnd.Range(0,2) == 0;
@@ -395,14 +393,7 @@ public class theSamsung : MonoBehaviour
 		Debug.LogFormat("[The Samsung #{0}] The solution for Google A&C is {1}.", moduleId, gacsolution);
 		solution[6] = gacsolution;
 		// Discord
-		allsymbols.Add(symbol1);
-		allsymbols.Add(symbol2);
-		allsymbols.Add(symbol3);
-		allsymbols.Add(symbol4);
-		allsymbols.Add(symbol5);
-		allsymbols.Add(symbol6);
-		allsymbols.Add(symbol7);
-		allsymbols.Add(symbol8);
+		allsymbols = new List<Texture[]> { symbol1, symbol2, symbol3, symbol4, symbol5, symbol6, symbol7, symbol8 };
 		cyclingsymbol.gameObject.SetActive(false);
 		call.SetActive(false);
 		greencircle.SetActive(false);
@@ -429,25 +420,32 @@ public class theSamsung : MonoBehaviour
 		for (int i = 0; i < 4; i++)
 			if (nonselves[i].Any(u => ((i == 0 || i ==2) ? u.z : u.x)  == ((i == 0 || i == 2) ? users[extremes[i]].z : users[extremes[i]].x)))
 				goto discordtryagain;
-		switch(Braille(users.Select(u => u.positionnumber).ToArray()))
+		Debug.LogFormat("[The Samsung #{0}] DISCORD:", moduleId);
+		switch (Braille(users.Select(u => u.positionnumber).ToArray()))
 		{
 			case "A":
 				person1 = extremes[0];
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "A");
 				break;
 			case "B":
 				person1 = extremes[1];
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "B");
 				break;
 			case "C":
 				person1 = extremes[2];
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "C");
 				break;
 			case "D":
 				person1 = extremes[3];
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "D");
 				break;
 			case "E":
 				person1 = bomb.GetSerialNumberLetters().Count(x => "AEIOU".Contains(x)) == 0 ? extremes[2] : extremes[1];
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left does not spell out a Braille letter..", moduleId);
 				break;
 			default:
 				person1 = bomb.GetPortPlates().Any(x => x.Length == 0) ? extremes[0] : extremes[3];
+				Debug.LogFormat("[The Samsung #{0}] DISCORD:", moduleId);
 				break;
 		}
 		string username2 = checknames[Array.IndexOf(extremes, person1)].Where(s => users.Select(u => u.username).ToArray().Contains(s) && !users.Where(u => u.username == s).Select(u => u.id).ToList().Contains(person1)).First();
@@ -459,12 +457,8 @@ public class theSamsung : MonoBehaviour
 		currentcolor = rnd.Range(0,6);
 		string[] activitynames = new string[10] { "defusing", "playing Jackbox", "playing Tabletop Simulator", "reacting to a new mod", "complaining about sleep", "experting", "arguing", "talking about food", "being AFK", "something else" };
 		string[] discordcolornames = new string[6] { "red", "orange", "yellow", "green", "blue", "purple" };
-		Debug.LogFormat("[The Samsung #{0}] DISCORD:", moduleId);
-		Debug.LogFormat("[The Samsung #{0}] The top-most user is {1}.", moduleId, users[extremes[0]].username);
-		Debug.LogFormat("[The Samsung #{0}] The right-most user is {1}.", moduleId, users[extremes[1]].username);
-		Debug.LogFormat("[The Samsung #{0}] The down-most user is {1}.", moduleId, users[extremes[2]].username);
-		Debug.LogFormat("[The Samsung #{0}] The left-most user is {1}.", moduleId, users[extremes[3]].username);
-		Debug.LogFormat("[The Samsung #{0}] The first user to call is {1}.", moduleId, users[person1].username);
+		string[] extremenames = new string[4] { "top-most", "right-most", "bottom-most", "right-most" };
+		Debug.LogFormat("[The Samsung #{0}] The first user to call is {1}, because they are the {2} user.", moduleId, users[person1].username, extremenames[Array.IndexOf(extremes, extremes.Where(x => x == person1).First())]);
 		Debug.LogFormat("[The Samsung #{0}] The second user to call is {1}.", moduleId, users[person2].username);
 		Debug.LogFormat("[The Samsung #{0}] The activity is {1}, which corresponds to {2}.", moduleId, activitynames[discordactivity], discordactivity);
 		Debug.LogFormat("[The Samsung #{0}] The correct symbol is symbol {1}.", moduleId, discordsymbol + 1);
@@ -570,6 +564,7 @@ public class theSamsung : MonoBehaviour
 		var photomathans = photomathentered.Join("");
 		if (photomathans != photomathsolution.ToString())
 		{
+			Debug.LogFormat("[The Samsung #{0}] You submitted {1} on Photomath. That was incorrect. Strike!", moduleId, photomathans);
 			StartCoroutine(Strike());
 		}
 		else
@@ -634,6 +629,7 @@ public class theSamsung : MonoBehaviour
 			{
 				Audio.PlaySoundAtTransform(Discord.busylinenames[ixuser], callpfp.transform);
 				yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
+				Debug.LogFormat("[The Samsung #{0}] You called {1}, but {2} Strike!", moduleId, discordnames[ixuser], busyexcuses[ixuser]);
 				StartCoroutine(Strike());
 				cantleave = false;
 				speaking = false;
@@ -665,7 +661,8 @@ public class theSamsung : MonoBehaviour
 			if (ixbutton != person2)
 			{
 				Audio.PlaySoundAtTransform(Discord.busylinenames[ixuser], callpfp.transform);
-				yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array.
+				yield return new WaitForSeconds(10f); // TEMPORARY, to be set to length of sound clip in array
+				Debug.LogFormat("[The Samsung #{0}] You called {1}, but {2} Strike!", moduleId, discordnames[ixuser], busyexcuses[ixuser]);
 				StartCoroutine(Strike());
 				cantleave = false;
 				speaking = false;
@@ -927,6 +924,16 @@ public class theSamsung : MonoBehaviour
 		solvedlight.enabled = false;
 		solvedlight.color = solvedcolor;
 		solvedthingy.material.color = defaultcolor;
+	}
+
+	void ShowEverything()
+	{
+
+	}
+
+	void HideEverything()
+	{
+
 	}
 
 	private int mod(int x, int m)
