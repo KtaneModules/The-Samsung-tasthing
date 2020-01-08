@@ -144,7 +144,7 @@ public class theSamsung : MonoBehaviour
 		new string[10] { "Deaf", "Procyon", "Espik", "Zefod", "Blananas", "TasThing", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
 		new string[10] { "Blananas", "TasThing", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Zefod", "Deaf", "SillyPuppy" }
 	};
-	private static readonly string[] busyexcuses = new string[10] { "she's not really into you...", "deafexcuse", "he's busy modding.", "he's at the badminton club.", "numexcuse", "zefodexcuse", "espikexcuse", "procyonexcuse", "exishexcuse", "he's in the middle of something. (or someone?)"  };
+	private static readonly string[] busyexcuses = new string[10] { "she's not really into you...", "he's being himself.", "he's busy modding.", "he's at the badminton club.", "numexcuse", "zefodexcuse", "espikexcuse", "procyonexcuse", "exishexcuse", "he's in the middle of something. (or someone?)"  };
 
 	private int currentappindex;
 	private int[] solution = new int[8];
