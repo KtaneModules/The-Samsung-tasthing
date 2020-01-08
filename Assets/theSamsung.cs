@@ -161,6 +161,7 @@ public class theSamsung : MonoBehaviour
     public Renderer batstatus;
     public Renderer volumestatus;
     public Renderer[] miscstatus;
+	public TextMesh timetext;
     public Renderer phonebackground;
     public Renderer phonescreen;
     public Renderer[] apprenders;
@@ -457,7 +458,7 @@ public class theSamsung : MonoBehaviour
 		currentcolor = rnd.Range(0,6);
 		string[] activitynames = new string[10] { "defusing", "playing Jackbox", "playing Tabletop Simulator", "reacting to a new mod", "complaining about sleep", "experting", "arguing", "talking about food", "being AFK", "something else" };
 		string[] discordcolornames = new string[6] { "red", "orange", "yellow", "green", "blue", "purple" };
-		string[] extremenames = new string[4] { "top-most", "right-most", "bottom-most", "right-most" };
+		string[] extremenames = new string[4] { "top-most", "right-most", "bottom-most", "left-most" };
 		Debug.LogFormat("[The Samsung #{0}] The first user to call is {1}, because they are the {2} user.", moduleId, users[person1].username, extremenames[Array.IndexOf(extremes, extremes.Where(x => x == person1).First())]);
 		Debug.LogFormat("[The Samsung #{0}] The second user to call is {1}.", moduleId, users[person2].username);
 		Debug.LogFormat("[The Samsung #{0}] The activity is {1}, which corresponds to {2}.", moduleId, activitynames[discordactivity], discordactivity);
@@ -764,7 +765,7 @@ public class theSamsung : MonoBehaviour
 
 	private IEnumerator HideDiscord()
 	{
-		var unhiddenicons = Enumerable.Range(0,5).ToList().Shuffle();
+		var unhiddenicons = Enumerable.Range(0,6).ToList().Shuffle();
 		for (int i = 0; i < 6; i++)
 		{
 			pfprenders[unhiddenicons[i]].gameObject.SetActive(false);
@@ -902,6 +903,7 @@ public class theSamsung : MonoBehaviour
             batstatus.material.mainTexture = baticons[1];
         if (!flashing && rnd.Range(0, 10000) == 0)
             StartCoroutine(FlashLed());
+		timetext.text = DateTime.Now.ToString("hh:mm");
     }
 
     private IEnumerator FlashLed()
