@@ -20,7 +20,10 @@ public class theSamsung : MonoBehaviour
 	public KMSelectable clearbutton;
 	public KMSelectable submitbutton;
 	public TextMesh answertext;
-	private static readonly string[] eastereggs = new string[] { "43556629", "82784464", "36725463", "69", "420", "666" };
+	private static readonly string[] eastereggs = new string[] { "43556629", "82784464", "26725463", "69", "420", "666", "177013" };
+	private static readonly string[] eastereggdisplays = new string[] { "Na na, na na", "She's not around.", "That's my name!", "Nice.", "Blaze it!", ">:)", "No." };
+	private static readonly float[] easteregglengths = new float[] { 8.5f, 7.5f, 9.5f, 2.5f, 3.5f, 5.5f, 4.5f };
+	private bool easteregging;
 
 	// Duolingo
 	private int languageindex;
@@ -517,7 +520,7 @@ public class theSamsung : MonoBehaviour
 
     void PressHomeButton()
     {
-		if (cantleave)
+		if (cantleave || easteregging)
 			return;
 		Audio.PlaySoundAtTransform("keyClick", homebutton.transform);
         icons.SetActive(true);
@@ -732,6 +735,7 @@ public class theSamsung : MonoBehaviour
 			if (!(((int) bomb.GetTime()) % 10 == discordactivity))
 			{
 				StartCoroutine(Strike());
+				Debug.LogFormat("[The Samsung #{0}] You pressed the mute button at the wrong time. Strike!", moduleId);
 			}
 			else
 			{
@@ -742,7 +746,10 @@ public class theSamsung : MonoBehaviour
 		else if (discordstage == 2)
 		{
 			if (currentsymbol != discordsymbol)
+			{
 				StartCoroutine(Strike());
+				Debug.LogFormat("[The Samsung #{0}] You submitted the wrong symbol. Strike!", moduleId);
+			}
 			else
 			{
 				discordstage++;
@@ -752,7 +759,10 @@ public class theSamsung : MonoBehaviour
 		else if (discordstage == 3)
 		{
 			if (currentcolor != discordcolor)
+			{
 				StartCoroutine(Strike());
+				Debug.LogFormat("[The Samsung #{0}] You submitted the wrong color. Strike!", moduleId);
+			}
 			else
 			{
 				cantleave = false;
@@ -776,7 +786,7 @@ public class theSamsung : MonoBehaviour
 
     void PressSettingsButton(KMSelectable button)
     {
-        if (enteringstage > 7)
+        if (enteringstage > 7 || easteregging)
             return;
         Audio.PlaySoundAtTransform("keyClick", button.transform);
         var numbers = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
@@ -787,7 +797,9 @@ public class theSamsung : MonoBehaviour
 
     void PressClearButton()
     {
-        Audio.PlaySoundAtTransform("keyClick", clearbutton.transform);
+		if (easteregging)
+			return;
+		Audio.PlaySoundAtTransform("keyClick", clearbutton.transform);
         enteringstage = 0;
         enteredsolution.Clear();
         answertext.text = "";
@@ -795,7 +807,9 @@ public class theSamsung : MonoBehaviour
 
     void PressSubmitButton()
     {
-        Audio.PlaySoundAtTransform("keyClick", submitbutton.transform);
+		if (easteregging)
+			return;
+		Audio.PlaySoundAtTransform("keyClick", submitbutton.transform);
         var enteredsolutionstring = enteredsolution.Join("");
         Debug.LogFormat("[The Samsung #{0}] You submitted {1}.", moduleId, enteredsolution);
         if (enteredsolutionstring == solutionstring)
@@ -812,7 +826,7 @@ public class theSamsung : MonoBehaviour
 		else if (eastereggs.Any(x => x == enteredsolutionstring))
 		{
 			var ix = Array.IndexOf(eastereggs, enteredsolutionstring);
-			Debug.LogFormat("[The Samsung #{0}] You found easter egg {1}.", moduleId, ix + 1);
+			StartCoroutine(EasterEgg(enteredsolutionstring, ix));
 		}
 		else
 		{
@@ -820,6 +834,18 @@ public class theSamsung : MonoBehaviour
 			StartCoroutine(Strike());
         }
     }
+
+	private IEnumerator EasterEgg(string name, int ix)
+	{
+		easteregging = true;
+		answertext.text = eastereggdisplays[ix];
+		Audio.PlaySoundAtTransform(name, homebutton.transform);
+		yield return new WaitForSeconds(easteregglengths[ix]);
+		easteregging = false;
+		enteredsolution.Clear();
+		answertext.text = "";
+		enteringstage = 0;
+	}
 
     private IEnumerator Authenticator()
     {
