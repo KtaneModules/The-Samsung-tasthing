@@ -37,6 +37,36 @@ public class theSamsung : MonoBehaviour
 	private static readonly string[] englishnumbernames = new string[21] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty" };
 	private static readonly string[] englishoperatornames = new string[4] { "plus", "minus", "times", "divided by" };
 
+	// Google Maps
+	public TextMesh[] gmapstext1;
+	public TextMesh[] gmapstext2;
+	private int country1;
+	private int country2;
+	private static readonly float[][] latcords = new float[10][] {
+		new float[2] { 32.886970f, 40.353244f },
+		new float[2] { 50.007742f, 64.623881f },
+		new float[2] { 18.554616f, 25.459147f },
+		new float[2] { 56.218924f, 65.425386f },
+		new float[2] { 49.336579f, 52.972463f },
+		new float[2] { -31.079284f, -20.739675f },
+		new float[2] { 50.836475f, 53.035930f },
+		new float[2] { 31.428669f, 39.707192f },
+		new float[2] { -21.518496f, -5.633482f },
+		new float[2] { -33.339706f, -29.531405f }
+	};
+	private static readonly float[][] loncords = new float[10][] {
+		new float[2] { -116.121098f, -81.843754f },
+		new float[2] { -122.115239f, -97.417976f },
+		new float[2] { -103.130860f, -98.455078f },
+		new float[2] { 40.464846f, 128.988279f },
+		new float[2] { 7.470706f, 11.610353f },
+		new float[2] { 119.950928f, 144.386716f },
+		new float[2] { -4.003420f, -0.259280f },
+		new float[2] { 82.001950f, 113.642575f },
+		new float[2] { -56.329102f, -40.535155f },
+		new float[2] { 18.769041f, 24.117188f }
+	};
+
 	// Authentiator
 	public TextMesh[] authenticatortexts;
 	public Transform authenticatorbar;
@@ -140,14 +170,14 @@ public class theSamsung : MonoBehaviour
 	private int currentcolor;
 	private int currentixuser;
 	private int currentixbutton;
-	private static readonly string[] discordnames = new string[10] { "TasThing", "Deaf", "Blananas", "Timwi", "Numdegased", "Zefod", "Espik", "Procyon", "eXish", "SillyPuppy" };
+	private static readonly string[] discordnames = new string[10] { "TasThing", "Deaf", "Blananas", "Timwi", "Numdegased", "Nico Robin", "Espik", "Procyon", "eXish", "SillyPuppy" };
 	private static readonly string[][] checknames = new string[4][] {
-		new string[10] { "TasThing", "Blananas", "Numdegased", "Espik", "eXish", "SillyPuppy", "Deaf", "Timwi", "Zefod", "Procyon" },
-		new string[10] { "Timwi", "eXish", "SillyPuppy", "Zefod", "Procyon", "Numdegased", "Deaf", "Espik", "Blananas", "TasThing" },
-		new string[10] { "Deaf", "Procyon", "Espik", "Zefod", "Blananas", "TasThing", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
-		new string[10] { "Blananas", "TasThing", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Zefod", "Deaf", "SillyPuppy" }
+		new string[10] { "TasThing", "Blananas", "Numdegased", "Espik", "eXish", "SillyPuppy", "Deaf", "Timwi", "Nico Robin", "Procyon" },
+		new string[10] { "Timwi", "eXish", "SillyPuppy", "Nico Robin", "Procyon", "Numdegased", "Deaf", "Espik", "Blananas", "TasThing" },
+		new string[10] { "Deaf", "Procyon", "Espik", "Nico Robin", "Blananas", "TasThing", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
+		new string[10] { "Blananas", "TasThing", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Nico Robin", "Deaf", "SillyPuppy" }
 	};
-	private static readonly string[] busyexcuses = new string[10] { "she's not really into you...", "he's being himself.", "he's busy modding.", "he's at the badminton club.", "numexcuse", "zefodexcuse", "espikexcuse", "procyonexcuse", "exishexcuse", "he's in the middle of something. (or someone?)"  };
+	private static readonly string[] busyexcuses = new string[10] { "she's not really into you...", "he's being himself.", "he's busy modding.", "he's at the badminton club.", "numexcuse", "he can't deal with you right now.", "espikexcuse", "procyonexcuse", "exishexcuse", "he's in the middle of something. (or someone?)"  };
 
 	private int currentappindex;
 	private int[] solution = new int[8];
@@ -289,6 +319,18 @@ public class theSamsung : MonoBehaviour
 		Debug.LogFormat("[The Samsung #{0}] The language present is {1}.", moduleId, languagenames[languageindex]);
 		Debug.LogFormat("[The Samsung #{0}] The expression is {1} {2} {3}.", moduleId, englishnumbernames[duolingonumbers[0]], englishoperatornames[operatorindex], englishnumbernames[duolingonumbers[1]]);
 		Debug.LogFormat("[The Samsung #{0}] The solution for Duolingo is {1}.", moduleId, solution[0]);
+		// Google Maps
+		country1 = rnd.Range(0,10);
+		country2 = rnd.Range(0,10);
+		solution[1] = mod(country1 - country2, 10);
+		gmapstext1[0].text = rnd.Range(latcords[country1][0], latcords[country1][1]).ToString();
+		gmapstext1[1].text = rnd.Range(loncords[country1][0], loncords[country1][1]).ToString();
+		gmapstext2[0].text = rnd.Range(latcords[country2][0], latcords[country2][1]).ToString();
+		gmapstext2[1].text = rnd.Range(loncords[country2][0], loncords[country2][1]).ToString();
+		Debug.LogFormat("[The Samsung #{0}] GOOGLE MAPS:", moduleId);
+		string[] countrynames = new string[10] { "The United States", "Canada", "Mexico", "Russia", "Germany", "Australia", "The United Kingdom", "China", "Brazil", "South Africa" };
+		Debug.LogFormat("[The Samsung #{0}] The first pair of coordinates is in {1}, and the second pair is in {2}.", moduleId, countrynames[country1], countrynames[country2]);
+		Debug.LogFormat("[The Samsung #{0}] The solution for Google Maps is {1}.", moduleId, solution[1]);
 		// Authenticator
 		string[] conditionnames = new string[10] { "a digital root of 8", "an even result when modulod by 3", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "division by 3" };
 		Debug.LogFormat("[The Samsung #{0}] GOOGLE AUTHENTICATOR:", moduleId);
