@@ -456,7 +456,7 @@ public class theSamsung : MonoBehaviour
 			users[i].z = pfppositions[i].localPosition.z;
 			pfprenders[i].material.mainTexture = pfpimages[usernumbers[i]];
 		}
-		List<User>[] nonselves = new List<User>[5];
+		List<User>[] nonselves = new List<User>[6];
 		for (int i = 0; i < 6; i++)
 			nonselves[i] = users.Where(u => u != users[i]).ToList();
 		extremes[0] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).Last());
@@ -528,6 +528,7 @@ public class theSamsung : MonoBehaviour
 			startingoffset--;
 		else if (bomb.GetPortCount(Port.Serial) > 0)
 			startingoffset++;
+		startingoffset %= 8;
 		Debug.LogFormat("[The Samsung #{0}] After modifications, the initial direction is {1}.", moduleId, directionnames[startingoffset]);
 		//
 		var solutionlist = new List<int>();
