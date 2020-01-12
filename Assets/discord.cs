@@ -7,7 +7,7 @@ public static class Discord
 		new string[10] { "blandefuse", "blanjackbox", "blantabletop", "blanreaction", "blansleep", "blanexpert", "blanargument", "blanfood", "blanbrb", "blanmisc" },
 		new string[10] { "timwidefuse", "timwijackbox", "timwitabletop", "timwireaction", "timwisleep", "timwiexpert", "timwiargument", "timwifood", "timwibrb", "timwimisc" },
 		new string[10] { "numdefuse", "numjackbox", "numtabletop", "numreaction", "numsleep", "numexpert", "numargument", "numfood", "numbrb", "nummisc" },
-		new string[10] { "zefoddefuse", "zefodjackbox", "zefodtabletop", "zefodreaction", "zefodsleep", "zefodexpert", "zefodargument", "zefodfood", "zefodbrb", "zefodmisc" },
+		new string[10] { "nicodefuse", "nicojackbox", "nicotabletop", "nicoreaction", "nicosleep", "nicoexpert", "nicoargument", "nicofood", "nicobrb", "nicomisc" },
 		new string[10] { "espikdefuse", "espikjackbox", "espiktabletop", "espikreaction", "espiksleep", "espikexpert", "espikargument", "espikfood", "espikbrb", "espikmisc" },
 		new string[10] { "procyondefuse", "procyonjackbox", "procyontabletop", "procyonreaction", "procyonsleep", "procyonexpert", "procyonargument", "procyonfood", "procyonbrb", "procyonmisc" },
 		new string[10] { "exishdefuse", "exishjackbox", "exishtabletop", "exishreaction", "exishsleep", "exishexpert", "exishargument", "exishfood", "exishbrb", "exishmisc" },
@@ -21,7 +21,7 @@ public static class Discord
 		new string[10] { "blan0", "blan1", "blan2", "blan3", "blan4", "blan5", "blan6", "blan7", "blan8", "blan9" },
 		new string[10] { "timwi0", "timwi1", "timwi2", "timwi3", "timwi4", "timwi5", "timwi6", "timwi7", "timwi8", "timwi9" },
 		new string[10] { "num0", "num1", "num2", "num3", "num4", "num5", "num6", "num7", "num8", "num9" },
-		new string[10] { "zefod0", "zefod1", "zefod2", "zefod3", "zefod4", "zefod5", "zefod6", "zefod7", "zefod8", "zefod9" },
+		new string[10] { "nico0", "nico1", "nico2", "nico3", "nico4", "nico5", "nico6", "nico7", "nico8", "nico9" },
 		new string[10] { "espik0", "espik1", "espik2", "espik3", "espik4", "espik5", "espik6", "espik7", "espik8", "espik9" },
 		new string[10] { "procyon0", "procyon1", "procyon2", "procyon3", "procyon4", "procyon5", "procyon6", "procyon7", "procyon8", "procyon9" },
 		new string[10] { "exish0", "exish1", "exish2", "exish3", "exish4", "exish5", "exish6", "exish7", "exish8", "exish9" },
@@ -35,7 +35,7 @@ public static class Discord
 		new string[6] { "blanred", "blanorange", "blanyellow", "blangreen", "blanblue", "blanpurple" },
 		new string[6] { "timwired", "timwiorange", "timwiyellow", "timwigreen", "timwiblue", "timwipurple" },
 		new string[6] { "numred", "numorange", "numyellow", "numgreen", "numblue", "numpurple" },
-		new string[6] { "zefodred", "zefodorange", "zefodyellow", "zefodgreen", "zefodblue", "zefodpurple" },
+		new string[6] { "nicored", "nicoorange", "nicoyellow", "nicogreen", "nicoblue", "nicopurple" },
 		new string[6] { "espikred", "espikorange", "espikyellow", "espikgreen", "espikblue", "espikpurple" },
 		new string[6] { "procyonred", "procyonorange", "procyonyellow", "procyongreen", "procyonblue", "procyonpurple" },
 		new string[6] { "exishred", "exishorange", "exishyellow", "exishgreen", "exishblue", "exishpurple" },
@@ -49,12 +49,12 @@ public static class Discord
 		new string[8] { "blansymbol1", "blansymbol2", "blansymbol3", "blansymbol4", "blansymbol5", "blansymbol6", "blansymbol7", "blansymbol8" },
 		new string[8] { "timwisymbol1", "timwisymbol2", "timwisymbol3", "timwisymbol4", "timwisymbol5", "timwisymbol6", "timwisymbol7", "timwisymbol8" },
 		new string[8] { "numsymbol1", "numsymbol2", "numsymbol3", "numsymbol4", "numsymbol5", "numsymbol6", "numsymbol7", "numsymbol8" },
-		new string[8] { "zefodsymbol1", "zefodsymbol2", "zefodsymbol3", "zefodsymbol4", "zefodsymbol5", "zefodsymbol6", "zefodsymbol7", "zefodsymbol8" },
+		new string[8] { "nicosymbol1", "nicosymbol2", "nicosymbol3", "nicosymbol4", "nicosymbol5", "nicosymbol6", "nicosymbol7", "nicosymbol8" },
 		new string[8] { "espiksymbol1", "espiksymbol2", "espiksymbol3", "espiksymbol4", "espiksymbol5", "espiksymbol6", "espiksymbol7", "espiksymbol8" },
 		new string[8] { "procyonsymbol1", "procyonsymbol2", "procyonsymbol3", "procyonsymbol4", "procyonsymbol5", "procyonsymbol6", "procyonsymbol7", "procyonsymbol8" },
 		new string[8] { "exishsymbol1", "exishsymbol2", "exishsymbol3", "exishsymbol4", "exishsymbol5", "exishsymbol6", "exishsymbol7", "exishsymbol8" },
 		new string[8] { "sillysymbol1", "sillysymbol2", "sillysymbol3", "sillysymbol4", "sillysymbol5", "sillysymbol6", "sillysymbol7", "sillysymbol8" }
 	};
 
-	public static readonly string[] busylinenames = new string[10] { "tasbusy", "deafbusy", "blanbusy", "timwibusy", "numbusy", "zefodbusy", "espikbusy", "procyonbusy", "exishbusy", "sillybusy" };
+	public static readonly string[] busylinenames = new string[10] { "tasbusy", "deafbusy", "blanbusy", "timwibusy", "numbusy", "nicobusy", "espikbusy", "procyonbusy", "exishbusy", "sillybusy" };
 }

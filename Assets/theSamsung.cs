@@ -456,7 +456,7 @@ public class theSamsung : MonoBehaviour
 			users[i].z = pfppositions[i].localPosition.z;
 			pfprenders[i].material.mainTexture = pfpimages[usernumbers[i]];
 		}
-		List<User>[] nonselves = new List<User>[6];
+		List<User>[] nonselves = new List<User>[5];
 		for (int i = 0; i < 6; i++)
 			nonselves[i] = users.Where(u => u != users[i]).ToList();
 		extremes[0] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).Last());
@@ -470,19 +470,19 @@ public class theSamsung : MonoBehaviour
 		switch (Braille(users.Select(u => u.positionnumber).ToArray()))
 		{
 			case "A":
-				person1 = extremes[0];
+				person1 = bomb.GetModuleNames().Count() % 2 != 0 ? extremes[0] : extremes[2];
 				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "A");
 				break;
 			case "B":
-				person1 = extremes[1];
+				person1 = (bomb.IsIndicatorOn("MSA") || bomb.IsIndicatorOn("NSA")) ? extremes[3] : extremes[1];
 				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "B");
 				break;
 			case "C":
-				person1 = extremes[2];
+				person1 = bomb.GetSerialNumberLetters().Any(x => "CORA".Contains(x)) ? extremes[2] : extremes[3];
 				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "C");
 				break;
 			case "D":
-				person1 = extremes[3];
+				person1 = (bomb.GetBatteryCount() + bomb.GetBatteryHolderCount()) % 2 == 0 ? extremes[0] : extremes[1];
 				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "D");
 				break;
 			case "E":
