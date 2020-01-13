@@ -12298,7 +12298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleType: theSamsung
   ModuleDisplayName: The Samsung
-  RequiresTimerVisibility: 0
+  RequiresTimerVisibility: 1
 --- !u!114 &114221408783110038
 MonoBehaviour:
   m_ObjectHideFlags: 1
