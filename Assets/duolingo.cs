@@ -1,6 +1,6 @@
 public static class duolingo
 {
-	public static readonly string[][] numberwords = new string[10][]
+	public static readonly string[][] numberWords = new string[10][]
 	{
 		new string[21]
 		{
@@ -43,7 +43,7 @@ public static class duolingo
 			"សូន", "មួយ", "ពីរ", "បី", "បួន", "ប្រាំ", "ប្រាំមួយ", "ប្រាំពីរ", "ប្រាំបី", "ប្រាំបួន", "ដប់", "ដប់មួយ", "ដប់ពីរ", "ដប់បី", "ដប់បួន", "ដប់ប្រាំ", "ដប់ប្រាំមួយ", "ដប់ប្រាំបី", "ដប់ប្រាំបី", "ដប់ប្រាំមួយ", "ម្ភៃ"
 		}
 	};
-	public static readonly string[][] operatorwords = new string[10][]
+	public static readonly string[][] operatorWords = new string[10][]
 	{
 		new string[4]
 		{

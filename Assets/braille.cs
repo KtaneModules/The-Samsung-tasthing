@@ -1,6 +1,6 @@
 public static class BrailleArrays
 {
-	public static readonly bool[][][] brailleletters = new bool[5][][]
+	public static readonly bool[][][] brailleLetters = new bool[5][][]
 	{
 		new bool[10][]
 		{

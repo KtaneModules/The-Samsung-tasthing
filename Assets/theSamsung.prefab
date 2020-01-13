@@ -12479,7 +12479,7 @@ MonoBehaviour:
   - {fileID: 1435734688209460}
   - {fileID: 1908404643600140}
   homebutton: {fileID: 114124141776233148}
-  appbuttons:
+  appButtons:
   - {fileID: 114321868935431250}
   - {fileID: 114861736811866022}
   - {fileID: 114763029967055416}

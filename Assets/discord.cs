@@ -1,6 +1,6 @@
 public static class Discord
 {
-	public static readonly string[][] activitylinenames = new string[10][]
+	public static readonly string[][] activityLineNames = new string[10][]
 	{
 		new string[10] { "tasdefuse", "tasjackbox", "tastabletop", "tasreaction", "tassleep", "tasexpert", "tasargument", "tasfood", "tasbrb", "tasmisc" },
 		new string[10] { "deafdefuse", "deafjackbox", "deaftabletop", "deafreaction", "deafsleep", "deafexpert", "deafargument", "deaffood", "deafbrb", "deafmisc" },
@@ -14,7 +14,7 @@ public static class Discord
 		new string[10] { "sillydefuse", "sillyjackbox", "sillytabletop", "sillyreaction", "sillysleep", "sillyexpert", "sillyargument", "sillyfood", "sillybrb", "sillymisc" }
 	};
 
-	public static readonly string[][] digitlinenames = new string[10][]
+	public static readonly string[][] digitLineNames = new string[10][]
 	{
 		new string[10] { "tas0", "tas1", "tas2", "tas3", "tas4", "tas5", "tas6", "tas7", "tas8", "tas9" },
 		new string[10] { "deaf0", "deaf1", "deaf2", "deaf3", "deaf4", "deaf5", "deaf6", "deaf7", "deaf8", "deaf9" },
@@ -28,7 +28,7 @@ public static class Discord
 		new string[10] { "silly0", "silly1", "silly2", "silly3", "silly4", "silly5", "silly6", "silly7", "silly8", "silly9" }
 	};
 
-	public static readonly string[][] colorlinenames = new string[10][]
+	public static readonly string[][] colorLineNames = new string[10][]
 	{
 		new string[6] { "tasred", "tasorange", "tasyellow", "tasgreen", "tasblue", "taspurple" },
 		new string[6] { "deafred", "deaforange", "deafyellow", "deafgreen", "deafblue", "deafpurple" },
@@ -42,7 +42,7 @@ public static class Discord
 		new string[6] { "sillyred", "sillyorange", "sillyyellow", "sillygreen", "sillyblue", "sillypurple" }
 	};
 
-	public static readonly string[][] symbollinenames = new string[10][]
+	public static readonly string[][] symbolLineNames = new string[10][]
 	{
 		new string[8] { "tassymbol1", "tassymbol2", "tassymbol3", "tassymbol4", "tassymbol5", "tassymbol6", "tassymbol7", "tassymbol8" },
 		new string[8] { "deafsymbol1", "deafsymbol2", "deafsymbol3", "deafsymbol4", "deafsymbol5", "deafsymbol6", "deafsymbol7", "deafsymbol8" },
@@ -56,5 +56,5 @@ public static class Discord
 		new string[8] { "sillysymbol1", "sillysymbol2", "sillysymbol3", "sillysymbol4", "sillysymbol5", "sillysymbol6", "sillysymbol7", "sillysymbol8" }
 	};
 
-	public static readonly string[] busylinenames = new string[10] { "tasbusy", "deafbusy", "blanbusy", "timwibusy", "numbusy", "nicobusy", "espikbusy", "procyonbusy", "exishbusy", "sillybusy" };
+	public static readonly string[] busyLineNames = new string[10] { "tasbusy", "deafbusy", "blanbusy", "timwibusy", "numbusy", "nicobusy", "espikbusy", "procyonbusy", "exishbusy", "sillybusy" };
 }
