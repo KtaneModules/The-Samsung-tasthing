@@ -84,7 +84,6 @@ public class theSamsung : MonoBehaviour
 		new string[] { "maybe", "everbody", "in", "the", "whole", "damn", "world", "is", "scared", "of", "each", "other" },
 		new string[] { "there", "is", "an", "idea", "of", "a", "patrick", "bateman", "some", "kind", "of", "abstraction", "but", "there", "is", "no", "real", "me", "only", "an", "entity", "something", "illusory" }
 	};
-	private static readonly int[] kindleLengths = new int[10] { 17, 19, 25, 12, 15, 22, 19, 16, 9, 21 };
 	public TextMesh[] kindleTexts;
 
 	// Authentiator
@@ -197,7 +196,7 @@ public class theSamsung : MonoBehaviour
 		new string[10] { "Deaf", "Procyon", "Espik", "Nico Robin", "Blananas", "TasThing", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
 		new string[10] { "Blananas", "TasThing", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Nico Robin", "Deaf", "SillyPuppy" }
 	};
-	private static readonly string[] busyExcuses = new string[10] { "she's not really into you...", "he's being himself.", "he's busy modding.", "he's at the badminton club.", "numexcuse", "he can't deal with you right now.", "espikexcuse", "procyonexcuse", "exishexcuse", "he's in the middle of something. (or someone?)"  };
+	private static readonly string[] busyExcuses = new string[10] { "she's not really into you...", "he's being himself.", "he's busy modding.", "he's at the badminton club.", "numexcuse", "he can't deal with you right now.", "he's preoccupied.", "procyonexcuse", "exishexcuse", "he's in the middle of something. (or someone?)"  };
 
 	private int currentAppIndex;
 	private int[] solution = new int[8];
@@ -353,10 +352,10 @@ public class theSamsung : MonoBehaviour
 		Debug.LogFormat("[The Samsung #{0}] The solution for Google Maps is {1}.", moduleId, solution[1]);
 		// Kindle
 		quoteIndex = rnd.Range(0, 10);
-		offset = rnd.Range(1, 10);
-		startingWord = rnd.Range(0, kindleLengths[quoteIndex]);
+		offset = rnd.Range(1, 14);
+		startingWord = rnd.Range(0, kindleQuotes[quoteIndex].Length - 3);
 		var wordSet = new Char[4][];
-		Char[] alphabet = new Char[35] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' };
+		Char[] alphabet = new Char[39] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm' };
 		for (int i = 0; i < 4; i++)
 		{
 			wordSet[i] = kindleQuotes[quoteIndex][startingWord + i].ToCharArray();
