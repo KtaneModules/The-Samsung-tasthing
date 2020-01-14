@@ -67,6 +67,26 @@ public class theSamsung : MonoBehaviour
 		new float[2] { 18.769041f, 24.117188f }
 	};
 
+	// Kindle
+	private int quoteIndex;
+	private int offset;
+	private int startingWord;
+	private static readonly string[][] kindleQuotes = new string[10][]
+	{
+		new string[] { "you", "have", "brains", "in", "your", "head", "you", "have", "feet", "in", "your", "shoes", "you", "can", "steer", "yourself", "any", "direction", "you", "choose" },
+		new string[] { "there", "are", "darknesses", "in", "life", "and", "there", "are", "lights", "and", "you", "are", "one", "of", "the", "lights", "the", "light", "of", "all", "lights" },
+		new string[] { "you", "never", "really", "understand", "a", "person", "until", "you", "consider", "things", "from", "his", "point", "of", "view", "until", "you", "climb", "inside", "of", "his", "skin", "and", "walk", "around", "in", "it" },
+		new string[] { "bet", "i", "know", "something", "else", "you", "dont", "theres", "dew", "on", "the", "grass", "in", "this", "morning" },
+		new string[] { "we", "lived", "in", "the", "blank", "white", "spaces", "at", "the", "edges", "of", "print", "it", "gave", "us", "more", "freedom" },
+		new string[] { "weve", "all", "got", "both", "light", "and", "dark", "inside", "us", "what", "matters", "is", "the", "part", "we", "choose", "to", "act", "on", "thats", "who", "we", "really", "are" },
+		new string[] { "do", "i", "love", "you", "my", "god", "if", "your", "love", "were", "a", "grain", "of", "sand", "mine", "would", "be", "a", "universe", "of", "beaches" },
+		new string[] { "doublethink", "means", "the", "power", "of", "holding", "two", "contradictory", "beliefs", "in", "ones", "mind", "simultaneously", "and", "accepting", "both", "of", "them" },
+		new string[] { "maybe", "everbody", "in", "the", "whole", "damn", "world", "is", "scared", "of", "each", "other" },
+		new string[] { "there", "is", "an", "idea", "of", "a", "patrick", "bateman", "some", "kind", "of", "abstraction", "but", "there", "is", "no", "real", "me", "only", "an", "entity", "something", "illusory" }
+	};
+	private static readonly int[] kindleLengths = new int[10] { 17, 19, 25, 12, 15, 22, 19, 16, 9, 21 };
+	public TextMesh[] kindleTexts;
+
 	// Authentiator
 	public TextMesh[] authenticatortexts;
 	public Transform authenticatorbar;
@@ -267,10 +287,10 @@ public class theSamsung : MonoBehaviour
         for (int i = 0; i < 8; i++)
             solution[i] = rnd.Range(0,10);
 		// Duolingo
-		languageIndex = rnd.Range(0,10);
-		duolingoNumbers[0] = rnd.Range(0,21);
-		operatorIndex = rnd.Range(0,4);
-		duolingoNumbers[1] = rnd.Range(1,21);
+		languageIndex = rnd.Range(0, 10);
+		duolingoNumbers[0] = rnd.Range(0, 21);
+		operatorIndex = rnd.Range(0, 4);
+		duolingoNumbers[1] = rnd.Range(1, 21);
 		switch (operatorIndex)
 		{
 			case 0:
@@ -320,8 +340,8 @@ public class theSamsung : MonoBehaviour
 		Debug.LogFormat("[The Samsung #{0}] The expression is {1} {2} {3}.", moduleId, englishNumberNames[duolingoNumbers[0]], englishOperatorNames[operatorIndex], englishNumberNames[duolingoNumbers[1]]);
 		Debug.LogFormat("[The Samsung #{0}] The solution for Duolingo is {1}.", moduleId, solution[0]);
 		// Google Maps
-		country1 = rnd.Range(0,10);
-		country2 = rnd.Range(0,10);
+		country1 = rnd.Range(0, 10);
+		country2 = rnd.Range(0, 10);
 		solution[1] = mod(country1 - country2, 10);
 		gmapstext1[0].text = rnd.Range(latCords[country1][0], latCords[country1][1]).ToString();
 		gmapstext1[1].text = rnd.Range(lonCords[country1][0], lonCords[country1][1]).ToString();
@@ -331,6 +351,23 @@ public class theSamsung : MonoBehaviour
 		string[] countryNames = new string[10] { "The United States", "Canada", "Mexico", "Russia", "Germany", "Australia", "The United Kingdom", "China", "Brazil", "South Africa" };
 		Debug.LogFormat("[The Samsung #{0}] The first pair of coordinates is in {1}, and the second pair is in {2}.", moduleId, countryNames[country1], countryNames[country2]);
 		Debug.LogFormat("[The Samsung #{0}] The solution for Google Maps is {1}.", moduleId, solution[1]);
+		// Kindle
+		quoteIndex = rnd.Range(0, 10);
+		offset = rnd.Range(1, 10);
+		startingWord = rnd.Range(0, kindleLengths[quoteIndex]);
+		var wordSet = new Char[4][];
+		Char[] alphabet = new Char[35] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' };
+		for (int i = 0; i < 4; i++)
+		{
+			wordSet[i] = kindleQuotes[quoteIndex][startingWord + i].ToCharArray();
+			for (int j = 0; j < wordSet[i].Length; j++)
+				wordSet[i][j] = alphabet[Array.IndexOf(alphabet, wordSet[i][j]) + offset];
+			kindleTexts[i].text = new string(wordSet[i]);
+		}
+		solution[2] = mod(quoteIndex + offset, 10);
+		Debug.LogFormat("[The Samsung #{0}] KINDLE:", moduleId);
+		Debug.LogFormat("[The Samsung #{0}] The 4 words are taken from quote {1}, and the letters are shifted forwards by {2}.", moduleId, quoteIndex, offset);
+		Debug.LogFormat("[The Samsung #{0}] The solution for Kindle is {1}.", moduleId, solution[2]);
 		// Authenticator
 		string[] conditionNames = new string[10] { "a digital root of 8", "an even result when modulod by 3", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "division by 3" };
 		Debug.LogFormat("[The Samsung #{0}] GOOGLE AUTHENTICATOR:", moduleId);
@@ -338,7 +375,7 @@ public class theSamsung : MonoBehaviour
 		Debug.LogFormat("[The Samsung #{0}] Therefore, the solution for Google Authenticator is {1}.", moduleId, solution[3]);
 		// Photomath
 		mathSymbols.Shuffle();
-		startingValue = rnd.Range(1,10);
+		startingValue = rnd.Range(1, 10);
 		photomathUsedColors = photomathcolors.ToList().Shuffle();
 		for (int i = 0; i < 4; i++)
 			photomathcircles[i].material.color = photomathUsedColors[i];
