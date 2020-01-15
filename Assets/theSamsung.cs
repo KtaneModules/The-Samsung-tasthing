@@ -196,7 +196,7 @@ public class theSamsung : MonoBehaviour
 		new string[10] { "Deaf", "Procyon", "Espik", "Nico Robin", "Blananas", "TasThing", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
 		new string[10] { "Blananas", "TasThing", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Nico Robin", "Deaf", "SillyPuppy" }
 	};
-	private static readonly string[] busyExcuses = new string[10] { "she's not really into you...", "he's being himself.", "he's busy modding.", "he's at the badminton club.", "numexcuse", "he can't deal with you right now.", "he's preoccupied.", "procyonexcuse", "exishexcuse", "he's in the middle of something. (or someone?)"  };
+	private static readonly string[] busyExcuses = new string[10] { "she's not really into you...", "he's being himself.", "he's busy modding.", "he's at the badminton club.", "he's watching the objectively best show of all time.", "he can't deal with you right now.", "he's preoccupied.", "procyonexcuse", "exishexcuse", "he's in the middle of something. (or someone?)"  };
 
 	private int currentAppIndex;
 	private int[] solution = new int[8];
@@ -508,27 +508,27 @@ public class theSamsung : MonoBehaviour
 		{
 			case "A":
 				person1 = bomb.GetModuleNames().Count() % 2 != 0 ? extremes[0] : extremes[2];
-				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "A");
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set A.", moduleId);
 				break;
 			case "B":
 				person1 = (bomb.IsIndicatorOn("MSA") || bomb.IsIndicatorOn("NSA")) ? extremes[3] : extremes[1];
-				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "B");
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set B.", moduleId);
 				break;
 			case "C":
 				person1 = bomb.GetSerialNumberLetters().Any(x => "CORA".Contains(x)) ? extremes[2] : extremes[3];
-				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "C");
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set C.", moduleId);
 				break;
 			case "D":
 				person1 = (bomb.GetBatteryCount() + bomb.GetBatteryHolderCount()) % 2 == 0 ? extremes[0] : extremes[1];
-				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set {1}.", moduleId, "D");
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set D.", moduleId);
 				break;
 			case "E":
 				person1 = bomb.GetSerialNumberLetters().Count(x => "AEIOU".Contains(x)) == 0 ? extremes[2] : extremes[1];
-				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left does not spell out a Braille letter..", moduleId);
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set E.", moduleId);
 				break;
 			default:
 				person1 = bomb.GetPortPlates().Any(x => x.Length == 0) ? extremes[0] : extremes[3];
-				Debug.LogFormat("[The Samsung #{0}] DISCORD:", moduleId);
+				Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left does not spell out a Braille letter.", moduleId);
 				break;
 		}
 		string userName2 = checkNames[Array.IndexOf(extremes, person1)].Where(s => users.Select(u => u.userName).ToArray().Contains(s) && !users.Where(u => u.userName == s).Select(u => u.id).ToList().Contains(person1)).First();
@@ -783,8 +783,8 @@ public class theSamsung : MonoBehaviour
 			cyclingsymbol.material.mainTexture = allSymbols[currentSymbol][currentColor];
 			yield return new WaitForSeconds(1f);
 		}
-		yield return new WaitForSeconds(1.5f);
-		while (cycling)
+		yield return new WaitForSeconds(1f);
+		while (discordStage == 3 && cycling)
 		{
 			currentColor = (currentColor + 1) % 6;
 			cyclingsymbol.material.mainTexture = allSymbols[currentSymbol][currentColor];
@@ -831,10 +831,7 @@ public class theSamsung : MonoBehaviour
 				Debug.LogFormat("[The Samsung #{0}] You submitted the wrong symbol. Strike!", moduleId);
 			}
 			else
-			{
 				discordStage++;
-				StartCoroutine(SymbolCycle());
-			}
 		}
 		else if (discordStage == 3)
 		{
