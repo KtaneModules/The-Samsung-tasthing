@@ -245,7 +245,7 @@ public class theSamsung : MonoBehaviour
         statusLight.SetActive(false);
         phonebackground.material.color = casingColors.PickRandom();
         currentWallpaper = wallpapers.PickRandom();
-        phonescreen.material.mainTexture = currentWallpaper;
+		phonescreen.material.mainTexture = currentWallpaper;
         volumestatus.material.mainTexture = volumeicons.PickRandom();
         var statusNumbers = Enumerable.Range(0, 5).ToList();
         statusNumbers.Shuffle();
@@ -590,7 +590,7 @@ public class theSamsung : MonoBehaviour
 
     void PressAppButton(KMSelectable button)
     {
-        currentAppIndex = Array.IndexOf(appButtons, button);
+		currentAppIndex = Array.IndexOf(appButtons, button);
         Audio.PlaySoundAtTransform("keyClick", button.transform);
         icons.SetActive(false);
         homebutton.gameObject.SetActive(true);
