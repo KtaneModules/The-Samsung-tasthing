@@ -33,7 +33,7 @@ public class theSamsung : MonoBehaviour
 	public Renderer[] duolingotextenderers;
 	public Font[] duolingofonts;
 	public Material[] duolingofontmats;
-	private static readonly string[] languageNames = new string[10] { "Spanish", "Italian", "Chinese", "French", "Afrikaans", "Swahili", "Japanese", "Korean", "Mongolian", "Khmer" };
+	private static readonly string[] languageNames = new string[10] { "Spanish", "Italian", "Chinese", "French", "Afrikaans", "Swahili", "Japanese", "Korean", "Mongolian", "Thai" };
 	private static readonly string[] englishNumberNames = new string[21] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty" };
 	private static readonly string[] englishOperatorNames = new string[4] { "plus", "minus", "times", "divided by" };
 
