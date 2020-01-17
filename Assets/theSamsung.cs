@@ -383,39 +383,40 @@ public class theSamsung : MonoBehaviour
 			operations[i] = rnd.Range(0,4);
 			values[i] = rnd.Range(1,10);
 		}
+		string[] operationNames = new string[4] { "plus", "minus", "times", "divided by" };
+		Debug.LogFormat("[The Samsung #{0}] PHOTOMATH:", moduleId);
 		for (int i = 0; i < 7; i++)
 		{
-			var x = i == 0 ? startingValue : photomathSolution;
+			var firstValue = (i == 0) ? startingValue : photomathSolution;
+			var secondValue = values[i];
 			switch (operations[i])
 			{
 				case 0:
-					photomathSolution += x;
+					photomathSolution = firstValue + secondValue;
 					break;
 				case 1:
-					photomathSolution -= x;
+					photomathSolution = firstValue - secondValue;
 					break;
 				case 2:
-					photomathSolution *= x;
+					photomathSolution = firstValue * secondValue;
 					break;
 				default:
-					if (x == 0)
-						x = 1;
-					photomathSolution /= x;
+					photomathSolution = firstValue / secondValue;
 					break;
 			}
+			Debug.LogFormat("[The Samsung #{0}] {1} {2} {3} is {4}.", moduleId, firstValue, operationNames[operations[i]], secondValue, photomathSolution );
 		}
 		if (photomathSolution < 0)
 			photomathSolution *= -1;
-		photomathSolution += operations.Count(x => x == 0 || x == 2);
 		int[] currentKeypadGrid = keypadGrids[bomb.GetSerialNumberNumbers().Last()];
 		for (int i = 0; i < 10; i++)
 			photmathkeypad[i].text = mathSymbols[currentKeypadGrid[i]];
 		string[] colornames = new string[4] { "blue", "purple", "green", "yellow" };
-		Debug.LogFormat("[The Samsung #{0}] PHOTOMATH:", moduleId);
 		Debug.LogFormat("[The Samsung #{0}] The circles on the bottom are colored {1}, {2}, {3}, and then {4}.", moduleId, colornames[Array.IndexOf(photomathcolors, photomathUsedColors[0])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[1])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[2])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[3])]);
 		for (int i = 0; i < 10; i++)
 		Debug.LogFormat("[The Samsung #{0}] {1} corresponds to {2}.", moduleId, mathSymbols[i], i);
-		Debug.LogFormat("[The Samsung #{0}] The solution for Photomath is {1}.", moduleId, photomathSolution);
+		Debug.LogFormat("[The Samsung #{0}] The number to enter is {1}.", moduleId, photomathSolution);
+		Debug.LogFormat("[The Samsung #{0}] The solution for Photomath is {1}.", moduleId, solution[4]);
 		// Spotify
 		decoyIndex = rnd.Range(0,10);
 		string[] songNames = new string[] { "You Spin Me Right Round", "Smooth Criminal", "Hardware Store", "Beat It", "Danger Zone", "Tacky", "Harder, Better, Faster, Stronger", "Drunken Sailor", "Megalovania", "a song not mentioned" };
@@ -649,6 +650,7 @@ public class theSamsung : MonoBehaviour
 		if (photomashAns != photomathSolution.ToString())
 		{
 			Debug.LogFormat("[The Samsung #{0}] You submitted {1} on Photomath. That was incorrect. Strike!", moduleId, photomashAns);
+			photomathEntered.Clear();
 			StartCoroutine(Strike());
 		}
 		else
