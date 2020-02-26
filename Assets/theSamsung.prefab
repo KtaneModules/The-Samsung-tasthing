@@ -12840,8 +12840,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8aea95ea1b95364192637b6083ea8bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Audio: {fileID: 114362555509535318}
+  audio: {fileID: 114362555509535318}
   bomb: {fileID: 114212602564178874}
+  module: {fileID: 114221075226099596}
   apps:
   - {fileID: 1048901756540632}
   - {fileID: 1037689334717320}
