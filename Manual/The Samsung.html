@@ -22,6 +22,11 @@
 		.small {
 			font-size: 11px;
 		}
+		@media print {
+		    a[href]:after {
+		        content: "";
+		    }
+        }
 	</style>
     <script src="js/ktane-utils.js"></script>
 </head>
@@ -648,9 +653,9 @@
 						<li>Divisible by 3</li>
 					</ol>
 					<h3>Photomath:</h3>
-					<p>Press the start button to cycle through a set of 7 mathematical symbols, each with a different color. After the first cycle, a keypad written in symbols and some circles will appear, and the cycle can be repeated any time without consequence.</p>
+					<p>Press the start button to cycle through a set of 7 mathematical symbols, each with a specific color. After the first cycle, a keypad written in symbols and some circles will appear, and the cycle can be repeated any time without consequence.</p>
 					<p>Take the grid below that corresponds to the last digit of the serial number. This is the placement of the digits on the keypad. Use this to associate symbols with digits. The colors of the circles on the bottom correspond to the operators +, -, *, and / in that order.</p>
-					<p>Using the symbol that flashes in the corner once per sequence as the starting value, perform the operations in the order of the cycle, using the color for the operator and the symbol for the digit. Ignore all decimals. Take the absolute value and submit this answer using the keypad to get this app's solution in the form of its symbol. Use the green button to submit, and the red button to clear. Striking also clears input.</p>
+					<p>Using the symbol that flashes in the corner once per cycle as the starting value, perform the operations in the order of the cycle, using the color for the operator and the symbol for the digit. Ignore all decimals. Take the absolute value, modulo 1000 and submit this answer using the keypad to get this app's solution in the form of its symbol. Use the green button to submit, and the red button to clear. Striking or playing the sequence again also clears input.</p>
 				</div>
                 <div class="page-footer relative-footer">Page 6 of 11</div>
             </div>
@@ -660,27 +665,14 @@
                     <span class="page-header-section-title">The Samsung</span>
                 </div>
                 <div class="page-content">
-                    <table>
+					<table>
 						<tr>
-							<td>0</td>
 							<td>1</td>
 							<td>2</td>
+							<td>3</td>
 						</tr>
 						<tr>
 							<td><table><tr>
-								<td>7</td>
-								<td>3</td>
-								<td>4</td>
-								<td>6</td>
-								<td>2</td>
-							</tr><tr>
-								<td>0</td>
-								<td>9</td>
-								<td>8</td>
-								<td>5</td>
-								<td>1</td>
-							</tr></table></td>
-							<td><table><tr>
 								<td>3</td>
 								<td>7</td>
 								<td>1</td>
@@ -705,106 +697,98 @@
 								<td>0</td>
 								<td>4</td>
 								<td>9</td>
+							</tr></table></td>
+							<td><table><tr>
+								<td>5</td>
+								<td>4</td>
+								<td>6</td>
+								<td>9</td>
+								<td>3</td>
+							</tr><tr>
+								<td>0</td>
+								<td>2</td>
+								<td>8</td>
+								<td>7</td>
+								<td>1</td>
 							</tr></table></td>
 						<tr>
-							<td>3</td>
 							<td>4</td>
 							<td>5</td>
-						</tr>
-						<tr>
-							<td><table><tr>
-								<td>5</td>
-								<td>4</td>
-								<td>6</td>
-								<td>9</td>
-								<td>3</td>
-							</tr><tr>
-								<td>0</td>
-								<td>2</td>
-								<td>8</td>
-								<td>7</td>
-								<td>1</td>
-							</tr></table></td>
-							<td><table><tr>
-								<td>3</td>
-								<td>1</td>
-								<td>7</td>
-								<td>4</td>
-								<td>0</td>
-							</tr><tr>
-								<td>8</td>
-								<td>2</td>
-								<td>6</td>
-								<td>9</td>
-								<td>5</td>
-							</tr></table></td>
-							<td><table><tr>
-								<td>8</td>
-								<td>2</td>
-								<td>6</td>
-								<td>0</td>
-								<td>9</td>
-							</tr><tr>
-								<td>4</td>
-								<td>7</td>
-								<td>5</td>
-								<td>3</td>
-								<td>1</td>
-							</tr></table></td>
-						</tr>
-						<tr>
 							<td>6</td>
+						</tr>
+						<tr>
+							<td><table><tr>
+								<td>3</td>
+								<td>1</td>
+								<td>7</td>
+								<td>4</td>
+								<td>0</td>
+							</tr><tr>
+								<td>8</td>
+								<td>2</td>
+								<td>6</td>
+								<td>9</td>
+								<td>5</td>
+							</tr></table></td>
+							<td><table><tr>
+								<td>8</td>
+								<td>2</td>
+								<td>6</td>
+								<td>0</td>
+								<td>9</td>
+							</tr><tr>
+								<td>4</td>
+								<td>7</td>
+								<td>5</td>
+								<td>3</td>
+								<td>1</td>
+							</tr></table></td>
+							<td><table><tr>
+								<td>9</td>
+								<td>3</td>
+								<td>5</td>
+								<td>4</td>
+								<td>2</td>
+							</tr><tr>
+								<td>1</td>
+								<td>7</td>
+								<td>8</td>
+								<td>6</td>
+								<td>0</td>
+							</tr></table></td>
+						</tr>
+						<tr>
 							<td>7</td>
 							<td>8</td>
-						</tr>
-						<tr>
-							<td><table><tr>
-								<td>9</td>
-								<td>3</td>
-								<td>5</td>
-								<td>4</td>
-								<td>2</td>
-							</tr><tr>
-								<td>1</td>
-								<td>7</td>
-								<td>8</td>
-								<td>6</td>
-								<td>0</td>
-							</tr></table></td>
-							<td><table><tr>
-								<td>7</td>
-								<td>9</td>
-								<td>6</td>
-								<td>3</td>
-								<td>1</td>
-							</tr><tr>
-								<td>5</td>
-								<td>0</td>
-								<td>2</td>
-								<td>4</td>
-								<td>8</td>
-							</tr></table></td>
-							<td><table><tr>
-								<td>0</td>
-								<td>4</td>
-								<td>8</td>
-								<td>7</td>
-								<td>5</td>
-							</tr><tr>
-								<td>3</td>
-								<td>9</td>
-								<td>0</td>
-								<td>1</td>
-								<td>7</td>
-							</tr></table></td>
-						</tr>
-						<tr>
-							<td class='empty'></td>
 							<td>9</td>
-							<td class='empty'></td>
 						</tr>
 						<tr>
-							<td class='empty'></td>
+							<td><table><tr>
+								<td>7</td>
+								<td>9</td>
+								<td>6</td>
+								<td>3</td>
+								<td>1</td>
+							</tr><tr>
+								<td>5</td>
+								<td>0</td>
+								<td>2</td>
+								<td>4</td>
+								<td>8</td>
+							</tr></table></td>
+							<td><table><tr>
+								<td>0</td>
+								<td>4</td>
+								<td>8</td>
+								<td>7</td>
+								<td>5</td>
+							</tr><tr>
+								<td>3</td>
+								<td>1</td>
+								<td>2</td>
+								<td>9</td>
+								<td>6</td>
+							</tr></table></td>
 							<td><table><tr>
 								<td>2</td>
 								<td>5</td>
@@ -817,6 +801,27 @@
 								<td>0</td>
 								<td>1</td>
 								<td>7</td>
+							</tr></table></td>
+						</tr>
+						<tr>
+							<td class='empty'></td>
+							<td>0</td>
+							<td class='empty'></td>
+						</tr>
+						<tr>
+							<td class='empty'></td>
+							<td><table><tr>
+								<td>7</td>
+								<td>3</td>
+								<td>4</td>
+								<td>6</td>
+								<td>2</td>
+							</tr><tr>
+								<td>0</td>
+								<td>9</td>
+								<td>8</td>
+								<td>5</td>
+								<td>1</td>
 							</tr></table></td>
 							<td class='empty'></td>
 						</tr>
@@ -981,12 +986,12 @@
 							<td>Defusing a bomb</td>
 							<td>Playing Jackbox</td>
 							<td>Playing Tabletop Simulator</td>
-							<td>Reaction to a new module</td>
+							<td>Reacting to a new module</td>
 							<td>Complaining about sleep</td>
 						</tr>
 						<tr>
 							<td>Experting for a bomb</td>
-							<td>In an argument</td>
+							<td>Arguing</td>
 							<td>Talking about food</td>
 							<td>Being right back</td>
 							<td>Any other activity</td>

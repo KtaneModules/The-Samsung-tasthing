@@ -13,6 +13,19 @@ public static class Discord
         new string[10] { "exishdefuse", "exishjackbox", "exishtabletop", "exishreaction", "exishsleep", "exishexpert", "exishargument", "exishfood", "exishbrb", "exishmisc" },
         new string[10] { "sillydefuse", "sillyjackbox", "sillytabletop", "sillyreaction", "sillysleep", "sillyexpert", "sillyargument", "sillyfood", "sillybrb", "sillymisc" }
     };
+    public static readonly float[][] activityLengths = new float[10][]
+    {
+        new float[10] { 5.5f, 4.5f, 4.5f, 3.5f, 5.5f, 7.5f, 5.5f, 3.5f, 2.5f, 3.5f },
+        new float[10] { 4.5f, 5.5f, 2.5f, 3.5f, 3.5f, 4.5f, 6.5f, 2.5f, 3.5f, 8.5f },
+        new float[10] { 6.5f, 4.5f, 4.5f, 4.5f, 3.5f, 8.5f, 5.5f, 4.5f, 7.5f, 12.5f },
+        new float[10] { 6.5f, 2.5f, 1.5f, 3.5f, 5.5f, 3.5f, 1.5f, 2.5f, 1.5f, 2.5f },
+        new float[10] { 2.5f, 3.5f, 1.5f, 3.5f, 2.5f, 1.5f, 2.5f, 2.5f, 2.5f, 16.5f },
+        new float[10] { 10.5f, 16.5f, 10.5f, 7.5f, 7.5f, 13.5f, 3.5f, 11.5f, 3.5f, 9.5f },
+        new float[10] { 2.5f, 2.5f, 1.5f, 1.5f, 1.5f, 2.5f, 2.5f, 1.5f, 1.5f, 2.5f },
+        new float[10] { 1.5f, 3.5f, 2.5f, 4.5f, 4.5f, 8.5f, 4.5f, 4.5f, 4.5f, 3.5f },
+        new float[10] { 3.5f, 3.5f, 4.5f, 4.5f, 3.5f, 2.5f, 3.5f, 2.5f, 3.5f, 5.5f },
+        new float[10] { 2.5f, 3.5f, 2.5f, 2.5f, 3.5f, 1.5f, 1.5f, 2.5f, 1.5f, 2.5f },
+    };
 
     public static readonly string[][] digitLineNames = new string[10][]
     {
@@ -26,6 +39,19 @@ public static class Discord
         new string[10] { "procyon0", "procyon1", "procyon2", "procyon3", "procyon4", "procyon5", "procyon6", "procyon7", "procyon8", "procyon9" },
         new string[10] { "exish0", "exish1", "exish2", "exish3", "exish4", "exish5", "exish6", "exish7", "exish8", "exish9" },
         new string[10] { "silly0", "silly1", "silly2", "silly3", "silly4", "silly5", "silly6", "silly7", "silly8", "silly9" }
+    };
+    public static readonly float[][] digitLengths = new float[10][]
+    {
+        new float[10] { 3.5f, 2.5f, 3.5f, 3.5f, 1.5f, 2.5f, 3.5f, 2.5f, 5.5f, 5.5f },
+        new float[10] { 2.5f, 1.5f, 3.5f, 3.5f, 2.5f, 2.5f, 2.5f, 5.5f, 2.5f, 7.5f },
+        new float[10] { 3.5f, 4.5f, 3.5f, 4.5f, 3.5f, 4.5f, 3.5f, 5.5f, 2.5f, 5.5f },
+        new float[10] { 3.5f, 1.5f, 3.5f, 2.5f, 1.5f, 3.5f, 4.5f, 5.5f, 3.5f, 4.5f },
+        new float[10] { 2.5f, 2.5f, 1.5f, 2.5f, 3.5f, 5.5f, 3.5f, 9.5f, 4.5f, 3.5f },
+        new float[10] { 9.5f, 8.5f, 10.5f, 10.5f, 8.5f, 6.5f, 8.5f, 9.5f, 13.5f, 5.5f },
+        new float[10] { 2.5f, 1.5f, 3.5f, 1.5f, 2.5f, 3.5f, 3.5f, 1.5f, 1.5f, 2.5f },
+        new float[10] { 2.5f, 2.5f, 1.5f, 1.5f, 1.5f, 2.5f, 3.5f, 3.5f, 1.5f, 2.5f },
+        new float[10] { 2.5f, 1.5f, 2.5f, 2.5f, 3.5f, 2.5f, 3.5f, 3.5f, 2.5f, 3.5f },
+        new float[10] { 2.5f, 2.5f, 1.5f, 2.5f, 1.5f, 3.5f, 2.5f, 1.5f, 2.5f, 2.5f },
     };
 
     public static readonly string[][] colorLineNames = new string[10][]
@@ -41,6 +67,19 @@ public static class Discord
         new string[6] { "exishred", "exishorange", "exishyellow", "exishgreen", "exishblue", "exishpurple" },
         new string[6] { "sillyred", "sillyorange", "sillyyellow", "sillygreen", "sillyblue", "sillypurple" }
     };
+    public static readonly float[][] colorLengths = new float[10][]
+    {
+        new float[6] { 3.5f, 5.5f, 3.5f, 7.5f, 5.5f, 4.5f },
+        new float[6] { 1.5f, 2.5f, 3.9f, 4.5f, 3.5f, 4.5f },
+        new float[6] { 3.5f, 3.5f, 3.5f, 4.5f, 4.5f, 3.5f },
+        new float[6] { 2.5f, 1.75f, 3.5f, 3.5f, 2.5f, 4.5f },
+        new float[6] { 2.5f, 2.5f, 1.5f, 1.5f, 1.5f, 2.5f },
+        new float[6] { 3.5f, 4.5f, 5.5f, 3.5f, 3.5f, 5.5f },
+        new float[6] { 2.5f, 1.5f, 2.5f, 2.5f, 1.5f, 3.5f },
+        new float[6] { 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f },
+        new float[6] { 2.5f, 2.5f, 3.5f, 2.5f, 2.5f, 1.5f },
+        new float[6] { 1.5f, 2.5f, 2.5f, 2.5f, 2.5f, 2.5f },
+    };
 
     public static readonly string[][] symbolLineNames = new string[10][]
     {
@@ -55,6 +94,20 @@ public static class Discord
         new string[8] { "exishsymbol1", "exishsymbol2", "exishsymbol3", "exishsymbol4", "exishsymbol5", "exishsymbol6", "exishsymbol7", "exishsymbol8" },
         new string[8] { "sillysymbol1", "sillysymbol2", "sillysymbol3", "sillysymbol4", "sillysymbol5", "sillysymbol6", "sillysymbol7", "sillysymbol8" }
     };
+    public static readonly float[][] symbolLengths = new float[10][]
+    {
+        new float[8] { 4.5f, 3.5f, 3.5f, 3.5f, 3.5f, 4.5f, 4.5f, 3.5f },
+        new float[8] { 6.5f, 2.5f, 3.5f, 2.5f, 7.5f, 4.5f, 3.5f, 4.5f },
+        new float[8] { 5.5f, 3.5f, 3.5f, 6.5f, 5.5f, 7.5f, 6.5f, 8.5f },
+        new float[8] { 3.5f, 2.5f, 3.5f, 1f, 3.5f, 3.5f, 3.5f, 2.5f },
+        new float[8] { 2.5f, 1.5f, 2.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f },
+        new float[8] { 15.5f, 11.5f, 10.5f, 15.5f, 12.5f, 10.5f, 11.5f, 11.5f },
+        new float[8] { 2.5f, 2.5f, 2.5f, 2.5f, 3.5f, 3.5f, 2.5f, 2.5f },
+        new float[8] { 1.5f, 1.5f, 2.5f, 1f, 1f, 2.5f, 1.5f, 1.5f },
+        new float[8] { 5.5f, 4.5f, 1.5f, 2.5f, 2.5f, 2.5f, 3.5f, 2.5f },
+        new float[8] { 3.5f, 3.5f, 2.5f, 2.5f, 4.5f, 5.5f, 4.5f, 1.5f },
+    };
 
     public static readonly string[] busyLineNames = new string[10] { "tasbusy", "deafbusy", "blanbusy", "timwibusy", "numbusy", "nicobusy", "espikbusy", "procyonbusy", "exishbusy", "sillybusy" };
+    public static readonly float[] busyLengths = new float[10] { 3.5f, 1f, 5.5f, 1.5f, 3.5f, 5.5f, 1.5f, 3.5f, 1.5f, 1.9f };
 }

@@ -18,7 +18,8 @@ MonoBehaviour:
     is which, you\u2019ll have a horrible time with Samsung\u2019s.\n\nModule idea
     by Deaf and TasThing, implemented by TasThing.\n\nThanks to Deaf, Blananas, Nico
     Robin, Timwi, eXish, Procyon, Espik, SillyPuppy, and Numdegased for providing
-    voice acting for Discord, and Yabbaguy for Spotify."
+    voice acting for Discord, and Yabbaguy for Spotify.\n\nBased on The iPhone by
+    Royal_Flu$h."
   version: 
   outputFolder: build
   previewImage: {fileID: 2800000, guid: c4201f4712833194593eb3e8b55e1d72, type: 3}
