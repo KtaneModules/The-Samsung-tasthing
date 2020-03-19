@@ -487,7 +487,7 @@ public class theSamsung : MonoBehaviour
         cyclingsymbol.gameObject.SetActive(false);
         call.SetActive(false);
         greencircle.SetActive(false);
-        discordtryagain:
+    discordtryagain:
         var userNumbers = Enumerable.Range(0, 10).ToList().Shuffle();
         var discordNumbers = Enumerable.Range(0, 16).ToList().Shuffle();
         var xfs = new float[4] { -.057f, -.0191f, .0188f, .0567f };
@@ -813,7 +813,7 @@ public class theSamsung : MonoBehaviour
             currentSymbol = (currentSymbol + 1) % 8;
             cyclingsymbol.material.mainTexture = allSymbols[currentSymbol][currentColor];
             if (TwitchPlaysActive)
-                twitchtext.text = ((int.Parse(twitchtext.text) + 1) % 8)+"";
+                twitchtext.text = ((int.Parse(twitchtext.text) + 1) % 8) + "";
             yield return new WaitForSeconds(1f);
         }
         yield return new WaitForSeconds(1f);
@@ -964,7 +964,7 @@ public class theSamsung : MonoBehaviour
         var elapsed = 0f;
         var duration = 6f;
         var validNumbers = Enumerable.Range(100000, 900000).Where(x => AuthCheck(x)).ToArray();
-        restart:
+    restart:
         elapsed = 0f;
         authenticatorbar.localScale = new Vector3(.15f, .001f, .01f);
         foreach (TextMesh auth in authenticatortexts)
@@ -1074,7 +1074,7 @@ public class theSamsung : MonoBehaviour
         return x % m;
     }
 
-    //twitch plays
+    // Twitch Plays
     bool TwitchPlaysActive;
 
     #pragma warning disable 414
@@ -1267,7 +1267,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror I cannot press the mute button because Discord is not open!";
                         yield break;
                     }
-                    while ((int)bomb.GetTime()%60%10 != temp) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
+                    while ((int)bomb.GetTime() % 60 % 10 != temp) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
                     mutebutton.OnInteract();
                 }
                 else
@@ -1308,7 +1308,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror I cannot press the mute button because Discord is not open!";
                         yield break;
                     }
-                    while (twitchtext.text != (""+temp)) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
+                    while (twitchtext.text != ("" + temp)) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
                     mutebutton.OnInteract();
                 }
                 else
@@ -1379,7 +1379,7 @@ public class theSamsung : MonoBehaviour
             string[] tempnames = discordNames;
             for (int i = 0; i < tempnames.Length; i++)
             {
-                tempnames[i] = tempnames[i].Replace(" ","").ToLower();
+                tempnames[i] = tempnames[i].Replace(" ", "").ToLower();
             }
             if (!tempnames.Contains(parameters[1].ToLower()))
             {
@@ -1593,7 +1593,7 @@ public class theSamsung : MonoBehaviour
                     }
                     else
                     {
-                        prm += parameters[i]+" ";
+                        prm += parameters[i] + " ";
                     }
                 }
                 yield return "sendtochaterror The specified application to open '" + prm + "' is invalid!";
@@ -1617,6 +1617,6 @@ public class theSamsung : MonoBehaviour
             mutebutton.OnInteract();
         }
         while (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf) { yield return true; yield return new WaitForSeconds(0.1f); }
-        yield return ProcessTwitchCommand("submit "+solutionString);
+        yield return ProcessTwitchCommand("submit " + solutionString);
     }
 }
