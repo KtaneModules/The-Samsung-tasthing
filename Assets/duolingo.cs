@@ -51,7 +51,7 @@ public static class duolingo
         },
         new string[4]
         {
-            "Plu", "Meno", "Moltiplicare", "Dividere"
+            "Più", "Meno", "Per", "Diviso"
         },
         new string[4]
         {

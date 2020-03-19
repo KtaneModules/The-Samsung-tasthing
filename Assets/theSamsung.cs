@@ -280,7 +280,6 @@ public class theSamsung : MonoBehaviour
             iconpositions[i].localPosition = appPositions[positionNumbers[i]];
         iconpositions[8].localPosition = appPositions[4];
         solvedlight.enabled = false;
-        module.OnActivate += OnActivate;
     }
 
     void Start()
@@ -487,7 +486,7 @@ public class theSamsung : MonoBehaviour
         cyclingsymbol.gameObject.SetActive(false);
         call.SetActive(false);
         greencircle.SetActive(false);
-    discordtryagain:
+        discordtryagain:
         var userNumbers = Enumerable.Range(0, 10).ToList().Shuffle();
         var discordNumbers = Enumerable.Range(0, 16).ToList().Shuffle();
         var xfs = new float[4] { -.057f, -.0191f, .0188f, .0567f };
@@ -583,18 +582,6 @@ public class theSamsung : MonoBehaviour
         Debug.LogFormat("[The Samsung #{0}] The module’s solution is {1}.", moduleId, solutionString);
         StartCoroutine(DisableStuff());
         StartCoroutine(Authenticator());
-    }
-
-    void OnActivate()
-    {
-        if (TwitchPlaysActive)
-        {
-            Debug.LogFormat("[The Samsung #{0}] Twitch Plays symbol text will be enabled for Discord.", moduleId);
-        }
-        else
-        {
-            Debug.LogFormat("[The Samsung #{0}] Twitch Plays symbol text will not be enabled for Discord.", moduleId);
-        }
     }
 
     private IEnumerator DisableStuff()
@@ -964,7 +951,7 @@ public class theSamsung : MonoBehaviour
         var elapsed = 0f;
         var duration = 6f;
         var validNumbers = Enumerable.Range(100000, 900000).Where(x => AuthCheck(x)).ToArray();
-    restart:
+        restart:
         elapsed = 0f;
         authenticatorbar.localScale = new Vector3(.15f, .001f, .01f);
         foreach (TextMesh auth in authenticatortexts)
