@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using KModkit;
 using rnd = UnityEngine.Random;
+using System.Text.RegularExpressions;
 
 public class theSamsung : MonoBehaviour
 {
@@ -171,6 +172,7 @@ public class theSamsung : MonoBehaviour
     public Texture[] symbol6;
     public Texture[] symbol7;
     public Texture[] symbol8;
+    public TextMesh twitchtext;
     private Coroutine cycle;
     private List<Texture[]> allSymbols = new List<Texture[]>();
     private User[] users = new User[6];
@@ -223,7 +225,7 @@ public class theSamsung : MonoBehaviour
     public Texture[] wallpapers;
     public Texture resetWallpaper;
     public Transform[] iconpositions;
-    private static readonly Vector3[] appPositions = new Vector3[9] { new Vector3(-.05f, .0124f, .05f), new Vector3(0f, .0124f, .05f), new Vector3(.05f, .0124f, .05f), new Vector3(-.05f, .0124f, 0f), new Vector3(0f, .0124f, 0f), new Vector3(.05f, .0124f, 0f), new Vector3(-.05f, .0124f, -.05f), new Vector3(0f, .0124f, -.05f), new Vector3(.05f, .0124f, -.05f) };
+    private static readonly Vector3[] appPositions = new Vector3[9] { new Vector3(-.05f, .0124f, .04f), new Vector3(0f, .0124f, .04f), new Vector3(.05f, .0124f, .04f), new Vector3(-.05f, .0124f, -.01f), new Vector3(0f, .0124f, -.01f), new Vector3(.05f, .0124f, -.01f), new Vector3(-.05f, .0124f, -.06f), new Vector3(0f, .0124f, -.06f), new Vector3(.05f, .0124f, -.06f) };
     private float timeRemaining;
     public Renderer solvedthingy;
     public Color solvedcolor;
@@ -278,6 +280,7 @@ public class theSamsung : MonoBehaviour
             iconpositions[i].localPosition = appPositions[positionNumbers[i]];
         iconpositions[8].localPosition = appPositions[4];
         solvedlight.enabled = false;
+        module.OnActivate += OnActivate;
     }
 
     void Start()
@@ -582,6 +585,18 @@ public class theSamsung : MonoBehaviour
         StartCoroutine(Authenticator());
     }
 
+    void OnActivate()
+    {
+        if (TwitchPlaysActive)
+        {
+            Debug.LogFormat("[The Samsung #{0}] Twitch Plays symbol text will be enabled for Discord.", moduleId);
+        }
+        else
+        {
+            Debug.LogFormat("[The Samsung #{0}] Twitch Plays symbol text will not be enabled for Discord.", moduleId);
+        }
+    }
+
     private IEnumerator DisableStuff()
     {
         yield return null;
@@ -720,6 +735,7 @@ public class theSamsung : MonoBehaviour
         cantLeave = true;
         speaking = true;
         greencircle.SetActive(true);
+        twitchtext.text = "";
         yield return new WaitForSeconds(.75f);
         if (discordStage == 0)
         {
@@ -770,6 +786,7 @@ public class theSamsung : MonoBehaviour
             else
             {
                 cycling = true;
+                twitchtext.text = "0";
                 cycle = StartCoroutine(SymbolCycle());
             }
         }
@@ -795,9 +812,12 @@ public class theSamsung : MonoBehaviour
         {
             currentSymbol = (currentSymbol + 1) % 8;
             cyclingsymbol.material.mainTexture = allSymbols[currentSymbol][currentColor];
+            if (TwitchPlaysActive)
+                twitchtext.text = ((int.Parse(twitchtext.text) + 1) % 8)+"";
             yield return new WaitForSeconds(1f);
         }
         yield return new WaitForSeconds(1f);
+        twitchtext.text = "";
         while (discordStage == 3 && cycling)
         {
             currentColor = (currentColor + 1) % 6;
@@ -1052,5 +1072,551 @@ public class theSamsung : MonoBehaviour
         if (x < 0)
             x *= -1;
         return x % m;
+    }
+
+    //twitch plays
+    bool TwitchPlaysActive;
+
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} open <duo/maps/kindle/auth/photo/spotify/arts/discord/settings> [Opens the specified app] | !{0} play [Presses the play button if Spotify is open] | !{0} start [Presses the start button if Photomath is open] | !{0} mathsub <digits> [Presses the specified buttons 'digits' in reading order (0-9) and submits the input to Photomath if Photomath is open] | !{0} call <user> [Calls the specified user 'user' if Discord is open] | !{0} mute <#> [Presses the mute button when the last digit of the bomb's timer is '#' if Discord is open] | !{0} symbol <#> [Presses the mute button when the specified symbol '#' is shown if Discord is open] | !{0} color <col> [Presses the mute button when the specified color 'col' is shown if Discord is open] | !{0} home [Goes back to the home screen] | !{0} submit <digits> [Submits the pin 'digits']";
+    #pragma warning restore 414
+    IEnumerator ProcessTwitchCommand(string command)
+    {
+        if (Regex.IsMatch(command, @"^\s*home\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            if (!homebutton.gameObject.activeSelf)
+            {
+                yield return "sendtochaterror I am already on the home screen!";
+            }
+            else if (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf)
+            {
+                yield return "sendtochaterror I cannot go to the home screen right now!";
+            }
+            else
+            {
+                homebutton.OnInteract();
+            }
+            yield break;
+        }
+        if (Regex.IsMatch(command, @"^\s*play\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            if (!apps[5].activeSelf)
+            {
+                yield return "sendtochaterror I cannot press the play button because Spotify is not open!";
+                yield break;
+            }
+            if (isPlaying)
+            {
+                yield return "sendtochaterror I cannot press the play button because a snippet of a song is already playing!";
+                yield break;
+            }
+            playbutton.OnInteract();
+            yield break;
+        }
+        if (Regex.IsMatch(command, @"^\s*start\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            if (!apps[4].activeSelf)
+            {
+                yield return "sendtochaterror I cannot press the start button because Photomath is not open!";
+                yield break;
+            }
+            if (!hideable.activeSelf)
+            {
+                yield return "sendtochaterror I cannot press the start button because Photomath is already cycling!";
+                yield break;
+            }
+            photomathstart.OnInteract();
+            yield break;
+        }
+        string[] parameters = command.Split(' ');
+        if (Regex.IsMatch(parameters[0], @"^\s*submit\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            if (parameters.Length > 2)
+            {
+                yield return "sendtochaterror Too many parameters!";
+            }
+            else if (parameters.Length == 2)
+            {
+                int temp = 0;
+                if (int.TryParse(parameters[1], out temp))
+                {
+                    if (temp < 0 || temp > 99999999)
+                    {
+                        yield return "sendtochaterror The specified code '" + parameters[1] + "' is not in range 0-99999999!";
+                        yield break;
+                    }
+                    if (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf)
+                    {
+                        yield return "sendtochaterror I cannot submit the code right now!";
+                        yield break;
+                    }
+                    if (homebutton.gameObject.activeSelf && !apps[8].activeSelf)
+                    {
+                        homebutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    if (!apps[8].activeSelf)
+                    {
+                        appButtons[8].OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    if (enteringStage > 0)
+                    {
+                        clearbutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    for (int i = 0; i < parameters[1].Length; i++)
+                    {
+                        if (parameters[1].ElementAt(i).Equals('0'))
+                            settingsbuttons[9].OnInteract();
+                        else
+                            settingsbuttons[int.Parse("" + parameters[1].ElementAt(i)) - 1].OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    submitbutton.OnInteract();
+                }
+                else
+                {
+                    yield return "sendtochaterror The specified code '" + parameters[1] + "' is invalid!";
+                }
+            }
+            else if (parameters.Length == 1)
+            {
+                yield return "sendtochaterror Please specify the code to submit!";
+            }
+            yield break;
+        }
+        if (Regex.IsMatch(parameters[0], @"^\s*mathsub\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            if (parameters.Length > 2)
+            {
+                yield return "sendtochaterror Too many parameters!";
+            }
+            else if (parameters.Length == 2)
+            {
+                int temp = 0;
+                if (int.TryParse(parameters[1], out temp))
+                {
+                    if (temp < 0 || temp > 999)
+                    {
+                        yield return "sendtochaterror The specified buttons to press '" + parameters[1] + "' to submit as an answer for Photomath are not in range 0-999!";
+                        yield break;
+                    }
+                    if (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf)
+                    {
+                        yield return "sendtochaterror I cannot press the specified buttons to submit as an answer to Photomath right now!";
+                        yield break;
+                    }
+                    if (!apps[4].activeSelf)
+                    {
+                        yield return "sendtochaterror I cannot press the specified buttons to submit an answer to Photomath because Photomath is not open!";
+                        yield break;
+                    }
+                    if (photomathsolutiontext.text.Length > 0)
+                    {
+                        photomathclear.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    for (int i = 0; i < parameters[1].Length; i++)
+                    {
+                        photomathbuttons[int.Parse("" + parameters[1].ElementAt(i))].OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    photomathsubmit.OnInteract();
+                }
+                else
+                {
+                    yield return "sendtochaterror The specified buttons '" + parameters[1] + "' to press for Photomath are invalid!";
+                }
+            }
+            else if (parameters.Length == 1)
+            {
+                yield return "sendtochaterror Please specify the buttons to press to submit as an answer to Photomath!";
+            }
+            yield break;
+        }
+        if (Regex.IsMatch(parameters[0], @"^\s*mute\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            if (parameters.Length > 2)
+            {
+                yield return "sendtochaterror Too many parameters!";
+            }
+            else if (parameters.Length == 2)
+            {
+                int temp = 0;
+                if (int.TryParse(parameters[1], out temp))
+                {
+                    if (temp < 0 || temp > 9)
+                    {
+                        yield return "sendtochaterror The time to press the mute button '" + parameters[1] + "' for Discord is not in range 0-9!";
+                        yield break;
+                    }
+                    if (easterEgging || !call.activeSelf || !photomathstart.gameObject.activeSelf)
+                    {
+                        yield return "sendtochaterror I cannot press the mute button right now!";
+                        yield break;
+                    }
+                    if (!apps[7].activeSelf)
+                    {
+                        yield return "sendtochaterror I cannot press the mute button because Discord is not open!";
+                        yield break;
+                    }
+                    while ((int)bomb.GetTime()%60%10 != temp) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
+                    mutebutton.OnInteract();
+                }
+                else
+                {
+                    yield return "sendtochaterror The time to press the mute button '" + parameters[1] + "' for Discord is invalid!";
+                }
+            }
+            else if (parameters.Length == 1)
+            {
+                yield return "sendtochaterror Please specify the time to press the mute button!";
+            }
+            yield break;
+        }
+        if (Regex.IsMatch(parameters[0], @"^\s*symbol\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            if (parameters.Length > 2)
+            {
+                yield return "sendtochaterror Too many parameters!";
+            }
+            else if (parameters.Length == 2)
+            {
+                int temp = 0;
+                if (int.TryParse(parameters[1], out temp))
+                {
+                    if (temp < 0 || temp > 7)
+                    {
+                        yield return "sendtochaterror The symbol to press the mute button on '" + parameters[1] + "' for Discord is not in range 0-7!";
+                        yield break;
+                    }
+                    if (easterEgging || !call.activeSelf || !cycling || !photomathstart.gameObject.activeSelf)
+                    {
+                        yield return "sendtochaterror I cannot press the mute button right now!";
+                        yield break;
+                    }
+                    if (!apps[7].activeSelf)
+                    {
+                        yield return "sendtochaterror I cannot press the mute button because Discord is not open!";
+                        yield break;
+                    }
+                    while (twitchtext.text != (""+temp)) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
+                    mutebutton.OnInteract();
+                }
+                else
+                {
+                    yield return "sendtochaterror The symbol to press the mute button on '" + parameters[1] + "' for Discord is invalid!";
+                }
+            }
+            else if (parameters.Length == 1)
+            {
+                yield return "sendtochaterror Please specify the symbol to press the mute button on!";
+            }
+            yield break;
+        }
+        if (Regex.IsMatch(parameters[0], @"^\s*color\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            string[] colors = { "red", "orange", "yellow", "green", "blue", "purple" };
+            if (parameters.Length > 2)
+            {
+                yield return "sendtochaterror Too many parameters!";
+            }
+            else if (parameters.Length == 2)
+            {
+                if (colors.Contains(parameters[1].ToLower()))
+                {
+                    if (easterEgging || !call.activeSelf || !cycling || !photomathstart.gameObject.activeSelf)
+                    {
+                        yield return "sendtochaterror I cannot press the mute button right now!";
+                        yield break;
+                    }
+                    if (!apps[7].activeSelf)
+                    {
+                        yield return "sendtochaterror I cannot press the mute button because Discord is not open!";
+                        yield break;
+                    }
+                    while (currentColor != Array.IndexOf(colors, parameters[1].ToLower())) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
+                    mutebutton.OnInteract();
+                }
+                else
+                {
+                    yield return "sendtochaterror The color to press the mute button on '" + parameters[1] + "' for Discord is invalid!";
+                }
+            }
+            else if (parameters.Length == 1)
+            {
+                yield return "sendtochaterror Please specify the color to press the mute button on!";
+            }
+            yield break;
+        }
+        if (Regex.IsMatch(parameters[0], @"^\s*call\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            string temp1 = "";
+            if (parameters.Length == 1)
+            {
+                yield return "sendtochaterror Please specify the user you would like to call!";
+            }
+            if (parameters.Length > 2)
+            {
+                string param = "";
+                for (int i = 1; i < parameters.Length; i++)
+                {
+                    param += parameters[i];
+                }
+                temp1 = parameters[1];
+                parameters[1] = param;
+            }
+            string[] tempnames = discordNames;
+            for (int i = 0; i < tempnames.Length; i++)
+            {
+                tempnames[i] = tempnames[i].Replace(" ","").ToLower();
+            }
+            if (!tempnames.Contains(parameters[1].ToLower()))
+            {
+                string prm = "";
+                for (int i = 1; i < parameters.Length; i++)
+                {
+                    if (i == (parameters.Length - 1))
+                    {
+                        prm += parameters[i];
+                    }
+                    else if (i == 1)
+                    {
+                        prm += temp1 + " ";
+                    }
+                    else
+                    {
+                        prm += parameters[i] + " ";
+                    }
+                }
+                yield return "sendtochaterror The specified user to call '" + prm + "' is invalid!";
+            }
+            else
+            {
+                if (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf)
+                {
+                    yield return "sendtochaterror I cannot call the specified user right now!";
+                    yield break;
+                }
+                if (!apps[7].activeSelf)
+                {
+                    yield return "sendtochaterror I cannot call the specified user because Discord is not open!";
+                    yield break;
+                }
+                bool done = false;
+                for (int i = 0; i < pfpbuttons.Length; i++)
+                {
+                    if (pfprenders[i].material.mainTexture == pfpimages[Array.IndexOf(tempnames, parameters[1].ToLower())])
+                    {
+                        done = true;
+                        pfpbuttons[i].OnInteract();
+                    }
+                }
+                if (!done)
+                {
+                    yield return "sendtochaterror The specified user is not available right now!";
+                }
+            }
+            yield break;
+        }
+        if (Regex.IsMatch(parameters[0], @"^\s*open\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            string temp1 = "";
+            if (parameters.Length == 1)
+            {
+                yield return "sendtochaterror Please specify the application to open!";
+            }
+            else if (parameters.Length > 2)
+            {
+                string param = "";
+                for (int i = 1; i < parameters.Length; i++)
+                {
+                    param += parameters[i];
+                }
+                temp1 = parameters[1];
+                parameters[1] = param;
+            }
+            if (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf)
+            {
+                yield return "sendtochaterror I cannot open an application right now!";
+                yield break;
+            }
+            if (Regex.IsMatch(parameters[1], @"^\s*duo\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[1], @"^\s*duolingo\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                if (!apps[0].activeSelf)
+                {
+                    if (homebutton.gameObject.activeSelf)
+                    {
+                        homebutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    appButtons[0].OnInteract();
+                }
+                else
+                    yield return "sendtochaterror The application 'Duolingo' is already open!";
+            }
+            else if (Regex.IsMatch(parameters[1], @"^\s*maps\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[1], @"^\s*googlemaps\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                if (!apps[1].activeSelf)
+                {
+                    if (homebutton.gameObject.activeSelf)
+                    {
+                        homebutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    appButtons[1].OnInteract();
+                }
+                else
+                    yield return "sendtochaterror The application 'Google Maps' is already open!";
+            }
+            else if (Regex.IsMatch(parameters[1], @"^\s*kindle\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                if (!apps[2].activeSelf)
+                {
+                    if (homebutton.gameObject.activeSelf)
+                    {
+                        homebutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    appButtons[2].OnInteract();
+                }
+                else
+                    yield return "sendtochaterror The application 'Kindle' is already open!";
+            }
+            else if (Regex.IsMatch(parameters[1], @"^\s*auth\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[1], @"^\s*googleauthenticator\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                if (!apps[3].activeSelf)
+                {
+                    if (homebutton.gameObject.activeSelf)
+                    {
+                        homebutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    appButtons[3].OnInteract();
+                }
+                else
+                    yield return "sendtochaterror The application 'Google Authenticator' is already open!";
+            }
+            else if (Regex.IsMatch(parameters[1], @"^\s*photo\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[1], @"^\s*photomath\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                if (!apps[4].activeSelf)
+                {
+                    if (homebutton.gameObject.activeSelf)
+                    {
+                        homebutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    appButtons[4].OnInteract();
+                }
+                else
+                    yield return "sendtochaterror The application 'Photomath' is already open!";
+            }
+            else if (Regex.IsMatch(parameters[1], @"^\s*spotify\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                if (!apps[5].activeSelf)
+                {
+                    if (homebutton.gameObject.activeSelf)
+                    {
+                        homebutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    appButtons[5].OnInteract();
+                }
+                else
+                    yield return "sendtochaterror The application 'Spotify' is already open!";
+            }
+            else if (Regex.IsMatch(parameters[1], @"^\s*arts\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[1], @"^\s*culture\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[1], @"^\s*a&c\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[1], @"^\s*googlearts&culture\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                if (!apps[6].activeSelf)
+                {
+                    if (homebutton.gameObject.activeSelf)
+                    {
+                        homebutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    appButtons[6].OnInteract();
+                }
+                else
+                    yield return "sendtochaterror The application 'Google Arts & Culture' is already open!";
+            }
+            else if (Regex.IsMatch(parameters[1], @"^\s*discord\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                if (!apps[7].activeSelf)
+                {
+                    if (homebutton.gameObject.activeSelf)
+                    {
+                        homebutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    appButtons[7].OnInteract();
+                }
+                else
+                    yield return "sendtochaterror The application 'Discord' is already open!";
+            }
+            else if (Regex.IsMatch(parameters[1], @"^\s*settings\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                if (!apps[8].activeSelf)
+                {
+                    if (homebutton.gameObject.activeSelf)
+                    {
+                        homebutton.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    appButtons[8].OnInteract();
+                }
+                else
+                    yield return "sendtochaterror The application 'Settings' is already open!";
+            }
+            else
+            {
+                string prm = "";
+                for (int i = 1; i < parameters.Length; i++)
+                {
+                    if (i == (parameters.Length - 1))
+                    {
+                        prm += parameters[i];
+                    }
+                    else if (i == 1)
+                    {
+                        prm += temp1 + " ";
+                    }
+                    else
+                    {
+                        prm += parameters[i]+" ";
+                    }
+                }
+                yield return "sendtochaterror The specified application to open '" + prm + "' is invalid!";
+            }
+            yield break;
+        }
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        if (call.activeSelf && discordStage == 0)
+        {
+            while ((int)bomb.GetTime() % 60 % 10 != discordActivity) { yield return true; yield return new WaitForSeconds(0.1f); }
+            mutebutton.OnInteract();
+        }
+        if (call.activeSelf && cycling)
+        {
+            while (currentSymbol != discordSymbol) { yield return true; yield return new WaitForSeconds(0.1f); }
+            mutebutton.OnInteract();
+            while (currentColor != discordColor) { yield return true; yield return new WaitForSeconds(0.1f); }
+            mutebutton.OnInteract();
+        }
+        while (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf) { yield return true; yield return new WaitForSeconds(0.1f); }
+        yield return ProcessTwitchCommand("submit "+solutionString);
     }
 }

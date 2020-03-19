@@ -109,5 +109,5 @@ public static class Discord
     };
 
     public static readonly string[] busyLineNames = new string[10] { "tasbusy", "deafbusy", "blanbusy", "timwibusy", "numbusy", "nicobusy", "espikbusy", "procyonbusy", "exishbusy", "sillybusy" };
-    public static readonly float[] busyLengths = new float[10] { 3.5f, 1f, 5.5f, 1.5f, 3.5f, 5.5f, 1.5f, 3.5f, 1.5f, 1.9f };
+    public static readonly float[] busyLengths = new float[10] { 3.5f, 1f, 5.5f, 2f, 3.5f, 5.5f, 1.5f, 3.5f, 1.5f, 1.9f };
 }
