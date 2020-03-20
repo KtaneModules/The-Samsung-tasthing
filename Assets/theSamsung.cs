@@ -1110,7 +1110,7 @@ public class theSamsung : MonoBehaviour
                 yield return "sendtochaterror I cannot press the start button because Photomath is not open!";
                 yield break;
             }
-            if (!hideable.activeSelf)
+            if (!photomathstart.gameObject.activeSelf)
             {
                 yield return "sendtochaterror I cannot press the start button because Photomath is already cycling!";
                 yield break;
