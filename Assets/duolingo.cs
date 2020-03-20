@@ -59,7 +59,7 @@ public static class duolingo
         },
         new string[4]
         {
-            "Plus", "Moins", "Fois", "Divisé par"
+            "Plus", "Moins", "Multiplié par", "Divisé par"
         },
         new string[4]
         {

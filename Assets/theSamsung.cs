@@ -513,7 +513,7 @@ public class theSamsung : MonoBehaviour
         switch (Braille(users.Select(u => u.positionNumber).ToArray()))
         {
             case "A":
-                person1 = bomb.GetModuleNames().Count() % 2 != 0 ? extremes[0] : extremes[2];
+                person1 = bomb.GetModuleNames().Count() % 2 == 0 ? extremes[0] : extremes[2];
                 Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set A.", moduleId);
                 break;
             case "B":
