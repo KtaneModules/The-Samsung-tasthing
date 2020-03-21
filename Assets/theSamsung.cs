@@ -968,23 +968,23 @@ public class theSamsung : MonoBehaviour
     private bool AuthCheck(int x)
     {
         if (solution[3] == 0)
-            return (((x - 1) % 9) + 1) == 8;
+            return dr(x) == 8;
         else if (solution[3] == 1)
-            return (x % 3) % 2 == 0;
+            return (x % 3) % 2 != 0;
         else if (solution[3] == 2)
             return x % 7 == 0;
         else if (solution[3] == 3)
             return (x % 5) % 2 != 0;
         else if (solution[3] == 4)
-            return ((((x - 1) % 9) + 1) == 3) || ((((x - 1) % 9) + 1) == 4);
+            return (dr(x) == 3) || (dr(x) == 4);
         else if (solution[3] == 5)
             return x % 6 == 0;
         else if (solution[3] == 6)
-            return (((x - 1) % 9) + 1) == 7;
+            return dr(x) == 7;
         else if (solution[3] == 7)
             return x % 9 == 0;
         else if (solution[3] == 8)
-            return (((x - 1) % 9) + 1) == 5;
+            return dr(x) == 5;
         else
             return x % 3 == 0;
     }
@@ -1059,6 +1059,11 @@ public class theSamsung : MonoBehaviour
         if (x < 0)
             x *= -1;
         return x % m;
+    }
+
+    private int dr(int x)
+    {
+        return ((x - 1) % 9) + 1;
     }
 
     // Twitch Plays
