@@ -773,7 +773,8 @@ public class theSamsung : MonoBehaviour
             else
             {
                 cycling = true;
-                twitchtext.text = "0";
+                if (TwitchPlaysActive)
+                    twitchtext.text = "0";
                 cycle = StartCoroutine(SymbolCycle());
             }
         }
