@@ -28,7 +28,7 @@ public static class duolingo
         },
         new string[21]
         {
-            "ゼロ", "一", "二", "三", "四", "五", "六", "セ", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十セ", "十八", "十九", "二十"
+            "ゼロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十"
         },
         new string[21]
         {
@@ -51,7 +51,7 @@ public static class duolingo
         },
         new string[4]
         {
-            "Plu", "Meno", "Moltiplicare", "Dividere"
+            "Più", "Meno", "Per", "Diviso"
         },
         new string[4]
         {
@@ -59,7 +59,7 @@ public static class duolingo
         },
         new string[4]
         {
-            "Plus", "Moins", "Fois", "Divisé par"
+            "Plus", "Moins", "Multiplié par", "Divisé par"
         },
         new string[4]
         {

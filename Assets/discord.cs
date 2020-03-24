@@ -42,7 +42,7 @@ public static class Discord
     };
     public static readonly float[][] digitLengths = new float[10][]
     {
-        new float[10] { 3.5f, 2.5f, 3.5f, 3.5f, 1.5f, 2.5f, 3.5f, 2.5f, 5.5f, 5.5f },
+        new float[10] { 3.5f, 2.5f, 3.5f, 3.5f, 1.5f, 2.5f, 4f, 2.5f, 5.5f, 5.5f },
         new float[10] { 2.5f, 1.5f, 3.5f, 3.5f, 2.5f, 2.5f, 2.5f, 5.5f, 2.5f, 7.5f },
         new float[10] { 3.5f, 4.5f, 3.5f, 4.5f, 3.5f, 4.5f, 3.5f, 5.5f, 2.5f, 5.5f },
         new float[10] { 3.5f, 1.5f, 3.5f, 2.5f, 1.5f, 3.5f, 4.5f, 5.5f, 3.5f, 4.5f },

@@ -280,7 +280,6 @@ public class theSamsung : MonoBehaviour
             iconpositions[i].localPosition = appPositions[positionNumbers[i]];
         iconpositions[8].localPosition = appPositions[4];
         solvedlight.enabled = false;
-        module.OnActivate += OnActivate;
     }
 
     void Start()
@@ -514,7 +513,7 @@ public class theSamsung : MonoBehaviour
         switch (Braille(users.Select(u => u.positionNumber).ToArray()))
         {
             case "A":
-                person1 = bomb.GetModuleNames().Count() % 2 != 0 ? extremes[0] : extremes[2];
+                person1 = bomb.GetModuleNames().Count() % 2 == 0 ? extremes[0] : extremes[2];
                 Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set A.", moduleId);
                 break;
             case "B":
@@ -583,18 +582,6 @@ public class theSamsung : MonoBehaviour
         Debug.LogFormat("[The Samsung #{0}] The module’s solution is {1}.", moduleId, solutionString);
         StartCoroutine(DisableStuff());
         StartCoroutine(Authenticator());
-    }
-
-    void OnActivate()
-    {
-        if (TwitchPlaysActive)
-        {
-            Debug.LogFormat("[The Samsung #{0}] Twitch Plays symbol text will be enabled for Discord.", moduleId);
-        }
-        else
-        {
-            Debug.LogFormat("[The Samsung #{0}] Twitch Plays symbol text will not be enabled for Discord.", moduleId);
-        }
     }
 
     private IEnumerator DisableStuff()
@@ -786,7 +773,8 @@ public class theSamsung : MonoBehaviour
             else
             {
                 cycling = true;
-                twitchtext.text = "0";
+                if (TwitchPlaysActive)
+                    twitchtext.text = "0";
                 cycle = StartCoroutine(SymbolCycle());
             }
         }
@@ -813,7 +801,7 @@ public class theSamsung : MonoBehaviour
             currentSymbol = (currentSymbol + 1) % 8;
             cyclingsymbol.material.mainTexture = allSymbols[currentSymbol][currentColor];
             if (TwitchPlaysActive)
-                twitchtext.text = ((int.Parse(twitchtext.text) + 1) % 8)+"";
+                twitchtext.text = ((int.Parse(twitchtext.text) + 1) % 8) + "";
             yield return new WaitForSeconds(1f);
         }
         yield return new WaitForSeconds(1f);
@@ -981,23 +969,23 @@ public class theSamsung : MonoBehaviour
     private bool AuthCheck(int x)
     {
         if (solution[3] == 0)
-            return (((x - 1) % 9) + 1) == 8;
+            return dr(x) == 8;
         else if (solution[3] == 1)
-            return (x % 3) % 2 == 0;
+            return (x % 3) % 2 != 0;
         else if (solution[3] == 2)
             return x % 7 == 0;
         else if (solution[3] == 3)
             return (x % 5) % 2 != 0;
         else if (solution[3] == 4)
-            return ((((x - 1) % 9) + 1) == 3) || ((((x - 1) % 9) + 1) == 4);
+            return (dr(x) == 3) || (dr(x) == 4);
         else if (solution[3] == 5)
             return x % 6 == 0;
         else if (solution[3] == 6)
-            return (((x - 1) % 9) + 1) == 7;
+            return dr(x) == 7;
         else if (solution[3] == 7)
             return x % 9 == 0;
         else if (solution[3] == 8)
-            return (((x - 1) % 9) + 1) == 5;
+            return dr(x) == 5;
         else
             return x % 3 == 0;
     }
@@ -1074,7 +1062,12 @@ public class theSamsung : MonoBehaviour
         return x % m;
     }
 
-    //twitch plays
+    private int dr(int x)
+    {
+        return ((x - 1) % 9) + 1;
+    }
+
+    // Twitch Plays
     bool TwitchPlaysActive;
 
     #pragma warning disable 414
@@ -1123,7 +1116,7 @@ public class theSamsung : MonoBehaviour
                 yield return "sendtochaterror I cannot press the start button because Photomath is not open!";
                 yield break;
             }
-            if (!hideable.activeSelf)
+            if (!photomathstart.gameObject.activeSelf)
             {
                 yield return "sendtochaterror I cannot press the start button because Photomath is already cycling!";
                 yield break;
@@ -1267,7 +1260,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror I cannot press the mute button because Discord is not open!";
                         yield break;
                     }
-                    while ((int)bomb.GetTime()%60%10 != temp) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
+                    while ((int)bomb.GetTime() % 60 % 10 != temp) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
                     mutebutton.OnInteract();
                 }
                 else
@@ -1308,7 +1301,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror I cannot press the mute button because Discord is not open!";
                         yield break;
                     }
-                    while (twitchtext.text != (""+temp)) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
+                    while (twitchtext.text != ("" + temp)) { yield return "trycancel Halted pressing the mute button due to a request to cancel!"; yield return new WaitForSeconds(0.1f); }
                     mutebutton.OnInteract();
                 }
                 else
@@ -1379,7 +1372,7 @@ public class theSamsung : MonoBehaviour
             string[] tempnames = discordNames;
             for (int i = 0; i < tempnames.Length; i++)
             {
-                tempnames[i] = tempnames[i].Replace(" ","").ToLower();
+                tempnames[i] = tempnames[i].Replace(" ", "").ToLower();
             }
             if (!tempnames.Contains(parameters[1].ToLower()))
             {
@@ -1593,7 +1586,7 @@ public class theSamsung : MonoBehaviour
                     }
                     else
                     {
-                        prm += parameters[i]+" ";
+                        prm += parameters[i] + " ";
                     }
                 }
                 yield return "sendtochaterror The specified application to open '" + prm + "' is invalid!";
@@ -1617,6 +1610,6 @@ public class theSamsung : MonoBehaviour
             mutebutton.OnInteract();
         }
         while (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf) { yield return true; yield return new WaitForSeconds(0.1f); }
-        yield return ProcessTwitchCommand("submit "+solutionString);
+        yield return ProcessTwitchCommand("submit " + solutionString);
     }
 }
