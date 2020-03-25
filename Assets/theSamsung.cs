@@ -106,6 +106,7 @@ public class theSamsung : MonoBehaviour
     private List<Color> photomathUsedColors = new List<Color>();
     private static readonly Vector3[] startingValuePositions = new Vector3[] { new Vector3(.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, .0267f), new Vector3(.074f, .0121f, .0267f) };
     private int startingValue;
+    private bool photocycle;
     private int[] operations = new int[7];
     private int[] values = new int[7];
     private List<int> photomathEntered = new List<int>();
@@ -682,6 +683,7 @@ public class theSamsung : MonoBehaviour
 
     private IEnumerator PhotomathCycle()
     {
+        photocycle = true;
         audio.PlaySoundAtTransform("keyClick", photomathstart.transform);
         photomathsolutiontext.text = "";
         photomathEntered.Clear();
@@ -704,6 +706,7 @@ public class theSamsung : MonoBehaviour
         photomathstartingtext.text = "";
         photomathstart.gameObject.SetActive(true);
         hideable.SetActive(true);
+        photocycle = false;
     }
 
     private void PressPfpButton(KMSelectable button, int ix)
@@ -1082,7 +1085,7 @@ public class theSamsung : MonoBehaviour
             {
                 yield return "sendtochaterror I am already on the home screen!";
             }
-            else if (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf)
+            else if (easterEgging || cantLeave || photocycle)
             {
                 yield return "sendtochaterror I cannot go to the home screen right now!";
             }
@@ -1116,7 +1119,7 @@ public class theSamsung : MonoBehaviour
                 yield return "sendtochaterror I cannot press the start button because Photomath is not open!";
                 yield break;
             }
-            if (!photomathstart.gameObject.activeSelf)
+            if (photocycle)
             {
                 yield return "sendtochaterror I cannot press the start button because Photomath is already cycling!";
                 yield break;
@@ -1142,7 +1145,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror The specified code '" + parameters[1] + "' is not in range 0-99999999!";
                         yield break;
                     }
-                    if (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf)
+                    if (easterEgging || cantLeave || photocycle)
                     {
                         yield return "sendtochaterror I cannot submit the code right now!";
                         yield break;
@@ -1200,7 +1203,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror The specified buttons to press '" + parameters[1] + "' to submit as an answer for Photomath are not in range 0-999!";
                         yield break;
                     }
-                    if (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf)
+                    if (easterEgging || cantLeave || photocycle)
                     {
                         yield return "sendtochaterror I cannot press the specified buttons to submit as an answer to Photomath right now!";
                         yield break;
@@ -1250,7 +1253,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror The time to press the mute button '" + parameters[1] + "' for Discord is not in range 0-9!";
                         yield break;
                     }
-                    if (easterEgging || !call.activeSelf || !photomathstart.gameObject.activeSelf)
+                    if (easterEgging || !call.activeSelf || photocycle)
                     {
                         yield return "sendtochaterror I cannot press the mute button right now!";
                         yield break;
@@ -1291,7 +1294,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror The symbol to press the mute button on '" + parameters[1] + "' for Discord is not in range 0-7!";
                         yield break;
                     }
-                    if (easterEgging || !call.activeSelf || !cycling || !photomathstart.gameObject.activeSelf)
+                    if (easterEgging || !call.activeSelf || !cycling)
                     {
                         yield return "sendtochaterror I cannot press the mute button right now!";
                         yield break;
@@ -1327,7 +1330,7 @@ public class theSamsung : MonoBehaviour
             {
                 if (colors.Contains(parameters[1].ToLower()))
                 {
-                    if (easterEgging || !call.activeSelf || !cycling || !photomathstart.gameObject.activeSelf)
+                    if (easterEgging || !call.activeSelf || !cycling)
                     {
                         yield return "sendtochaterror I cannot press the mute button right now!";
                         yield break;
@@ -1396,7 +1399,7 @@ public class theSamsung : MonoBehaviour
             }
             else
             {
-                if (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf)
+                if (easterEgging || cantLeave || photocycle)
                 {
                     yield return "sendtochaterror I cannot call the specified user right now!";
                     yield break;
@@ -1440,7 +1443,7 @@ public class theSamsung : MonoBehaviour
                 temp1 = parameters[1];
                 parameters[1] = param;
             }
-            if (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf)
+            if (easterEgging || cantLeave || photocycle)
             {
                 yield return "sendtochaterror I cannot open an application right now!";
                 yield break;
@@ -1609,7 +1612,7 @@ public class theSamsung : MonoBehaviour
             while (currentColor != discordColor) { yield return true; yield return new WaitForSeconds(0.1f); }
             mutebutton.OnInteract();
         }
-        while (easterEgging || cantLeave || !photomathstart.gameObject.activeSelf) { yield return true; yield return new WaitForSeconds(0.1f); }
+        while (easterEgging || cantLeave || photocycle) { yield return true; yield return new WaitForSeconds(0.1f); }
         yield return ProcessTwitchCommand("submit " + solutionString);
     }
 }
