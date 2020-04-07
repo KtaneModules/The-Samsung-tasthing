@@ -174,7 +174,9 @@ public class theSamsung : MonoBehaviour
     public Texture[] symbol7;
     public Texture[] symbol8;
     public TextMesh twitchtext;
+    #pragma warning disable 414
     private Coroutine cycle;
+    #pragma warning restore 414
     private List<Texture[]> allSymbols = new List<Texture[]>();
     private User[] users = new User[6];
     private int discordStage;
@@ -500,6 +502,7 @@ public class theSamsung : MonoBehaviour
             users[i].z = pfppositions[i].localPosition.z;
             pfprenders[i].material.mainTexture = pfpimages[userNumbers[i]];
         }
+        // Now entering: Lambda Hell.
         List<User>[] nonselves = new List<User>[6];
         for (int i = 0; i < 6; i++)
             nonselves[i] = users.Where(u => u != users[i]).ToList();
@@ -515,31 +518,36 @@ public class theSamsung : MonoBehaviour
         {
             case "A":
                 person1 = bomb.GetModuleNames().Count() % 2 == 0 ? extremes[0] : extremes[2];
-                Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set A.", moduleId);
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set A.", moduleId);
                 break;
             case "B":
                 person1 = (bomb.IsIndicatorOn("MSA") || bomb.IsIndicatorOn("NSA")) ? extremes[3] : extremes[1];
-                Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set B.", moduleId);
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set B.", moduleId);
                 break;
             case "C":
                 person1 = bomb.GetSerialNumberLetters().Any(x => "CORA".Contains(x)) ? extremes[2] : extremes[3];
-                Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set C.", moduleId);
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set C.", moduleId);
                 break;
             case "D":
                 person1 = (bomb.GetBatteryCount() + bomb.GetBatteryHolderCount()) % 2 == 0 ? extremes[0] : extremes[1];
-                Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set D.", moduleId);
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set D.", moduleId);
                 break;
             case "E":
                 person1 = bomb.GetSerialNumberLetters().Count(x => "AEIOU".Contains(x)) == 0 ? extremes[2] : extremes[1];
-                Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left spells out a Braille letter in set E.", moduleId);
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set E.", moduleId);
                 break;
             default:
                 person1 = bomb.GetPortPlates().Any(x => x.Length == 0) ? extremes[0] : extremes[3];
-                Debug.LogFormat("[The Samsung #{0}] The 2x3 in the top-left does not spell out a Braille letter.", moduleId);
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left does not spell out a Braille letter.", moduleId);
                 break;
         }
-        string userName2 = checkNames[Array.IndexOf(extremes, person1)].Where(s => users.Select(u => u.userName).ToArray().Contains(s) && !users.Where(u => u.userName == s).Select(u => u.id).ToList().Contains(person1)).First();
+        for (int i = 0; i < 10; i++)
+            Debug.Log("Element " + i + " of userNumbers: " + userNumbers[i]);
+        for (int i = 0; i < 16; i++)
+            Debug.Log("Element " + i + " of discordNumbers: " + discordNumbers[i]);
+        string userName2 = checkNames[Array.IndexOf(extremes, person1)].First(s => users.Select(u => u.userName).ToArray().Contains(s) && !users.Where(u => u.userName == s).Select(u => u.id).ToList().Contains(person1));
         person2 = users.Where(u => u.userName == userName2).First().id;
+        // Thank you for visiting Lambda Hell. Please come again soon.
         discordActivity = rnd.Range(0, 10);
         discordColor = rnd.Range(0, 6);
         discordSymbol = rnd.Range(0, 8);
@@ -1071,11 +1079,13 @@ public class theSamsung : MonoBehaviour
     }
 
     // Twitch Plays
+    #pragma warning disable 0649
+    #pragma warning disable 414
     bool TwitchPlaysActive;
 
-    #pragma warning disable 414
     private readonly string TwitchHelpMessage = @"!{0} open <duo/maps/kindle/auth/photo/spotify/arts/discord/settings> [Opens the specified app] | !{0} play [Presses the play button if Spotify is open] | !{0} start [Presses the start button if Photomath is open] | !{0} mathsub <digits> [Presses the specified buttons 'digits' in reading order (0-9) and submits the input to Photomath if Photomath is open] | !{0} call <user> [Calls the specified user 'user' if Discord is open] | !{0} mute <#> [Presses the mute button when the last digit of the bomb's timer is '#' if Discord is open] | !{0} symbol <#> [Presses the mute button when the specified symbol '#' is shown if Discord is open] | !{0} color <col> [Presses the mute button when the specified color 'col' is shown if Discord is open] | !{0} home [Goes back to the home screen] | !{0} submit <digits> [Submits the pin 'digits']";
     #pragma warning restore 414
+    #pragma warning restore 0649
     IEnumerator ProcessTwitchCommand(string command)
     {
         if (Regex.IsMatch(command, @"^\s*home\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
