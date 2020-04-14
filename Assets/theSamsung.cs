@@ -541,12 +541,12 @@ public class theSamsung : MonoBehaviour
                 Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left does not spell out a Braille letter.", moduleId);
                 break;
         }
-        for (int i = 0; i < 10; i++)
+        /*for (int i = 0; i < 10; i++)
             Debug.Log("Element " + i + " of userNumbers: " + userNumbers[i]);
         for (int i = 0; i < 16; i++)
-            Debug.Log("Element " + i + " of discordNumbers: " + discordNumbers[i]);
-        string userName2 = checkNames[Array.IndexOf(extremes, person1)].First(s => users.Select(u => u.userName).ToArray().Contains(s) && !users.Where(u => u.userName == s).Select(u => u.id).ToList().Contains(person1));
-        person2 = users.Where(u => u.userName == userName2).First().id;
+            Debug.Log("Element " + i + " of discordNumbers: " + discordNumbers[i]);*/
+        string userName2 = checkNames[Array.IndexOf(extremes, person1)].First(s => users.Any(u => u.userName == s && u.id != person1));
+        person2 = users.First(u => u.userName == userName2).id;
         // Thank you for visiting Lambda Hell. Please come again soon.
         discordActivity = rnd.Range(0, 10);
         discordColor = rnd.Range(0, 6);
