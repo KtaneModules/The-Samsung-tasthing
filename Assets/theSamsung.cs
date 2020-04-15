@@ -107,8 +107,8 @@ public class theSamsung : MonoBehaviour
     private static readonly Vector3[] startingValuePositions = new Vector3[] { new Vector3(.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, .0267f), new Vector3(.074f, .0121f, .0267f) };
     private int startingValue;
     private bool photocycle;
-    private int[] operations = new int[7];
-    private int[] values = new int[7];
+    private int[] operations = new int[4];
+    private int[] values = new int[4];
     private List<int> photomathEntered = new List<int>();
     private int photomathSolution;
     private List<string> mathSymbols = new List<string>() { "Σ", "ℝ", "≜", "!", "δ", "∞", "⋰", "∝", "∴", "¬" };
@@ -385,14 +385,14 @@ public class theSamsung : MonoBehaviour
         photomathUsedColors = photomathcolors.ToList().Shuffle();
         for (int i = 0; i < 4; i++)
             photomathcircles[i].material.color = photomathUsedColors[i];
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 4; i++)
         {
             operations[i] = rnd.Range(0, 4);
             values[i] = rnd.Range(1, 10);
         }
         string[] operationNames = new string[4] { "plus", "minus", "times", "divided by" };
         Debug.LogFormat("[The Samsung #{0}] PHOTOMATH:", moduleId);
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 4; i++)
         {
             var firstValue = (i == 0) ? startingValue : photomathSolution;
             var secondValue = values[i];
@@ -695,11 +695,11 @@ public class theSamsung : MonoBehaviour
         audio.PlaySoundAtTransform("keyClick", photomathstart.transform);
         photomathsolutiontext.text = "";
         photomathEntered.Clear();
-        var show = rnd.Range(0, 7);
+        var show = rnd.Range(0, 4);
         photomathstartingtext.transform.localPosition = startingValuePositions.PickRandom();
         photomathstart.gameObject.SetActive(false);
         hideable.SetActive(false);
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 4; i++)
         {
             photomathmaintext.text = mathSymbols[values[i]];
             photomathmaintext.color = photomathUsedColors[operations[i]];
