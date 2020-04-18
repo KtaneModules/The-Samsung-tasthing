@@ -386,51 +386,7 @@ public class theSamsung : MonoBehaviour
         Debug.LogFormat("[The Samsung #{0}] Every number shown has {1}.", moduleId, conditionNames[solution[3]]);
         Debug.LogFormat("[The Samsung #{0}] Therefore, the solution for Google Authenticator is {1}.", moduleId, solution[3]);
         // Photomath
-        mathSymbols.Shuffle();
-        startingValue = rnd.Range(1, 10);
-        photomathUsedColors = photomathcolors.ToList().Shuffle();
-        for (int i = 0; i < 4; i++)
-            photomathcircles[i].material.color = photomathUsedColors[i];
-        for (int i = 0; i < 4; i++)
-        {
-            operations[i] = rnd.Range(0, 4);
-            values[i] = rnd.Range(1, 10);
-        }
-        string[] operationNames = new string[4] { "plus", "minus", "times", "divided by" };
-        Debug.LogFormat("[The Samsung #{0}] PHOTOMATH:", moduleId);
-        for (int i = 0; i < 4; i++)
-        {
-            var firstValue = (i == 0) ? startingValue : photomathSolution;
-            var secondValue = values[i];
-            switch (operations[i])
-            {
-                case 0:
-                    photomathSolution = firstValue + secondValue;
-                    break;
-                case 1:
-                    photomathSolution = firstValue - secondValue;
-                    break;
-                case 2:
-                    photomathSolution = firstValue * secondValue;
-                    break;
-                default:
-                    photomathSolution = firstValue / secondValue;
-                    break;
-            }
-            Debug.LogFormat("[The Samsung #{0}] {1} {2} {3} is {4}.", moduleId, firstValue, operationNames[operations[i]], secondValue, photomathSolution);
-        }
-        if (photomathSolution < 0)
-            photomathSolution *= -1;
-        photomathSolution %= 1000;
-        int[] currentKeypadGrid = keypadGrids[bomb.GetSerialNumberNumbers().Last()];
-        for (int i = 0; i < 10; i++)
-            photmathkeypad[i].text = mathSymbols[currentKeypadGrid[i]];
-        string[] colornames = new string[4] { "blue", "purple", "green", "yellow" };
-        Debug.LogFormat("[The Samsung #{0}] The circles on the bottom are colored {1}, {2}, {3}, and then {4}.", moduleId, colornames[Array.IndexOf(photomathcolors, photomathUsedColors[0])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[1])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[2])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[3])]);
-        for (int i = 0; i < 10; i++)
-            Debug.LogFormat("[The Samsung #{0}] {1} corresponds to {2}.", moduleId, mathSymbols[i], i);
-        Debug.LogFormat("[The Samsung #{0}] The number to enter is {1}.", moduleId, photomathSolution);
-        Debug.LogFormat("[The Samsung #{0}] The solution for Photomath is {1}.", moduleId, solution[4]);
+        GeneratePhotomath();
         // Spotify
         decoyIndex = rnd.Range(0, 10);
         string[] songNames = new string[] { "You Spin Me Right Round", "Smooth Criminal", "Hardware Store", "Beat It", "Danger Zone", "Tacky", "Harder, Better, Faster, Stronger", "Drunken Sailor", "Megalovania", "a song not mentioned" };
@@ -542,21 +498,40 @@ public class theSamsung : MonoBehaviour
     {
         audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, resetButton.transform);
         resetButton.AddInteractionPunch(.5f);
-        if (currentAppIndex == 7)
+        switch (currentAppIndex)
         {
-            Debug.LogFormat("[The Samsung #{0}] Discord reset.", moduleId);
-            discordStage = 0;
-            if (cycle != null)
-            {
-                StopCoroutine(cycle);
-                cycle = null;
-            }
-            if (voice != null)
-            {
-                StopCoroutine(voice);
-                voice = null;
-            }
-            GenerateDiscord();
+            case 7:
+                Debug.LogFormat("[The Samsung #{0}] Discord reset.", moduleId);
+                discordStage = 0;
+                if (cycle != null)
+                {
+                    StopCoroutine(cycle);
+                    cycle = null;
+                }
+                if (voice != null)
+                {
+                    StopCoroutine(voice);
+                    voice = null;
+                }
+                GenerateDiscord();
+                break;
+            case 4:
+                Debug.LogFormat("[The Samsung #{0}] Photomath reset.", moduleId);
+                if (mathCycle != null)
+                {
+                    StopCoroutine(mathCycle);
+                    mathCycle = null;
+                    photocycle = false;
+                }
+                hideable.SetActive(false);
+                photomathstart.gameObject.SetActive(true);
+                photomathmaintext.text = "";
+                photomathstartingtext.text = "";
+                photomathsolutiontext.text = "";
+                GeneratePhotomath();
+                break;
+            default:
+                break;
         }
     }
 
@@ -635,8 +610,58 @@ public class theSamsung : MonoBehaviour
         Debug.LogFormat("[The Samsung #{0}] The solution for Discord is {1}.", moduleId, solution[7]);
     }
 
+    private void GeneratePhotomath()
+    {
+        mathSymbols.Shuffle();
+        startingValue = rnd.Range(1, 10);
+        photomathUsedColors = photomathcolors.ToList().Shuffle();
+        for (int i = 0; i < 4; i++)
+            photomathcircles[i].material.color = photomathUsedColors[i];
+        for (int i = 0; i < 4; i++)
+        {
+            operations[i] = rnd.Range(0, 4);
+            values[i] = rnd.Range(1, 10);
+        }
+        string[] operationNames = new string[4] { "plus", "minus", "times", "divided by" };
+        Debug.LogFormat("[The Samsung #{0}] PHOTOMATH:", moduleId);
+        for (int i = 0; i < 4; i++)
+        {
+            var firstValue = (i == 0) ? startingValue : photomathSolution;
+            var secondValue = values[i];
+            switch (operations[i])
+            {
+                case 0:
+                    photomathSolution = firstValue + secondValue;
+                    break;
+                case 1:
+                    photomathSolution = firstValue - secondValue;
+                    break;
+                case 2:
+                    photomathSolution = firstValue * secondValue;
+                    break;
+                default:
+                    photomathSolution = firstValue / secondValue;
+                    break;
+            }
+            Debug.LogFormat("[The Samsung #{0}] {1} {2} {3} is {4}.", moduleId, firstValue, operationNames[operations[i]], secondValue, photomathSolution);
+        }
+        if (photomathSolution < 0)
+            photomathSolution *= -1;
+        photomathSolution %= 1000;
+        int[] currentKeypadGrid = keypadGrids[bomb.GetSerialNumberNumbers().Last()];
+        for (int i = 0; i < 10; i++)
+            photmathkeypad[i].text = mathSymbols[currentKeypadGrid[i]];
+        string[] colornames = new string[4] { "blue", "purple", "green", "yellow" };
+        Debug.LogFormat("[The Samsung #{0}] The circles on the bottom are colored {1}, {2}, {3}, and then {4}.", moduleId, colornames[Array.IndexOf(photomathcolors, photomathUsedColors[0])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[1])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[2])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[3])]);
+        for (int i = 0; i < 10; i++)
+            Debug.LogFormat("[The Samsung #{0}] {1} corresponds to {2}.", moduleId, mathSymbols[i], i);
+        Debug.LogFormat("[The Samsung #{0}] The number to enter is {1}.", moduleId, photomathSolution);
+        Debug.LogFormat("[The Samsung #{0}] The solution for Photomath is {1}.", moduleId, solution[4]);
+    }
+
     private void PressAppButton(KMSelectable button)
     {
+        button.AddInteractionPunch(.1f);
         currentAppIndex = Array.IndexOf(appButtons, button);
         audio.PlaySoundAtTransform("keyClick", button.transform);
         icons.SetActive(false);
@@ -647,6 +672,7 @@ public class theSamsung : MonoBehaviour
 
     private void PressHomeButton()
     {
+        homebutton.AddInteractionPunch(.1f);
         if (cantLeave || easterEgging)
             return;
         audio.PlaySoundAtTransform("keyClick", homebutton.transform);
@@ -658,6 +684,7 @@ public class theSamsung : MonoBehaviour
 
     private void PressPlayButton()
     {
+        playbutton.AddInteractionPunch(.1f);
         if (isPlaying)
             return;
         StartCoroutine(Spotify());
@@ -685,6 +712,7 @@ public class theSamsung : MonoBehaviour
 
     private void PressPhotomathClearButton()
     {
+        photomathclear.AddInteractionPunch(.1f);
         audio.PlaySoundAtTransform("keyClick", photomathclear.transform);
         photomathsolutiontext.text = "";
         photomathEntered.Clear();
@@ -692,6 +720,7 @@ public class theSamsung : MonoBehaviour
 
     private void PressPhotomathSubmitButton()
     {
+        photomathsubmit.AddInteractionPunch(.1f);
         audio.PlaySoundAtTransform("keyClick", photomathsubmit.transform);
         var photomashAns = photomathEntered.Join("");
         if (photomashAns != photomathSolution.ToString())
@@ -712,6 +741,7 @@ public class theSamsung : MonoBehaviour
 
     private void PressPhotomathButton(KMSelectable button)
     {
+        button.AddInteractionPunch(.1f);
         audio.PlaySoundAtTransform("keyClick", button.transform);
         if (photomathsolutiontext.text.Length >= 3)
             return;
@@ -750,6 +780,7 @@ public class theSamsung : MonoBehaviour
 
     private void PressPfpButton(KMSelectable button, int ix)
     {
+        button.AddInteractionPunch(.1f);
         callpfp.material.mainTexture = pfpimages[users[ix].userId];
         call.SetActive(true);
         pfps.SetActive(false);
@@ -872,6 +903,7 @@ public class theSamsung : MonoBehaviour
 
     private void PressMuteButton()
     {
+        mutebutton.AddInteractionPunch(.1f);
         if (speaking)
             return;
         if (discordStage == 0)
@@ -929,6 +961,7 @@ public class theSamsung : MonoBehaviour
 
     private void PressSettingsButton(KMSelectable button)
     {
+        button.AddInteractionPunch(.1f);
         if (enteringStage > 7 || easterEgging)
             return;
         audio.PlaySoundAtTransform("keyClick", button.transform);
@@ -940,6 +973,7 @@ public class theSamsung : MonoBehaviour
 
     private void PressClearButton()
     {
+        clearbutton.AddInteractionPunch(.1f);
         if (easterEgging)
             return;
         audio.PlaySoundAtTransform("keyClick", clearbutton.transform);
@@ -950,6 +984,7 @@ public class theSamsung : MonoBehaviour
 
     private void PressSubmitButton()
     {
+        submitbutton.AddInteractionPunch(.1f);
         if (easterEgging)
             return;
         audio.PlaySoundAtTransform("keyClick", submitbutton.transform);
@@ -1115,7 +1150,7 @@ public class theSamsung : MonoBehaviour
     #pragma warning disable 414
     bool TwitchPlaysActive;
 
-    private readonly string TwitchHelpMessage = @"!{0} open <duo/maps/kindle/auth/photo/spotify/arts/discord/settings> [Opens the specified app] | !{0} play [Presses the play button if Spotify is open] | !{0} start [Presses the start button if Photomath is open] | !{0} mathsub <digits> [Presses the specified buttons 'digits' in reading order (0-9) and submits the input to Photomath if Photomath is open] | !{0} call <user> [Calls the specified user 'user' if Discord is open] | !{0} mute <#> [Presses the mute button when the last digit of the bomb's timer is '#' if Discord is open] | !{0} symbol <#> [Presses the mute button when the specified symbol '#' is shown if Discord is open] | !{0} color <col> [Presses the mute button when the specified color 'col' is shown if Discord is open] | !{0} home [Goes back to the home screen] | !{0} submit <digits> [Submits the pin 'digits']";
+    private readonly string TwitchHelpMessage = @"!{0} open <duo/maps/kindle/auth/photo/spotify/arts/discord/settings> [Opens the specified app] | !{0} play [Presses the play button if Spotify is open] | !{0} start [Presses the start button if Photomath is open] | !{0} mathsub <digits> [Presses the specified buttons 'digits' in reading order (0-9) and submits the input to Photomath if Photomath is open] | !{0} call <user> [Calls the specified user 'user' if Discord is open] | !{0} mute <#> [Presses the mute button when the last digit of the bomb's timer is '#' if Discord is open] | !{0} symbol <#> [Presses the mute button when the specified symbol '#' is shown if Discord is open] | !{0} color <col> [Presses the mute button when the specified color 'col' is shown if Discord is open] | !{0} home [Goes back to the home screen] | !{0} submit <digits> [Submits the pin 'digits'] | !{0} regenerate [Presses the notification LED]";
     #pragma warning restore 414
     #pragma warning restore 0649
     IEnumerator ProcessTwitchCommand(string command)
@@ -1136,6 +1171,11 @@ public class theSamsung : MonoBehaviour
                 homebutton.OnInteract();
             }
             yield break;
+        }
+        if (Regex.IsMatch(command, @"^\s*regenerate\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            resetButton.OnInteract();
         }
         if (Regex.IsMatch(command, @"^\s*play\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
