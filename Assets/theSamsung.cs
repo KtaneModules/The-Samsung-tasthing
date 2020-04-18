@@ -16,6 +16,7 @@ public class theSamsung : MonoBehaviour
     public GameObject[] apps;
     public KMSelectable homebutton;
     public KMSelectable[] appButtons;
+    public KMSelectable resetButton;
 
     // Settings
     public KMSelectable[] settingsbuttons;
@@ -104,6 +105,9 @@ public class theSamsung : MonoBehaviour
     public Renderer[] photomathcircles;
     public Color[] photomathcolors;
     private List<Color> photomathUsedColors = new List<Color>();
+    #pragma warning disable 414
+    private Coroutine mathCycle;
+    #pragma warning restore 414
     private static readonly Vector3[] startingValuePositions = new Vector3[] { new Vector3(.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, .0267f), new Vector3(.074f, .0121f, .0267f) };
     private int startingValue;
     private bool photocycle;
@@ -176,6 +180,7 @@ public class theSamsung : MonoBehaviour
     public TextMesh twitchtext;
     #pragma warning disable 414
     private Coroutine cycle;
+    private Coroutine voice;
     #pragma warning restore 414
     private List<Texture[]> allSymbols = new List<Texture[]>();
     private User[] users = new User[6];
@@ -260,6 +265,7 @@ public class theSamsung : MonoBehaviour
             statusIcon.material.mainTexture = miscicons[statusNumbers[Array.IndexOf(miscstatus, statusIcon)]];
         // <Selectables>
         homebutton.OnInteract += delegate () { PressHomeButton(); return false; };
+        resetButton.OnInteract += delegate () { PressResetButton(); return false; };
         playbutton.OnInteract += delegate () { PressPlayButton(); return false; };
         foreach (KMSelectable appButton in appButtons)
             appButton.OnInteract += delegate () { PressAppButton(appButton); return false; };
@@ -267,7 +273,7 @@ public class theSamsung : MonoBehaviour
             button.OnInteract += delegate () { PressSettingsButton(button); return false; };
         photomathclear.OnInteract += delegate () { PressPhotomathClearButton(); return false; };
         photomathsubmit.OnInteract += delegate () { PressPhotomathSubmitButton(); return false; };
-        photomathstart.OnInteract += delegate () { StartCoroutine(PhotomathCycle()); return false; };
+        photomathstart.OnInteract += delegate () { mathCycle = StartCoroutine(PhotomathCycle()); return false; };
         foreach (KMSelectable button in photomathbuttons)
             button.OnInteract += delegate () { PressPhotomathButton(button); return false; };
         foreach (KMSelectable button in pfpbuttons)
@@ -489,79 +495,7 @@ public class theSamsung : MonoBehaviour
         cyclingsymbol.gameObject.SetActive(false);
         call.SetActive(false);
         greencircle.SetActive(false);
-        discordtryagain:
-        var userNumbers = Enumerable.Range(0, 10).ToList().Shuffle();
-        var discordNumbers = Enumerable.Range(0, 16).ToList().Shuffle();
-        var xfs = new float[4] { -.057f, -.0191f, .0188f, .0567f };
-        var yfs = new float[4] { .0462f, .0083f, -.0296f, -.0675f };
-        for (int i = 0; i < 6; i++)
-        {
-            users[i] = new User { id = i, positionNumber = discordNumbers[i], userId = userNumbers[i], userName = discordNames[userNumbers[i]], x = 0f, z = 0f };
-            pfppositions[i].localPosition = new Vector3(xfs[discordNumbers[i] % 4], .0123f, yfs[discordNumbers[i] / 4]);
-            users[i].x = pfppositions[i].localPosition.x;
-            users[i].z = pfppositions[i].localPosition.z;
-            pfprenders[i].material.mainTexture = pfpimages[userNumbers[i]];
-        }
-        // Now entering: Lambda Hell.
-        List<User>[] nonselves = new List<User>[6];
-        for (int i = 0; i < 6; i++)
-            nonselves[i] = users.Where(u => u != users[i]).ToList();
-        extremes[0] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).Last());
-        extremes[1] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.x != u.x)).OrderBy(u => u.x).Last());
-        extremes[2] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).First());
-        extremes[3] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.x != u.x)).OrderBy(u => u.x).First());
-        for (int i = 0; i < 4; i++)
-            if (nonselves[i].Any(u => ((i == 0 || i == 2) ? u.z : u.x) == ((i == 0 || i == 2) ? users[extremes[i]].z : users[extremes[i]].x)))
-                goto discordtryagain;
-        Debug.LogFormat("[The Samsung #{0}] DISCORD:", moduleId);
-        switch (Braille(users.Select(u => u.positionNumber).ToArray()))
-        {
-            case "A":
-                person1 = bomb.GetModuleNames().Count() % 2 == 0 ? extremes[0] : extremes[2];
-                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set A.", moduleId);
-                break;
-            case "B":
-                person1 = (bomb.IsIndicatorOn("MSA") || bomb.IsIndicatorOn("NSA")) ? extremes[3] : extremes[1];
-                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set B.", moduleId);
-                break;
-            case "C":
-                person1 = bomb.GetSerialNumberLetters().Any(x => "CORA".Contains(x)) ? extremes[2] : extremes[3];
-                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set C.", moduleId);
-                break;
-            case "D":
-                person1 = (bomb.GetBatteryCount() + bomb.GetBatteryHolderCount()) % 2 == 0 ? extremes[0] : extremes[1];
-                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set D.", moduleId);
-                break;
-            case "E":
-                person1 = bomb.GetSerialNumberLetters().Count(x => "AEIOU".Contains(x)) == 0 ? extremes[2] : extremes[1];
-                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set E.", moduleId);
-                break;
-            default:
-                person1 = bomb.GetPortPlates().Any(x => x.Length == 0) ? extremes[0] : extremes[3];
-                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left does not spell out a Braille letter.", moduleId);
-                break;
-        }
-        /*for (int i = 0; i < 10; i++)
-            Debug.Log("Element " + i + " of userNumbers: " + userNumbers[i]);
-        for (int i = 0; i < 16; i++)
-            Debug.Log("Element " + i + " of discordNumbers: " + discordNumbers[i]);*/
-        string userName2 = checkNames[Array.IndexOf(extremes, person1)].First(s => users.Any(u => u.userName == s && u.id != person1));
-        person2 = users.First(u => u.userName == userName2).id;
-        // Thank you for visiting Lambda Hell. Please come again soon.
-        discordActivity = rnd.Range(0, 10);
-        discordColor = rnd.Range(0, 6);
-        discordSymbol = rnd.Range(0, 8);
-        currentSymbol = rnd.Range(0, 8);
-        currentColor = rnd.Range(0, 6);
-        string[] activityNames = new string[10] { "defusing", "playing Jackbox", "playing Tabletop Simulator", "reacting to a new mod", "complaining about sleep", "experting", "arguing", "talking about food", "being AFK", "something else" };
-        string[] discordColornames = new string[6] { "red", "orange", "yellow", "green", "blue", "purple" };
-        string[] extremeNames = new string[4] { "top-most", "right-most", "bottom-most", "left-most" };
-        Debug.LogFormat("[The Samsung #{0}] The first user to call is {1}, because they are the {2} user.", moduleId, users[person1].userName, extremeNames[Array.IndexOf(extremes, extremes.Where(x => x == person1).First())]);
-        Debug.LogFormat("[The Samsung #{0}] The second user to call is {1}.", moduleId, users[person2].userName);
-        Debug.LogFormat("[The Samsung #{0}] The activity is {1}, which corresponds to {2}.", moduleId, activityNames[discordActivity], discordActivity);
-        Debug.LogFormat("[The Samsung #{0}] The correct symbol is symbol {1}.", moduleId, discordSymbol + 1);
-        Debug.LogFormat("[The Samsung #{0}] The correct color is {1}.", moduleId, discordColornames[discordColor]);
-        Debug.LogFormat("[The Samsung #{0}] The solution for Discord is {1}.", moduleId, solution[7]);
+        GenerateDiscord();
         // Solution
         string[] directionNames = new string[8] { "north-west", "north", "north-east", "east", "south-east", "south", "south-west", "west" };
         Debug.LogFormat("[The Samsung #{0}] SETTINGS:", moduleId);
@@ -602,6 +536,103 @@ public class theSamsung : MonoBehaviour
         hideable.SetActive(false);
         photomathmaintext.text = "";
         photomathsolutiontext.text = "";
+    }
+
+    private void PressResetButton()
+    {
+        audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, resetButton.transform);
+        resetButton.AddInteractionPunch(.5f);
+        if (currentAppIndex == 7)
+        {
+            Debug.LogFormat("[The Samsung #{0}] Discord reset.", moduleId);
+            discordStage = 0;
+            if (cycle != null)
+            {
+                StopCoroutine(cycle);
+                cycle = null;
+            }
+            if (voice != null)
+            {
+                StopCoroutine(voice);
+                voice = null;
+            }
+            GenerateDiscord();
+        }
+    }
+
+    private void GenerateDiscord()
+    {
+        pfps.SetActive(true);
+        cyclingsymbol.gameObject.SetActive(false);
+        call.SetActive(false);
+        greencircle.SetActive(false);
+        discordtryagain:
+        var userNumbers = Enumerable.Range(0, 10).ToList().Shuffle();
+        var discordNumbers = Enumerable.Range(0, 16).ToList().Shuffle();
+        var xfs = new float[4] { -.057f, -.0191f, .0188f, .0567f };
+        var yfs = new float[4] { .0462f, .0083f, -.0296f, -.0675f };
+        for (int i = 0; i < 6; i++)
+        {
+            users[i] = new User { id = i, positionNumber = discordNumbers[i], userId = userNumbers[i], userName = discordNames[userNumbers[i]], x = 0f, z = 0f };
+            pfppositions[i].localPosition = new Vector3(xfs[discordNumbers[i] % 4], .0123f, yfs[discordNumbers[i] / 4]);
+            users[i].x = pfppositions[i].localPosition.x;
+            users[i].z = pfppositions[i].localPosition.z;
+            pfprenders[i].material.mainTexture = pfpimages[userNumbers[i]];
+        }
+        var nonselves = new List<User>[6];
+        for (int i = 0; i < 6; i++)
+            nonselves[i] = users.Where(u => u != users[i]).ToList();
+        extremes[0] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).Last());
+        extremes[1] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.x != u.x)).OrderBy(u => u.x).Last());
+        extremes[2] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).First());
+        extremes[3] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.x != u.x)).OrderBy(u => u.x).First());
+        for (int i = 0; i < 4; i++)
+            if (nonselves[i].Any(u => ((i == 0 || i == 2) ? u.z : u.x) == ((i == 0 || i == 2) ? users[extremes[i]].z : users[extremes[i]].x)))
+                goto discordtryagain;
+        Debug.LogFormat("[The Samsung #{0}] DISCORD:", moduleId);
+        switch (Braille(users.Select(u => u.positionNumber).ToArray()))
+        {
+            case "A":
+                person1 = bomb.GetModuleNames().Count() % 2 == 0 ? extremes[0] : extremes[2];
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set A.", moduleId);
+                break;
+            case "B":
+                person1 = (bomb.IsIndicatorOn("MSA") || bomb.IsIndicatorOn("NSA")) ? extremes[3] : extremes[1];
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set B.", moduleId);
+                break;
+            case "C":
+                person1 = bomb.GetSerialNumberLetters().Any(x => "CORA".Contains(x)) ? extremes[2] : extremes[3];
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set C.", moduleId);
+                break;
+            case "D":
+                person1 = (bomb.GetBatteryCount() + bomb.GetBatteryHolderCount()) % 2 == 0 ? extremes[0] : extremes[1];
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set D.", moduleId);
+                break;
+            case "E":
+                person1 = bomb.GetSerialNumberLetters().Count(x => "AEIOU".Contains(x)) == 0 ? extremes[2] : extremes[1];
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set E.", moduleId);
+                break;
+            default:
+                person1 = bomb.GetPortPlates().Any(x => x.Length == 0) ? extremes[0] : extremes[3];
+                Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left does not spell out a Braille letter.", moduleId);
+                break;
+        }
+        var userName2 = checkNames[Array.IndexOf(extremes, person1)].First(s => users.Any(u => u.userName == s && u.id != person1));
+        person2 = users.First(u => u.userName == userName2).id;
+        discordActivity = rnd.Range(0, 10);
+        discordColor = rnd.Range(0, 6);
+        discordSymbol = rnd.Range(0, 8);
+        currentSymbol = rnd.Range(0, 8);
+        currentColor = rnd.Range(0, 6);
+        var activityNames = new string[10] { "defusing", "playing Jackbox", "playing Tabletop Simulator", "reacting to a new mod", "complaining about sleep", "experting", "arguing", "talking about food", "being AFK", "something else" };
+        var discordColornames = new string[6] { "red", "orange", "yellow", "green", "blue", "purple" };
+        var extremeNames = new string[4] { "top-most", "right-most", "bottom-most", "left-most" };
+        Debug.LogFormat("[The Samsung #{0}] The first user to call is {1}, because they are the {2} user.", moduleId, users[person1].userName, extremeNames[Array.IndexOf(extremes, extremes.Where(x => x == person1).First())]);
+        Debug.LogFormat("[The Samsung #{0}] The second user to call is {1}.", moduleId, users[person2].userName);
+        Debug.LogFormat("[The Samsung #{0}] The activity is {1}, which corresponds to {2}.", moduleId, activityNames[discordActivity], discordActivity);
+        Debug.LogFormat("[The Samsung #{0}] The correct symbol is symbol {1}.", moduleId, discordSymbol + 1);
+        Debug.LogFormat("[The Samsung #{0}] The correct color is {1}.", moduleId, discordColornames[discordColor]);
+        Debug.LogFormat("[The Samsung #{0}] The solution for Discord is {1}.", moduleId, solution[7]);
     }
 
     private void PressAppButton(KMSelectable button)
@@ -723,7 +754,7 @@ public class theSamsung : MonoBehaviour
         call.SetActive(true);
         pfps.SetActive(false);
         audio.PlaySoundAtTransform("join", button.transform);
-        StartCoroutine(DiscordVoice(users[ix].userId, ix));
+        voice = StartCoroutine(DiscordVoice(users[ix].userId, ix));
     }
 
     private IEnumerator DiscordVoice(int ixuser, int ixbutton)
@@ -853,7 +884,7 @@ public class theSamsung : MonoBehaviour
             else
             {
                 discordStage++;
-                StartCoroutine(DiscordVoice(currentIxUser, currentIxButton));
+                voice = StartCoroutine(DiscordVoice(currentIxUser, currentIxButton));
             }
         }
         else if (discordStage == 2)
@@ -878,7 +909,7 @@ public class theSamsung : MonoBehaviour
                 cantLeave = false;
                 cycling = false;
                 discordStage++;
-                StartCoroutine(DiscordVoice(currentIxUser, currentIxButton));
+                voice = StartCoroutine(DiscordVoice(currentIxUser, currentIxButton));
             }
         }
     }
@@ -886,6 +917,7 @@ public class theSamsung : MonoBehaviour
     private IEnumerator HideDiscord()
     {
         StopCoroutine(SymbolCycle());
+        cycle = null;
         var unhiddenicons = Enumerable.Range(0, 6).ToList().Shuffle();
         for (int i = 0; i < 6; i++)
         {
@@ -1442,6 +1474,7 @@ public class theSamsung : MonoBehaviour
             if (parameters.Length == 1)
             {
                 yield return "sendtochaterror Please specify the application to open!";
+                yield break;
             }
             else if (parameters.Length > 2)
             {
