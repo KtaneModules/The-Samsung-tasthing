@@ -1454,7 +1454,7 @@ public class theSamsung : MonoBehaviour
                 temp1 = parameters[1];
                 parameters[1] = param;
             }
-            string[] tempnames = discordNames;
+            string[] tempnames = discordNames.ToArray();
             for (int i = 0; i < tempnames.Length; i++)
             {
                 tempnames[i] = tempnames[i].Replace(" ", "").ToLower();

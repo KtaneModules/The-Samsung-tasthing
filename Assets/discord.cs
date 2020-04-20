@@ -76,7 +76,7 @@ public static class Discord
         new float[6] { 2.5f, 2.5f, 1.5f, 1.5f, 1.5f, 2.5f },
         new float[6] { 3.5f, 4.5f, 5.5f, 3.5f, 3.5f, 5.5f },
         new float[6] { 2.5f, 1.5f, 2.5f, 2.5f, 1.5f, 3.5f },
-        new float[6] { 1.5f, 1.5f, 2.5f, 1.5f, 1.5f, 1.5f },
+        new float[6] { 1.5f, 1.5f, 2.5f, 1.5f, 1.5f, 2.25f },
         new float[6] { 2.5f, 2.5f, 3.5f, 2.5f, 2.5f, 1.5f },
         new float[6] { 1.5f, 2.5f, 2.5f, 2.5f, 2.5f, 2.5f },
     };
@@ -103,7 +103,7 @@ public static class Discord
         new float[8] { 2.5f, 1.5f, 2.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f },
         new float[8] { 15.5f, 11.5f, 10.5f, 15.5f, 12.5f, 10.5f, 11.5f, 11.5f },
         new float[8] { 2.5f, 2.5f, 2.5f, 2.5f, 3.5f, 3.5f, 2.5f, 2.5f },
-        new float[8] { 1.5f, 1.5f, 2.5f, 1f, 1f, 2.5f, 1.5f, 1.5f },
+        new float[8] { 1.5f, 1.5f, 2.5f, 1.5f, 1.5f, 2.5f, 1.5f, 1.5f },
         new float[8] { 5.5f, 4.5f, 1.5f, 2.5f, 2.5f, 2.5f, 3.5f, 2.5f },
         new float[8] { 3.5f, 3.5f, 2.5f, 2.5f, 4.5f, 5.5f, 4.5f, 1.5f },
     };
