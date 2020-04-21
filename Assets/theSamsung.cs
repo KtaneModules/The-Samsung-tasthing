@@ -23,9 +23,11 @@ public class theSamsung : MonoBehaviour
     public KMSelectable clearbutton;
     public KMSelectable submitbutton;
     public TextMesh answertext;
+    public TextMesh strikeText;
     private static readonly string[] easterEggs = new string[] { "43556629", "82784464", "26725463", "69", "420", "666", "177013" };
     private static readonly float[] easterEggLengths = new float[] { 8.5f, 7.5f, 9.5f, 2.5f, 3.5f, 5.5f, 4.5f };
     private bool easterEgging;
+    private bool strikeAnimating;
 
     // Duolingo
     private int languageIndex;
@@ -673,7 +675,7 @@ public class theSamsung : MonoBehaviour
     private void PressHomeButton()
     {
         homebutton.AddInteractionPunch(.1f);
-        if (cantLeave || easterEgging)
+        if (cantLeave || easterEgging || strikeAnimating)
             return;
         audio.PlaySoundAtTransform("keyClick", homebutton.transform);
         icons.SetActive(true);
@@ -962,7 +964,7 @@ public class theSamsung : MonoBehaviour
     private void PressSettingsButton(KMSelectable button)
     {
         button.AddInteractionPunch(.1f);
-        if (enteringStage > 7 || easterEgging)
+        if (enteringStage > 7 || easterEgging || strikeAnimating)
             return;
         audio.PlaySoundAtTransform("keyClick", button.transform);
         var numbers = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
@@ -974,7 +976,7 @@ public class theSamsung : MonoBehaviour
     private void PressClearButton()
     {
         clearbutton.AddInteractionPunch(.1f);
-        if (easterEgging)
+        if (easterEgging || strikeAnimating)
             return;
         audio.PlaySoundAtTransform("keyClick", clearbutton.transform);
         enteringStage = 0;
@@ -985,7 +987,7 @@ public class theSamsung : MonoBehaviour
     private void PressSubmitButton()
     {
         submitbutton.AddInteractionPunch(.1f);
-        if (easterEgging)
+        if (easterEgging || strikeAnimating)
             return;
         audio.PlaySoundAtTransform("keyClick", submitbutton.transform);
         var enteredSolutionString = enteredSolution.Join("");
@@ -1011,7 +1013,24 @@ public class theSamsung : MonoBehaviour
         {
             Debug.LogFormat("[The Samsung #{0}] That was incorrect. Strike!", moduleId);
             StartCoroutine(Strike());
+            StartCoroutine(StrikeCycle(enteredSolutionString));
         }
+    }
+
+    private IEnumerator StrikeCycle(string enteredSolutionString)
+    {
+        strikeAnimating = true;
+        for (int i = 0; i < enteredSolutionString.Length; i++)
+        {
+            if (solutionString[i] != enteredSolutionString[i])
+            {
+                strikeText.text = (i + 1).ToString();
+                yield return new WaitForSeconds(1.25f);
+                strikeText.text = "";
+                yield return new WaitForSeconds(.5f);
+            }
+        }
+        strikeAnimating = false;
     }
 
     private IEnumerator EasterEgg(string name, int ix)
@@ -1162,7 +1181,7 @@ public class theSamsung : MonoBehaviour
             {
                 yield return "sendtochaterror I am already on the home screen!";
             }
-            else if (easterEgging || cantLeave || photocycle)
+            else if (easterEgging || cantLeave || photocycle || strikeAnimating)
             {
                 yield return "sendtochaterror I cannot go to the home screen right now!";
             }
@@ -1227,7 +1246,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror The specified code '" + parameters[1] + "' is not in range 0-99999999!";
                         yield break;
                     }
-                    if (easterEgging || cantLeave || photocycle)
+                    if (easterEgging || cantLeave || photocycle || strikeAnimating)
                     {
                         yield return "sendtochaterror I cannot submit the code right now!";
                         yield break;
@@ -1285,7 +1304,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror The specified buttons to press '" + parameters[1] + "' to submit as an answer for Photomath are not in range 0-999!";
                         yield break;
                     }
-                    if (easterEgging || cantLeave || photocycle)
+                    if (easterEgging || cantLeave || photocycle || strikeAnimating)
                     {
                         yield return "sendtochaterror I cannot press the specified buttons to submit as an answer to Photomath right now!";
                         yield break;
@@ -1335,7 +1354,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror The time to press the mute button '" + parameters[1] + "' for Discord is not in range 0-9!";
                         yield break;
                     }
-                    if (easterEgging || !call.activeSelf || photocycle)
+                    if (easterEgging || !call.activeSelf || photocycle || strikeAnimating)
                     {
                         yield return "sendtochaterror I cannot press the mute button right now!";
                         yield break;
@@ -1376,7 +1395,7 @@ public class theSamsung : MonoBehaviour
                         yield return "sendtochaterror The symbol to press the mute button on '" + parameters[1] + "' for Discord is not in range 0-7!";
                         yield break;
                     }
-                    if (easterEgging || !call.activeSelf || !cycling)
+                    if (easterEgging || !call.activeSelf || !cycling || strikeAnimating)
                     {
                         yield return "sendtochaterror I cannot press the mute button right now!";
                         yield break;
@@ -1412,7 +1431,7 @@ public class theSamsung : MonoBehaviour
             {
                 if (colors.Contains(parameters[1].ToLower()))
                 {
-                    if (easterEgging || !call.activeSelf || !cycling)
+                    if (easterEgging || !call.activeSelf || !cycling || strikeAnimating)
                     {
                         yield return "sendtochaterror I cannot press the mute button right now!";
                         yield break;
@@ -1481,7 +1500,7 @@ public class theSamsung : MonoBehaviour
             }
             else
             {
-                if (easterEgging || cantLeave || photocycle)
+                if (easterEgging || cantLeave || photocycle || strikeAnimating)
                 {
                     yield return "sendtochaterror I cannot call the specified user right now!";
                     yield break;
@@ -1526,7 +1545,7 @@ public class theSamsung : MonoBehaviour
                 temp1 = parameters[1];
                 parameters[1] = param;
             }
-            if (easterEgging || cantLeave || photocycle)
+            if (easterEgging || cantLeave || photocycle || strikeAnimating)
             {
                 yield return "sendtochaterror I cannot open an application right now!";
                 yield break;
@@ -1695,7 +1714,7 @@ public class theSamsung : MonoBehaviour
             while (currentColor != discordColor) { yield return true; yield return new WaitForSeconds(0.1f); }
             mutebutton.OnInteract();
         }
-        while (easterEgging || cantLeave || photocycle) { yield return true; yield return new WaitForSeconds(0.1f); }
+        while (easterEgging || cantLeave || photocycle || strikeAnimating) { yield return true; yield return new WaitForSeconds(0.1f); }
         yield return ProcessTwitchCommand("submit " + solutionString);
     }
 }
