@@ -383,7 +383,7 @@ public class theSamsung : MonoBehaviour
         Debug.LogFormat("[The Samsung #{0}] The 4 words are taken from quote {1}, and the letters are shifted forwards by {2}.", moduleId, quoteIndex, offset);
         Debug.LogFormat("[The Samsung #{0}] The solution for Kindle is {1}.", moduleId, solution[2]);
         // Authenticator
-        string[] conditionNames = new string[10] { "a digital root of 8", "an even result when modulod by 3", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "division by 3" };
+        string[] conditionNames = new string[10] { "a digital root of 8", "a perfect square root", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "division by 3" };
         Debug.LogFormat("[The Samsung #{0}] GOOGLE AUTHENTICATOR:", moduleId);
         Debug.LogFormat("[The Samsung #{0}] Every number shown has {1}.", moduleId, conditionNames[solution[3]]);
         Debug.LogFormat("[The Samsung #{0}] Therefore, the solution for Google Authenticator is {1}.", moduleId, solution[3]);
@@ -1068,7 +1068,10 @@ public class theSamsung : MonoBehaviour
         if (solution[3] == 0)
             return dr(x) == 8;
         else if (solution[3] == 1)
-            return (x % 3) % 2 != 0;
+        {
+            double result = Math.Sqrt(x);
+            return result % 1.0 == 0.0;
+        }
         else if (solution[3] == 2)
             return x % 7 == 0;
         else if (solution[3] == 3)
@@ -1141,7 +1144,7 @@ public class theSamsung : MonoBehaviour
 
     private IEnumerator Strike()
     {
-        GetComponent<KMBombModule>().HandleStrike();
+        module.HandleStrike();
         var defaultColor = solvedthingy.material.color;
         solvedthingy.material.color = strikecolor;
         solvedlight.enabled = true;
