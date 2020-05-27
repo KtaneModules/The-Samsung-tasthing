@@ -1197,7 +1197,9 @@ public class theSamsung : MonoBehaviour
         if (Regex.IsMatch(command, @"^\s*regenerate\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
             yield return null;
+            cantLeave = false;
             resetButton.OnInteract();
+            yield break;
         }
         if (Regex.IsMatch(command, @"^\s*play\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
