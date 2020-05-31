@@ -1197,7 +1197,9 @@ public class theSamsung : MonoBehaviour
         if (Regex.IsMatch(command, @"^\s*regenerate\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
             yield return null;
+            cantLeave = false;
             resetButton.OnInteract();
+            yield break;
         }
         if (Regex.IsMatch(command, @"^\s*play\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
@@ -1465,6 +1467,7 @@ public class theSamsung : MonoBehaviour
             if (parameters.Length == 1)
             {
                 yield return "sendtochaterror Please specify the user you would like to call!";
+                yield break;
             }
             if (parameters.Length > 2)
             {
