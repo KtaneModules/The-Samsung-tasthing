@@ -1467,6 +1467,7 @@ public class theSamsung : MonoBehaviour
             if (parameters.Length == 1)
             {
                 yield return "sendtochaterror Please specify the user you would like to call!";
+                yield break;
             }
             if (parameters.Length > 2)
             {
