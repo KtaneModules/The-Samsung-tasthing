@@ -139,6 +139,10 @@ public class theSamsung : MonoBehaviour
     private static readonly float[] songLengths = new float[9] { 7.5f, 7.5f, 30.5f, 8.5f, 5.5f, 6.5f, 5.5f, 8.5f, 8.5f };
     private static readonly string[] decoyNames = new string[10] { "decoy1", "decoy2", "decoy3", "decoy4", "decoy5", "decoy6", "decoy7", "decoy8", "decoy9", "decoy10" };
     private static readonly float[] decoyLengths = new float[10] { 7.5f, 8.5f, 6.5f, 8.5f, 9.5f, 6.5f, 9.5f, 6.5f, 8.5f, 8.5f, };
+    private static readonly string[] ncSongNames = new string[9] { "heroestonight", "dontjuststandthere", "ignite", "blank", "runaway", "symbolism", "letsgo", "boombox", "journey" };
+    private static readonly float[] ncSongLengths = new float[9] { 7.5f, 7.5f, 7f, 7f, 7.5f, 7.5f, 7.5f, 7.5f, 7.5f };
+    private static readonly string[] ncDecoyNames = new string[10] { "ncdecoy1", "ncdecoy2", "ncdecoy3", "ncdecoy4", "ncdecoy5", "ncdecoy6", "ncdecoy7", "ncdecoy8", "ncdecoy9", "ncdecoy10" };
+    private static readonly float[] ncDecoyLengths = new float[10] { 9.5f, 8f, 8f, 8.5f, 8f, 9f, 7f, 10f, 6f, 7.5f, };
     private int decoyIndex;
     private bool isPlaying;
 
@@ -246,6 +250,7 @@ public class theSamsung : MonoBehaviour
     public Renderer notificationlight;
     public Material notifoff;
 
+    private SamsungSettings Settings = new SamsungSettings();
     private Texture currentWallpaper;
     private List<int> positionNumbers = new List<int>();
     private float halfPoint;
@@ -258,6 +263,12 @@ public class theSamsung : MonoBehaviour
     void Awake()
     {
         moduleId = moduleIdCounter++;
+        ModConfig<SamsungSettings> modConfig = new ModConfig<SamsungSettings>("SamsungSettings");
+        //Read from the settings file, or create one if one doesn't exist
+        Settings = modConfig.Settings;
+        //Update the settings file incase there was an error during read
+        modConfig.Settings = Settings;
+        Debug.LogFormat("[The Samsung #{0}] Copyright Filter: {1}", moduleId, Settings.noCopyright ? "On" : "Off");
         statusLight.SetActive(false);
         phonebackground.material.color = casingColors.PickRandom();
         currentWallpaper = wallpapers.PickRandom();
@@ -394,8 +405,9 @@ public class theSamsung : MonoBehaviour
         // Spotify
         decoyIndex = rnd.Range(0, 10);
         string[] songNames = new string[] { "You Spin Me Right Round", "Smooth Criminal", "Hardware Store", "Beat It", "Danger Zone", "Tacky", "Harder, Better, Faster, Stronger", "Drunken Sailor", "Megalovania", "a song not mentioned" };
+        string[] ncSongNames = new string[] { "Heroes Tonight", "Don't Just Stand There", "Ignite", "Blank", "Runaway", "Symbolism", "Lets Go!", "Boombox 2012", "Journey", "a song not mentioned" };
         Debug.LogFormat("[The Samsung #{0}] SPOTIFY:", moduleId);
-        Debug.LogFormat("[The Samsung #{0}] The song being played is {1}, so the solution for Spotify is {2}.", moduleId, songNames[solution[5]], solution[5]);
+        Debug.LogFormat("[The Samsung #{0}] The song being played is {1}, so the solution for Spotify is {2}.", moduleId, Settings.noCopyright ? ncSongNames[solution[5]] : songNames[solution[5]], solution[5]);
         // Google Arts & Culture
         paintings = new List<Texture[]> { bobross, picasso, davinci, vangogh };
         artistIndex = rnd.Range(0, 5);
@@ -509,6 +521,7 @@ public class theSamsung : MonoBehaviour
                     return;
                 Debug.LogFormat("[The Samsung #{0}] Discord reset.", moduleId);
                 discordStage = 0;
+                cantLeave = false;
                 if (cycle != null)
                 {
                     StopCoroutine(cycle);
@@ -710,13 +723,29 @@ public class theSamsung : MonoBehaviour
         yield return new WaitForSeconds(adLengths[adIx] + .5f);
         if (solution[5] == 9)
         {
-            audio.PlaySoundAtTransform(decoyNames[decoyIndex], playbutton.transform);
-            yield return new WaitForSeconds(decoyLengths[decoyIndex]);
+            if (Settings.noCopyright)
+            {
+                audio.PlaySoundAtTransform(ncDecoyNames[decoyIndex], playbutton.transform);
+                yield return new WaitForSeconds(ncDecoyLengths[decoyIndex]);
+            }
+            else
+            {
+                audio.PlaySoundAtTransform(decoyNames[decoyIndex], playbutton.transform);
+                yield return new WaitForSeconds(decoyLengths[decoyIndex]);
+            }
         }
         else
         {
-            audio.PlaySoundAtTransform(songNames[solution[5]], playbutton.transform);
-            yield return new WaitForSeconds(songLengths[solution[5]]);
+            if (Settings.noCopyright)
+            {
+                audio.PlaySoundAtTransform(ncSongNames[solution[5]], playbutton.transform);
+                yield return new WaitForSeconds(ncSongLengths[solution[5]]);
+            }
+            else
+            {
+                audio.PlaySoundAtTransform(songNames[solution[5]], playbutton.transform);
+                yield return new WaitForSeconds(songLengths[solution[5]]);
+            }
         }
         isPlaying = false;
     }
@@ -1755,4 +1784,25 @@ public class theSamsung : MonoBehaviour
         while (easterEgging || cantLeave || photocycle || strikeAnimating) { yield return true; yield return new WaitForSeconds(0.1f); }
         yield return ProcessTwitchCommand("submit " + solutionString);
     }
+
+    class SamsungSettings
+    {
+        public bool noCopyright = false;
+    }
+
+    static Dictionary<string, object>[] TweaksEditorSettings = new Dictionary<string, object>[]
+    {
+        new Dictionary<string, object>
+        {
+            { "Filename", "SamsungSettings.json" },
+            { "Name", "Samsung Settings" },
+            { "Listing", new List<Dictionary<string, object>>{
+                new Dictionary<string, object>
+                {
+                    { "Key", "noCopyright" },
+                    { "Text", "If enabled all songs played in Spotify will be non-copyright (use non-copyright manual variant to solve Spotify with this setting)." }
+                },
+            } }
+        }
+    };
 }
