@@ -133,6 +133,7 @@ public class theSamsung : MonoBehaviour
 
     // Spotify
     public KMSelectable playbutton;
+    public GameObject copyright;
     private static readonly string[] adNames = new string[5] { "ad1", "ad2", "ad3", "ad4", "ad5" };
     private static readonly float[] adLengths = new float[5] { 13f, 18.5f, 15.25f, 14f, 17.5f };
     private static readonly string[] songNames = new string[9] { "rightround", "smoothcriminal", "hardwarestore", "beatit", "dangerzone", "tacky", "harderbetterfasterstronger", "drunkensailor", "megalovania" };
@@ -269,6 +270,8 @@ public class theSamsung : MonoBehaviour
         //Update the settings file incase there was an error during read
         modConfig.Settings = Settings;
         Debug.LogFormat("[The Samsung #{0}] Copyright Filter: {1}", moduleId, Settings.noCopyright ? "On" : "Off");
+        if (!Settings.noCopyright)
+            copyright.SetActive(false);
         statusLight.SetActive(false);
         phonebackground.material.color = casingColors.PickRandom();
         currentWallpaper = wallpapers.PickRandom();
