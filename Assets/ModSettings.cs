@@ -8,7 +8,7 @@ class ModConfig<T>
 {
     public ModConfig(string filename)
     {
-        SettingsPath = @"Assets\SamsungSettings.json";
+        SettingsPath = Application.isEditor ? @"Assets\SamsungSettings.json" : Path.Combine(Path.Combine(Application.persistentDataPath, "Modsettings"), filename + ".json");
     }
 
     readonly string SettingsPath = null;
