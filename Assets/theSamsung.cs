@@ -1810,6 +1810,7 @@ public class theSamsung : MonoBehaviour
         public bool noCopyright = false;
     }
 
+    #pragma warning disable 414
     static Dictionary<string, object>[] TweaksEditorSettings = new Dictionary<string, object>[]
     {
         new Dictionary<string, object>
@@ -1825,6 +1826,7 @@ public class theSamsung : MonoBehaviour
             } }
         }
     };
+    #pragma warning restore 414
 
     IEnumerator PenisMusic()
     {
