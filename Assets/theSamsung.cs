@@ -1166,7 +1166,7 @@ public class theSamsung : MonoBehaviour
     {
         double number, result;
         number = Convert.ToDouble(x);
-        result = Math.Ceiling(Math.Pow(number, (double) 1 / 3));
+        result = Math.Pow(number, (double) 1 / 3);
         return result;
     }
 
