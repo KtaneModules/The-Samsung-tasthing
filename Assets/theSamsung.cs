@@ -107,9 +107,9 @@ public class theSamsung : MonoBehaviour
     public Renderer[] photomathcircles;
     public Color[] photomathcolors;
     private List<Color> photomathUsedColors = new List<Color>();
-    #pragma warning disable 414
+#pragma warning disable 414
     private Coroutine mathCycle;
-    #pragma warning restore 414
+#pragma warning restore 414
     private static readonly Vector3[] startingValuePositions = new Vector3[] { new Vector3(.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, .0267f), new Vector3(.074f, .0121f, .0267f) };
     private int startingValue;
     private bool photocycle;
@@ -140,10 +140,8 @@ public class theSamsung : MonoBehaviour
     private static readonly float[] songLengths = new float[9] { 7.5f, 7.5f, 30.5f, 8.5f, 5.5f, 6.5f, 5.5f, 8.5f, 8.5f };
     private static readonly string[] decoyNames = new string[10] { "decoy1", "decoy2", "decoy3", "decoy4", "decoy5", "decoy6", "decoy7", "decoy8", "decoy9", "decoy10" };
     private static readonly float[] decoyLengths = new float[10] { 7.5f, 8.5f, 6.5f, 8.5f, 9.5f, 6.5f, 9.5f, 6.5f, 8.5f, 8.5f, };
-    private static readonly string[] ncSongNames = new string[9] { "heroestonight", "dontjuststandthere", "ignite", "blank", "runaway", "symbolism", "letsgo", "boombox", "journey" };
-    private static readonly float[] ncSongLengths = new float[9] { 7.5f, 7.5f, 7f, 7f, 7.5f, 7.5f, 7.5f, 7.5f, 7.5f };
-    private static readonly string[] ncDecoyNames = new string[10] { "ncdecoy1", "ncdecoy2", "ncdecoy3", "ncdecoy4", "ncdecoy5", "ncdecoy6", "ncdecoy7", "ncdecoy8", "ncdecoy9", "ncdecoy10" };
-    private static readonly float[] ncDecoyLengths = new float[10] { 9.5f, 8f, 8f, 8.5f, 8f, 9f, 7f, 10f, 6f, 7.5f, };
+    private static readonly string[] ncSongNames = new string[10] { "dannydontyouknow", "atthespeedoflight", "vitality", "exitthisearthsatomosphere", "ransom", "newfriendly", "astronomia", "spanishflea", "mountainking", "clutterfunk" };
+    private static readonly float[] ncSongLengths = new float[10] { 14.5f, 11.5f, 12.5f, 10.5f, 11.5f, 8.5f, 19.5f, 10.5f, 6.5f, 7.5f };
     private int decoyIndex;
     private bool isPlaying;
 
@@ -186,10 +184,10 @@ public class theSamsung : MonoBehaviour
     public Texture[] symbol7;
     public Texture[] symbol8;
     public TextMesh twitchtext;
-    #pragma warning disable 414
+#pragma warning disable 414
     private Coroutine cycle;
     private Coroutine voice;
-    #pragma warning restore 414
+#pragma warning restore 414
     private List<Texture[]> allSymbols = new List<Texture[]>();
     private User[] users = new User[6];
     private int discordStage;
@@ -416,7 +414,7 @@ public class theSamsung : MonoBehaviour
         Debug.LogFormat("[The Samsung #{0}] The 4 words are taken from quote {1}, and the letters are shifted forwards by {2}.", moduleId, quoteIndex, offset);
         Debug.LogFormat("[The Samsung #{0}] The solution for Kindle is {1}.", moduleId, solution[2]);
         // Authenticator
-        string[] conditionNames = new string[10] { "a digital root of 8", "a perfect square root", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "division by 3" };
+        string[] conditionNames = new string[10] { "a digital root of 8", "a perfect square root", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "an even result when modulod by 6" };
         Debug.LogFormat("[The Samsung #{0}] GOOGLE AUTHENTICATOR:", moduleId);
         Debug.LogFormat("[The Samsung #{0}] Every number shown has {1}.", moduleId, conditionNames[solution[3]]);
         Debug.LogFormat("[The Samsung #{0}] Therefore, the solution for Google Authenticator is {1}.", moduleId, solution[3]);
@@ -425,7 +423,7 @@ public class theSamsung : MonoBehaviour
         // Spotify
         decoyIndex = rnd.Range(0, 10);
         string[] songNames = new string[] { "You Spin Me Right Round", "Smooth Criminal", "Hardware Store", "Beat It", "Danger Zone", "Tacky", "Harder, Better, Faster, Stronger", "Drunken Sailor", "Megalovania", "a song not mentioned" };
-        string[] ncSongNames = new string[] { "Heroes Tonight", "Don't Just Stand There", "Ignite", "Blank", "Runaway", "Symbolism", "Lets Go!", "Boombox 2012", "Journey", "a song not mentioned" };
+        string[] ncSongNames = new string[] { "Danny Don't You Know", "At The Speed of Light", "Vitality", "Exit This Earth's Atomosphere", "Ransom", "New Friendly", "Astronomia", "Spanish Flea", "Mountain King", "Clutterfunk" };
         Debug.LogFormat("[The Samsung #{0}] SPOTIFY:", moduleId);
         Debug.LogFormat("[The Samsung #{0}] The song being played is {1}, so the solution for Spotify is {2}.", moduleId, Settings.noCopyright ? ncSongNames[solution[5]] : songNames[solution[5]], solution[5]);
         // Google Arts & Culture
@@ -584,7 +582,7 @@ public class theSamsung : MonoBehaviour
         cyclingsymbol.gameObject.SetActive(false);
         call.SetActive(false);
         greencircle.SetActive(false);
-        discordtryagain:
+    discordtryagain:
         var userNumbers = Enumerable.Range(0, 10).ToList().Shuffle();
         var discordNumbers = Enumerable.Range(0, 16).ToList().Shuffle();
         var xfs = new float[4] { -.057f, -.0191f, .0188f, .0567f };
@@ -745,8 +743,8 @@ public class theSamsung : MonoBehaviour
         {
             if (Settings.noCopyright)
             {
-                audio.PlaySoundAtTransform(ncDecoyNames[decoyIndex], playbutton.transform);
-                yield return new WaitForSeconds(ncDecoyLengths[decoyIndex]);
+                audio.PlaySoundAtTransform(ncSongNames[solution[5]], playbutton.transform);
+                yield return new WaitForSeconds(ncSongLengths[solution[5]]);
             }
             else
             {
@@ -1118,7 +1116,7 @@ public class theSamsung : MonoBehaviour
         var elapsed = 0f;
         var duration = 6f;
         var validNumbers = Enumerable.Range(100000, 900000).Where(x => AuthCheck(x)).Select(x => x.ToString()).ToArray();
-        restart:
+    restart:
         elapsed = 0f;
         authenticatorbar.localScale = new Vector3(.15f, .001f, .01f);
         foreach (TextMesh auth in authenticatortexts)
@@ -1156,18 +1154,7 @@ public class theSamsung : MonoBehaviour
         else if (solution[3] == 8)
             return dr(x) == 5;
         else
-        {
-            double result = CubeRoot(x);
-            return result % 1.0 == 0.0;
-        }
-    }
-
-    static double CubeRoot(int x)
-    {
-        double number, result;
-        number = Convert.ToDouble(x);
-        result = Math.Pow(number, (double) 1 / 3);
-        return result;
+            return (x % 6) % 2 == 0;
     }
 
     class User
@@ -1249,13 +1236,13 @@ public class theSamsung : MonoBehaviour
     }
 
     // Twitch Plays
-    #pragma warning disable 0649
-    #pragma warning disable 414
+#pragma warning disable 0649
+#pragma warning disable 414
     bool TwitchPlaysActive;
 
     private readonly string TwitchHelpMessage = @"!{0} open <duo/maps/kindle/auth/photo/spotify/arts/discord/settings> [Opens the specified app] | !{0} play [Presses the play button if Spotify is open] | !{0} start [Presses the start button if Photomath is open] | !{0} mathsub <digits> [Presses the specified buttons 'digits' in reading order (0-9) and submits the input to Photomath if Photomath is open] | !{0} call <user> [Calls the specified user 'user' if Discord is open] | !{0} mute <#> [Presses the mute button when the last digit of the bomb's timer is '#' if Discord is open] | !{0} symbol <#> [Presses the mute button when the specified symbol '#' is shown if Discord is open] | !{0} color <col> [Presses the mute button when the specified color 'col' is shown if Discord is open] | !{0} home [Goes back to the home screen] | !{0} submit <digits> [Submits the pin 'digits'] | !{0} regenerate [Presses the notification LED]";
-    #pragma warning restore 414
-    #pragma warning restore 0649
+#pragma warning restore 414
+#pragma warning restore 0649
     IEnumerator ProcessTwitchCommand(string command)
     {
         if (Regex.IsMatch(command, @"^\s*home\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
@@ -1810,7 +1797,7 @@ public class theSamsung : MonoBehaviour
         public bool noCopyright = false;
     }
 
-    #pragma warning disable 414
+#pragma warning disable 414
     static Dictionary<string, object>[] TweaksEditorSettings = new Dictionary<string, object>[]
     {
         new Dictionary<string, object>
@@ -1826,7 +1813,7 @@ public class theSamsung : MonoBehaviour
             } }
         }
     };
-    #pragma warning restore 414
+#pragma warning restore 414
 
     IEnumerator PenisMusic()
     {

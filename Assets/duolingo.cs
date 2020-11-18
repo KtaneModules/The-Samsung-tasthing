@@ -8,7 +8,7 @@ public static class duolingo
         },
         new string[21]
         {
-            "Zero", "Uno", "Duo", "Tre", "Quattro", "Cinque", "Sei", "Sette", "Otto", "Nove", "Dieci", "Undici", "Dodici", "Tredici", "Quattórdici", "Quindici", "Sedici", "Diciassette", "Diciotto", "Diciannove", "Venti"
+            "Zero", "Uno", "Due", "Tre", "Quattro", "Cinque", "Sei", "Sette", "Otto", "Nove", "Dieci", "Undici", "Dodici", "Tredici", "Quattórdici", "Quindici", "Sedici", "Diciassette", "Diciotto", "Diciannove", "Venti"
         },
         new string[21]
         {
