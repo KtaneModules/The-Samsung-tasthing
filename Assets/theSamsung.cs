@@ -151,7 +151,7 @@ public class theSamsung : MonoBehaviour
         new int[8] { 1, 9, 4, 2, 1, 9, 9, 5, },
         new int[8] { 1, 8, 8, 1, 1, 9, 7, 3, },
         new int[8] { 1, 4, 5, 2, 1, 5, 1, 9, },
-        new int[8] { 1, 8, 5, 3, 1, 8, 0, 0, }
+        new int[8] { 1, 8, 5, 3, 1, 8, 9, 0, }
     };
     private static readonly string[] artistNames = new string[5] { "Bob Ross", "Picasso", "Da Vinci", "Van Gogh", "Misc artist" };
     public Renderer painting;
