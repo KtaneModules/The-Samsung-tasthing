@@ -259,13 +259,6 @@ public class theSamsung : MonoBehaviour
     private int moduleId;
     private bool moduleSolved;
 
-    private static readonly string[] GETGAMEREDNIGGA = new string[] { "Forget Me Later", "The Samsung", "Dungeon 2nd Floor", "The Ultracube", "Echolocation", "Chinese Counting", "RGB Arithmetic", "Railway Cargo Loading", "Rainbow Arrows", "Intervals", "Module Rick" };
-    private bool unlocked;
-    public GameObject[] fuckinEverything;
-    public Texture hoofduuoof;
-    public GameObject theFunny;
-    public TextMesh cockAndNuts;
-
     void Awake()
     {
         moduleId = moduleIdCounter++;
@@ -321,16 +314,6 @@ public class theSamsung : MonoBehaviour
         halfPoint = bomb.GetTime() / 2f;
         for (int i = 0; i < 8; i++)
             solution[i] = rnd.Range(0, 10);
-        // Taskmaster
-        theFunny.SetActive(false);
-        if (bomb.GetSolvableModuleNames().All(x => GETGAMEREDNIGGA.Contains(x)) && !bomb.GetSolvableModuleNames().All(x => x == "The Samsung"))
-        {
-            if (!unlocked)
-            {
-                StartCoroutine(PenisMusic());
-                return;
-            }
-        }
         // Duolingo
         languageIndex = rnd.Range(0, 10);
         duolingoNumbers[0] = rnd.Range(0, 21);
@@ -1815,22 +1798,4 @@ public class theSamsung : MonoBehaviour
     };
 #pragma warning restore 414
 
-    IEnumerator PenisMusic()
-    {
-        foreach (GameObject x in fuckinEverything)
-            x.SetActive(false);
-        theFunny.SetActive(true);
-        phonescreen.material.mainTexture = hoofduuoof;
-        yield return null;
-        for (int i = 0; i < 36000; i++)
-        {
-            cockAndNuts.text = (36000 - i).ToString();
-            yield return new WaitForSeconds(1f);
-        }
-        phonescreen.material.mainTexture = currentWallpaper;
-        fuckinEverything[0].SetActive(true);
-        fuckinEverything[1].SetActive(true);
-        unlocked = true;
-        Start();
-    }
 }
