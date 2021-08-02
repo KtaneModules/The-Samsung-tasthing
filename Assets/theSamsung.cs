@@ -106,7 +106,7 @@ public class theSamsung : MonoBehaviour
     public KMSelectable[] photomathbuttons;
     public Renderer[] photomathcircles;
     public Color[] photomathcolors;
-    private List<Color> photomathUsedColors = new List<Color>();
+    private List<int> photomathUsedColors = new List<int>();
 #pragma warning disable 414
     private Coroutine mathCycle;
 #pragma warning restore 414
@@ -397,7 +397,7 @@ public class theSamsung : MonoBehaviour
         Debug.LogFormat("[The Samsung #{0}] The 4 words are taken from quote {1}, and the letters are shifted forwards by {2}.", moduleId, quoteIndex, offset);
         Debug.LogFormat("[The Samsung #{0}] The solution for Kindle is {1}.", moduleId, solution[2]);
         // Authenticator
-        string[] conditionNames = new string[10] { "a digital root of 8", "a perfect square root", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "an even result when modulod by 6" };
+        string[] conditionNames = new string[10] { "a digital root of 8", "a perfect square root", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "an odd result when modulod by 6" };
         Debug.LogFormat("[The Samsung #{0}] GOOGLE AUTHENTICATOR:", moduleId);
         Debug.LogFormat("[The Samsung #{0}] Every number shown has {1}.", moduleId, conditionNames[solution[3]]);
         Debug.LogFormat("[The Samsung #{0}] Therefore, the solution for Google Authenticator is {1}.", moduleId, solution[3]);
@@ -640,9 +640,9 @@ public class theSamsung : MonoBehaviour
     {
         mathSymbols.Shuffle();
         startingValue = rnd.Range(1, 10);
-        photomathUsedColors = photomathcolors.ToList().Shuffle();
+        photomathUsedColors = Enumerable.Range(0, 4).ToList().Shuffle();
         for (int i = 0; i < 4; i++)
-            photomathcircles[i].material.color = photomathUsedColors[i];
+            photomathcircles[i].material.color = photomathcolors[photomathUsedColors[i]];
         for (int i = 0; i < 4; i++)
         {
             operations[i] = rnd.Range(0, 4);
@@ -678,7 +678,7 @@ public class theSamsung : MonoBehaviour
         for (int i = 0; i < 10; i++)
             photmathkeypad[i].text = mathSymbols[currentKeypadGrid[i]];
         string[] colornames = new string[4] { "blue", "purple", "green", "yellow" };
-        Debug.LogFormat("[The Samsung #{0}] The circles on the bottom are colored {1}, {2}, {3}, and then {4}.", moduleId, colornames[Array.IndexOf(photomathcolors, photomathUsedColors[0])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[1])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[2])], colornames[Array.IndexOf(photomathcolors, photomathUsedColors[3])]);
+        Debug.LogFormat("[The Samsung #{0}] The circles on the bottom are colored {1}, {2}, {3}, and then {4}.", moduleId, colornames[photomathUsedColors[0]], colornames[photomathUsedColors[1]], colornames[photomathUsedColors[2]], colornames[photomathUsedColors[3]]);
         for (int i = 0; i < 10; i++)
             Debug.LogFormat("[The Samsung #{0}] {1} corresponds to {2}.", moduleId, mathSymbols[i], i);
         Debug.LogFormat("[The Samsung #{0}] The number to enter is {1}.", moduleId, photomathSolution);
@@ -804,7 +804,7 @@ public class theSamsung : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             photomathmaintext.text = mathSymbols[values[i]];
-            photomathmaintext.color = photomathUsedColors[operations[i]];
+            photomathmaintext.color = photomathcolors[photomathUsedColors[operations[i]]];
             if (i == show)
                 photomathstartingtext.text = mathSymbols[startingValue];
             else
@@ -1137,7 +1137,7 @@ public class theSamsung : MonoBehaviour
         else if (solution[3] == 8)
             return dr(x) == 5;
         else
-            return (x % 6) % 2 == 0;
+            return (x % 6) % 2 == 1;
     }
 
     class User
