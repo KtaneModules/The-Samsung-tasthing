@@ -1049,6 +1049,7 @@ public class theSamsung : MonoBehaviour
             homebutton.gameObject.SetActive(false);
             phonescreen.material.mainTexture = resetWallpaper;
             module.HandlePass();
+            moduleSolved = true;
             audio.PlaySoundAtTransform("solve", module.transform);
             solvedthingy.material.color = solvedcolor;
             StopAllCoroutines();
