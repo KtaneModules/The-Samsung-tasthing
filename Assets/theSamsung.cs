@@ -24,8 +24,8 @@ public class theSamsung : MonoBehaviour
     public KMSelectable submitbutton;
     public TextMesh answertext;
     public TextMesh strikeText;
-    private static readonly string[] easterEggs = new string[] { "43556629", "82784464", "26725463", "69", "420", "666", "177013" };
-    private static readonly float[] easterEggLengths = new float[] { 8.5f, 7.5f, 9.5f, 2.5f, 3.5f, 5.5f, 4.5f };
+    private static readonly string[] easterEggs = new[] { "43556629", "82784464", "26725463", "69", "420", "666", "177013" };
+    private static readonly float[] easterEggLengths = new[] { 8.5f, 7.5f, 9.5f, 2.5f, 3.5f, 5.5f, 4.5f };
     private bool easterEgging;
     private bool strikeAnimating;
 
@@ -37,56 +37,56 @@ public class theSamsung : MonoBehaviour
     public Renderer[] duolingotextenderers;
     public Font[] duolingofonts;
     public Material[] duolingofontmats;
-    private static readonly string[] languageNames = new string[10] { "Spanish", "Italian", "Chinese", "French", "Afrikaans", "Swahili", "Japanese", "Korean", "Mongolian", "Thai" };
-    private static readonly string[] englishNumberNames = new string[21] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty" };
-    private static readonly string[] englishOperatorNames = new string[4] { "plus", "minus", "times", "divided by" };
+    private static readonly string[] languageNames = new[] { "Spanish", "Italian", "Chinese", "French", "Afrikaans", "Swahili", "Japanese", "Korean", "Mongolian", "Thai" };
+    private static readonly string[] englishNumberNames = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty" };
+    private static readonly string[] englishOperatorNames = new[] { "plus", "minus", "times", "divided by" };
 
     // Google Maps
     public TextMesh[] gmapstext1;
     public TextMesh[] gmapstext2;
     private int country1;
     private int country2;
-    private static readonly float[][] latCords = new float[10][] {
-        new float[2] { 32.886970f, 40.353244f },
-        new float[2] { 50.007742f, 64.623881f },
-        new float[2] { 18.554616f, 25.459147f },
-        new float[2] { 56.218924f, 65.425386f },
-        new float[2] { 49.336579f, 52.972463f },
-        new float[2] { -31.079284f, -20.739675f },
-        new float[2] { 50.836475f, 53.035930f },
-        new float[2] { 31.428669f, 39.707192f },
-        new float[2] { -21.518496f, -5.633482f },
-        new float[2] { -33.339706f, -29.531405f }
+    private static readonly float[][] latCords = new float[][] {
+        new[] { 32.886970f, 40.353244f },
+        new[] { 50.007742f, 64.623881f },
+        new[] { 18.554616f, 25.459147f },
+        new[] { 56.218924f, 65.425386f },
+        new[] { 49.336579f, 52.972463f },
+        new[] { -31.079284f, -20.739675f },
+        new[] { 50.836475f, 53.035930f },
+        new[] { 31.428669f, 39.707192f },
+        new[] { -21.518496f, -5.633482f },
+        new[] { -33.339706f, -29.531405f }
     };
-    private static readonly float[][] lonCords = new float[10][] {
-        new float[2] { -116.121098f, -81.843754f },
-        new float[2] { -122.115239f, -97.417976f },
-        new float[2] { -103.130860f, -98.455078f },
-        new float[2] { 40.464846f, 128.988279f },
-        new float[2] { 7.470706f, 11.610353f },
-        new float[2] { 119.950928f, 144.386716f },
-        new float[2] { -4.003420f, -0.259280f },
-        new float[2] { 82.001950f, 113.642575f },
-        new float[2] { -56.329102f, -40.535155f },
-        new float[2] { 18.769041f, 24.117188f }
+    private static readonly float[][] lonCords = new float[][] {
+        new[] { -116.121098f, -81.843754f },
+        new[] { -122.115239f, -97.417976f },
+        new[] { -103.130860f, -98.455078f },
+        new[] { 40.464846f, 128.988279f },
+        new[] { 7.470706f, 11.610353f },
+        new[] { 119.950928f, 144.386716f },
+        new[] { -4.003420f, -0.259280f },
+        new[] { 82.001950f, 113.642575f },
+        new[] { -56.329102f, -40.535155f },
+        new[] { 18.769041f, 24.117188f }
     };
 
     // Kindle
     private int quoteIndex;
     private int offset;
     private int startingWord;
-    private static readonly string[][] kindleQuotes = new string[10][]
+    private static readonly string[][] kindleQuotes = new string[][]
     {
-        new string[] { "you", "have", "brains", "in", "your", "head", "you", "have", "feet", "in", "your", "shoes", "you", "can", "steer", "yourself", "any", "direction", "you", "choose" },
-        new string[] { "there", "are", "darknesses", "in", "life", "and", "there", "are", "lights", "and", "you", "are", "one", "of", "the", "lights", "the", "light", "of", "all", "lights" },
-        new string[] { "you", "never", "really", "understand", "a", "person", "until", "you", "consider", "things", "from", "his", "point", "of", "view", "until", "you", "climb", "inside", "of", "his", "skin", "and", "walk", "around", "in", "it" },
-        new string[] { "bet", "i", "know", "something", "else", "you", "dont", "theres", "dew", "on", "the", "grass", "in", "this", "morning" },
-        new string[] { "we", "lived", "in", "the", "blank", "white", "spaces", "at", "the", "edges", "of", "print", "it", "gave", "us", "more", "freedom" },
-        new string[] { "weve", "all", "got", "both", "light", "and", "dark", "inside", "us", "what", "matters", "is", "the", "part", "we", "choose", "to", "act", "on", "thats", "who", "we", "really", "are" },
-        new string[] { "do", "i", "love", "you", "my", "god", "if", "your", "love", "were", "a", "grain", "of", "sand", "mine", "would", "be", "a", "universe", "of", "beaches" },
-        new string[] { "doublethink", "means", "the", "power", "of", "holding", "two", "contradictory", "beliefs", "in", "ones", "mind", "simultaneously", "and", "accepting", "both", "of", "them" },
-        new string[] { "maybe", "everbody", "in", "the", "whole", "damn", "world", "is", "scared", "of", "each", "other" },
-        new string[] { "there", "is", "an", "idea", "of", "a", "patrick", "bateman", "some", "kind", "of", "abstraction", "but", "there", "is", "no", "real", "me", "only", "an", "entity", "something", "illusory" }
+        new[] { "you", "have", "brains", "in", "your", "head", "you", "have", "feet", "in", "your", "shoes", "you", "can", "steer", "yourself", "any", "direction", "you", "choose" },
+        new[] { "there", "are", "darknesses", "in", "life", "and", "there", "are", "lights", "and", "you", "are", "one", "of", "the", "lights", "the", "light", "of", "all", "lights" },
+        new[] { "you", "never", "really", "understand", "a", "person", "until", "you", "consider", "things", "from", "his", "point", "of", "view", "until", "you", "climb", "inside", "of", "his", "skin", "and", "walk", "around", "in", "it" },
+        new[] { "bet", "i", "know", "something", "else", "you", "dont", "theres", "dew", "on", "the", "grass", "in", "this", "morning" },
+        new[] { "we", "lived", "in", "the", "blank", "white", "spaces", "at", "the", "edges", "of", "print", "it", "gave", "us", "more", "freedom" },
+        new[] { "weve", "all", "got", "both", "light", "and", "dark", "inside", "us", "what", "matters", "is", "the", "part", "we", "choose", "to", "act", "on", "thats", "who", "we", "really", "are" },
+        new[] { "do", "i", "love", "you", "my", "god", "if", "your", "love", "were", "a", "grain", "of", "sand", "mine", "would", "be", "a", "universe", "of", "beaches" },
+        new[] { "doublethink", "means", "the", "power", "of", "holding", "two", "contradictory", "beliefs", "in", "ones", "mind", "simultaneously", "and", "accepting", "both", "of", "them" },
+        new[] { "maybe", "everbody", "in", "the", "whole", "damn", "world", "is", "scared", "of", "each", "other" },
+        new[] { "there", "is", "an", "idea", "of", "a", "patrick", "bateman", "some", "kind", "of", "abstraction", "but", "there", "is", "no", "real", "me", "only", "an", "entity", "something", "illusory" }
     };
     public TextMesh[] kindleTexts;
 
@@ -110,7 +110,7 @@ public class theSamsung : MonoBehaviour
 #pragma warning disable 414
     private Coroutine mathCycle;
 #pragma warning restore 414
-    private static readonly Vector3[] startingValuePositions = new Vector3[] { new Vector3(.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, .0267f), new Vector3(.074f, .0121f, .0267f) };
+    private static readonly Vector3[] startingValuePositions = new[] { new Vector3(.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, -.0505f), new Vector3(-.074f, .0121f, .0267f), new Vector3(.074f, .0121f, .0267f) };
     private int startingValue;
     private bool photocycle;
     private int[] operations = new int[4];
@@ -118,42 +118,37 @@ public class theSamsung : MonoBehaviour
     private List<int> photomathEntered = new List<int>();
     private int photomathSolution;
     private List<string> mathSymbols = new List<string>() { "Σ", "ℝ", "≜", "!", "δ", "∞", "⋰", "∝", "∴", "¬" };
-    private static readonly int[][] keypadGrids = new int[10][] {
-        new int[10] { 7, 3, 4, 6, 2, 0, 9, 8, 5, 1 },
-        new int[10] { 3, 7, 1, 4, 6, 9, 8, 2, 5, 0 },
-        new int[10] { 6, 2, 1, 5, 8, 3, 7, 0, 4, 9 },
-        new int[10] { 5, 4, 6, 9, 3, 0, 2, 8, 7, 1 },
-        new int[10] { 3, 1, 7, 4, 0, 8, 2, 6, 9, 5 },
-        new int[10] { 8, 2, 6, 0, 9, 4, 7, 5, 3, 1 },
-        new int[10] { 9, 3, 5, 4, 2, 1, 7, 8, 6, 0 },
-        new int[10] { 7, 9, 6, 3, 1, 5, 0, 2, 4, 8 },
-        new int[10] { 0, 4, 8, 7, 5, 3, 1, 2, 9, 6 },
-        new int[10] { 2, 5, 4, 8, 6, 3, 9, 0, 1, 7 }
+    private static readonly int[][] keypadGrids = new int[][] {
+        new[] { 7, 3, 4, 6, 2, 0, 9, 8, 5, 1 },
+        new[] { 3, 7, 1, 4, 6, 9, 8, 2, 5, 0 },
+        new[] { 6, 2, 1, 5, 8, 3, 7, 0, 4, 9 },
+        new[] { 5, 4, 6, 9, 3, 0, 2, 8, 7, 1 },
+        new[] { 3, 1, 7, 4, 0, 8, 2, 6, 9, 5 },
+        new[] { 8, 2, 6, 0, 9, 4, 7, 5, 3, 1 },
+        new[] { 9, 3, 5, 4, 2, 1, 7, 8, 6, 0 },
+        new[] { 7, 9, 6, 3, 1, 5, 0, 2, 4, 8 },
+        new[] { 0, 4, 8, 7, 5, 3, 1, 2, 9, 6 },
+        new[] { 2, 5, 4, 8, 6, 3, 9, 0, 1, 7 }
      };
 
     // Spotify
     public KMSelectable playbutton;
     public GameObject copyright;
-    private static readonly string[] adNames = new string[5] { "ad1", "ad2", "ad3", "ad4", "ad5" };
-    private static readonly float[] adLengths = new float[5] { 13f, 18.5f, 15.25f, 14f, 17.5f };
-    private static readonly string[] songNames = new string[9] { "rightround", "smoothcriminal", "hardwarestore", "beatit", "dangerzone", "tacky", "harderbetterfasterstronger", "drunkensailor", "megalovania" };
-    private static readonly float[] songLengths = new float[9] { 7.5f, 7.5f, 30.5f, 8.5f, 5.5f, 6.5f, 5.5f, 8.5f, 8.5f };
-    private static readonly string[] decoyNames = new string[10] { "decoy1", "decoy2", "decoy3", "decoy4", "decoy5", "decoy6", "decoy7", "decoy8", "decoy9", "decoy10" };
-    private static readonly float[] decoyLengths = new float[10] { 7.5f, 8.5f, 6.5f, 8.5f, 9.5f, 6.5f, 9.5f, 6.5f, 8.5f, 8.5f, };
-    private static readonly string[] ncSongNames = new string[10] { "dannydontyouknow", "atthespeedoflight", "vitality", "exitthisearthsatomosphere", "ransom", "newfriendly", "astronomia", "spanishflea", "mountainking", "clutterfunk" };
-    private static readonly float[] ncSongLengths = new float[10] { 14.5f, 11.5f, 12.5f, 10.5f, 11.5f, 8.5f, 19.5f, 10.5f, 6.5f, 7.5f };
+    private static readonly string[] songNames = new[] { "harderBetterFasterStronger", "beatIt", "dangerZone", "youSpinMeRound", "hardwareStore", "xoTourLlif3", "runaway", "dontFearTheReaper", "touchToneTelephone", "rulerOfEverything" };
+    private static readonly string[] ncSongNames = new[] { "dannyDontYouKnow", "atTheSpeedOfLight", "vitality", "exitThisEarthsAtomosphere", "ransom", "newFriendly", "astronomia", "spanishFlea", "mountainKing", "clutterfunk" };
     private int decoyIndex;
+    private bool decoyUsed;
     private bool isPlaying;
 
     // Google Arts & Culture
     private int artistIndex;
-    private static readonly int[][] artYears = new int[4][] {
-        new int[8] { 1, 9, 4, 2, 1, 9, 9, 5, },
-        new int[8] { 1, 8, 8, 1, 1, 9, 7, 3, },
-        new int[8] { 1, 4, 5, 2, 1, 5, 1, 9, },
-        new int[8] { 1, 8, 5, 3, 1, 8, 9, 0, }
+    private static readonly int[][] artYears = new int[][] {
+        new[] { 1, 9, 4, 2, 1, 9, 9, 5, },
+        new[] { 1, 8, 8, 1, 1, 9, 7, 3, },
+        new[] { 1, 4, 5, 2, 1, 5, 1, 9, },
+        new[] { 1, 8, 5, 3, 1, 8, 9, 0, }
     };
-    private static readonly string[] artistNames = new string[5] { "Bob Ross", "Picasso", "Da Vinci", "Van Gogh", "Misc artist" };
+    private static readonly string[] artistNames = new[] { "Bob Ross", "Picasso", "Da Vinci", "Van Gogh", "Misc artist" };
     public Renderer painting;
     public TextMesh artisttext;
     public Texture[] bobross;
@@ -206,14 +201,14 @@ public class theSamsung : MonoBehaviour
     private int currentColor;
     private int currentIxUser;
     private int currentIxButton;
-    private static readonly string[] discordNames = new string[10] { "TasThing", "Deaf", "Blananas", "Timwi", "Numdegased", "Nico Robin", "Espik", "Procyon", "eXish", "SillyPuppy" };
-    private static readonly string[][] checkNames = new string[4][] {
-        new string[10] { "TasThing", "Blananas", "Numdegased", "Espik", "eXish", "SillyPuppy", "Deaf", "Timwi", "Nico Robin", "Procyon" },
-        new string[10] { "Timwi", "eXish", "SillyPuppy", "Nico Robin", "Procyon", "Numdegased", "Deaf", "Espik", "Blananas", "TasThing" },
-        new string[10] { "Deaf", "Procyon", "Espik", "Nico Robin", "Blananas", "TasThing", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
-        new string[10] { "Blananas", "TasThing", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Nico Robin", "Deaf", "SillyPuppy" }
+    private static readonly string[] discordNames = new[] { "TasThing", "Deaf", "Blananas", "Timwi", "Numdegased", "Nico Robin", "Espik", "Procyon", "eXish", "SillyPuppy" };
+    private static readonly string[][] checkNames = new string[][] {
+        new[] { "TasThing", "Blananas", "Numdegased", "Espik", "eXish", "SillyPuppy", "Deaf", "Timwi", "Nico Robin", "Procyon" },
+        new[] { "Timwi", "eXish", "SillyPuppy", "Nico Robin", "Procyon", "Numdegased", "Deaf", "Espik", "Blananas", "TasThing" },
+        new[] { "Deaf", "Procyon", "Espik", "Nico Robin", "Blananas", "TasThing", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
+        new[] { "Blananas", "TasThing", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Nico Robin", "Deaf", "SillyPuppy" }
     };
-    private static readonly string[] busyExcuses = new string[10] { "she’s not really into you...", "he’s being himself.", "he’s busy modding.", "he’s at the badminton club.", "he’s watching a show.", "he can’t deal with you right now.", "he’s preoccupied.", "he’s not in the right headspace.", "he’ll be back to you later.", "he’s in the middle of something. (or someone?)" };
+    private static readonly string[] busyExcuses = new[] { "she’s not really into you...", "he’s being himself.", "he’s busy modding.", "he’s at the badminton club.", "he’s watching a show.", "he can’t deal with you right now.", "he’s preoccupied.", "he’s not in the right headspace.", "he’ll be back to you later.", "he’s in the middle of something. (or someone?)" };
 
     private int currentAppIndex;
     private int[] solution = new int[8];
@@ -239,7 +234,7 @@ public class theSamsung : MonoBehaviour
     public Texture[] wallpapers;
     public Texture resetWallpaper;
     public Transform[] iconpositions;
-    private static readonly Vector3[] appPositions = new Vector3[9] { new Vector3(-.05f, .0124f, .04f), new Vector3(0f, .0124f, .04f), new Vector3(.05f, .0124f, .04f), new Vector3(-.05f, .0124f, -.01f), new Vector3(0f, .0124f, -.01f), new Vector3(.05f, .0124f, -.01f), new Vector3(-.05f, .0124f, -.06f), new Vector3(0f, .0124f, -.06f), new Vector3(.05f, .0124f, -.06f) };
+    private static readonly Vector3[] appPositions = new[] { new Vector3(-.05f, .0124f, .04f), new Vector3(0f, .0124f, .04f), new Vector3(.05f, .0124f, .04f), new Vector3(-.05f, .0124f, -.01f), new Vector3(0f, .0124f, -.01f), new Vector3(.05f, .0124f, -.01f), new Vector3(-.05f, .0124f, -.06f), new Vector3(0f, .0124f, -.06f), new Vector3(.05f, .0124f, -.06f) };
     private float timeRemaining;
     public Renderer solvedthingy;
     public Color solvedcolor;
@@ -383,8 +378,8 @@ public class theSamsung : MonoBehaviour
         quoteIndex = rnd.Range(0, 10);
         offset = rnd.Range(1, 14);
         startingWord = rnd.Range(0, kindleQuotes[quoteIndex].Length - 3);
-        var wordSet = new Char[4][];
-        Char[] alphabet = new Char[39] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm' };
+        var wordSet = new char[4][];
+        var alphabet = new[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm' };
         for (int i = 0; i < 4; i++)
         {
             wordSet[i] = kindleQuotes[quoteIndex][startingWord + i].ToCharArray();
@@ -405,10 +400,13 @@ public class theSamsung : MonoBehaviour
         GeneratePhotomath();
         // Spotify
         decoyIndex = rnd.Range(0, 10);
-        string[] songNames = new string[] { "You Spin Me Right Round", "Smooth Criminal", "Hardware Store", "Beat It", "Danger Zone", "Tacky", "Harder, Better, Faster, Stronger", "Drunken Sailor", "Megalovania", "a song not mentioned" };
-        string[] ncSongNames = new string[] { "Danny Don't You Know", "At The Speed of Light", "Vitality", "Exit This Earth's Atomosphere", "Ransom", "New Friendly", "Astronomia", "Spanish Flea", "Mountain King", "Clutterfunk" };
+        decoyUsed = rnd.Range(0, 11) == 0 && !Settings.noCopyright;
+        if (decoyUsed)
+            solution[5] = bomb.GetSerialNumberNumbers().First();
+        var fullSongNames = new[] { "Harder, Better, Faster, Stronger", "Beat It", "Danger Zone", "You Spin Me Round", "Hardware Store", "XO Tour Llif3", "Runaway", "(Don't Fear) The Reaper", "Touch Tone Telephone", "Ruler of Everything" };
+        var ncFullSongNames = new[] { "Danny Don't You Know", "At The Speed of Light", "Vitality", "Exit This Earth's Atomosphere", "Ransom", "New Friendly", "Astronomia", "Spanish Flea", "Mountain King", "Clutterfunk" };
         Debug.LogFormat("[The Samsung #{0}] SPOTIFY:", moduleId);
-        Debug.LogFormat("[The Samsung #{0}] The song being played is {1}, so the solution for Spotify is {2}.", moduleId, Settings.noCopyright ? ncSongNames[solution[5]] : songNames[solution[5]], solution[5]);
+        Debug.LogFormat("[The Samsung #{0}] The song being played is {1}, so the solution for Spotify is {2}.", moduleId, Settings.noCopyright ? ncFullSongNames[solution[5]] : (decoyUsed ? "some other song" : fullSongNames[solution[5]]), solution[5]);
         // Google Arts & Culture
         paintings = new List<Texture[]> { bobross, picasso, davinci, vangogh };
         artistIndex = rnd.Range(0, 5);
@@ -449,8 +447,8 @@ public class theSamsung : MonoBehaviour
                     gacSolution = artYears[artistIndex][7];
                     break;
             }
-            var n1 = new int[] { 0, 2, 4, 6, 8 };
-            var n2 = new int[] { 1, 3, 5, 7, 9 };
+            var n1 = new[] { 0, 2, 4, 6, 8 };
+            var n2 = new[] { 1, 3, 5, 7, 9 };
             gacSolution += (!lying ? n1[paintingIndex] : n2[paintingIndex]);
             gacSolution %= 10;
             painting.material.mainTexture = paintings[artistIndex][paintingIndex];
@@ -470,15 +468,15 @@ public class theSamsung : MonoBehaviour
         greencircle.SetActive(false);
         GenerateDiscord();
         // Solution
-        string[] directionNames = new string[8] { "north-west", "north", "north-east", "east", "south-east", "south", "south-west", "west" };
+        var directionNames = new[] { "north-west", "north", "north-east", "east", "south-east", "south", "south-west", "west" };
         Debug.LogFormat("[The Samsung #{0}] SETTINGS:", moduleId);
         int startingOffset;
         var ser = bomb.GetSerialNumber();
-        if (Char.IsLetter(ser[0]) && Char.IsLetter(ser[1]))
+        if (char.IsLetter(ser[0]) && char.IsLetter(ser[1]))
             startingOffset = 1;
-        else if (Char.IsLetter(ser[0]) && !Char.IsLetter(ser[1]))
+        else if (char.IsLetter(ser[0]) && !char.IsLetter(ser[1]))
             startingOffset = 3;
-        else if (!Char.IsLetter(ser[0]) && Char.IsLetter(ser[1]))
+        else if (!char.IsLetter(ser[0]) && char.IsLetter(ser[1]))
             startingOffset = 5;
         else
             startingOffset = 7;
@@ -491,7 +489,7 @@ public class theSamsung : MonoBehaviour
         Debug.LogFormat("[The Samsung #{0}] After modifications, the initial direction is {1}.", moduleId, directionNames[startingOffset]);
         //
         var solutionList = new List<int>();
-        var clockwiseOrder = new int[] { 0, 1, 2, 5, 8, 7, 6, 3 };
+        var clockwiseOrder = new[] { 0, 1, 2, 5, 8, 7, 6, 3 };
         for (int i = 0; i < 8; i++)
             solutionList.Add(solution[positionNumbers.IndexOf(clockwiseOrder[(i + startingOffset) % clockwiseOrder.Length])]);
         solutionString = solutionList.Join("");
@@ -568,8 +566,8 @@ public class theSamsung : MonoBehaviour
     discordtryagain:
         var userNumbers = Enumerable.Range(0, 10).ToList().Shuffle();
         var discordNumbers = Enumerable.Range(0, 16).ToList().Shuffle();
-        var xfs = new float[4] { -.057f, -.0191f, .0188f, .0567f };
-        var yfs = new float[4] { .0462f, .0083f, -.0296f, -.0675f };
+        var xfs = new[] { -.057f, -.0191f, .0188f, .0567f };
+        var yfs = new[] { .0462f, .0083f, -.0296f, -.0675f };
         for (int i = 0; i < 6; i++)
         {
             users[i] = new User { id = i, positionNumber = discordNumbers[i], userId = userNumbers[i], userName = discordNames[userNumbers[i]], x = 0f, z = 0f };
@@ -716,36 +714,28 @@ public class theSamsung : MonoBehaviour
         StartCoroutine(Spotify());
     }
 
-    IEnumerator Spotify()
+    private IEnumerator Spotify()
     {
         isPlaying = true;
         var adIx = rnd.Range(0, 5);
-        audio.PlaySoundAtTransform(adNames[adIx], playbutton.transform);
-        yield return new WaitForSeconds(adLengths[adIx] + .5f);
-        if (solution[5] == 9)
+        audio.PlaySoundAtTransform("ad" + adIx, playbutton.transform);
+        yield return new WaitForSeconds(allSounds.First(x => x.name == "ad" + adIx).length + .5f);
+        if (decoyUsed)
         {
-            if (Settings.noCopyright)
-            {
-                audio.PlaySoundAtTransform(ncSongNames[solution[5]], playbutton.transform);
-                yield return new WaitForSeconds(ncSongLengths[solution[5]]);
-            }
-            else
-            {
-                audio.PlaySoundAtTransform(decoyNames[decoyIndex], playbutton.transform);
-                yield return new WaitForSeconds(decoyLengths[decoyIndex]);
-            }
+            audio.PlaySoundAtTransform("decoy" + decoyIndex, playbutton.transform);
+            yield return new WaitForSeconds(allSounds.First(x => x.name == "decoy" + decoyIndex).length + .5f);
         }
         else
         {
             if (Settings.noCopyright)
             {
                 audio.PlaySoundAtTransform(ncSongNames[solution[5]], playbutton.transform);
-                yield return new WaitForSeconds(ncSongLengths[solution[5]]);
+                yield return new WaitForSeconds(allSounds.First(x => x.name == ncSongNames[solution[5]]).length + .5f);
             }
             else
             {
                 audio.PlaySoundAtTransform(songNames[solution[5]], playbutton.transform);
-                yield return new WaitForSeconds(songLengths[solution[5]]);
+                yield return new WaitForSeconds(allSounds.First(x => x.name == songNames[solution[5]]).length + .5f);
             }
         }
         isPlaying = false;
