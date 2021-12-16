@@ -7,7 +7,7 @@ using KModkit;
 using rnd = UnityEngine.Random;
 using System.Text.RegularExpressions;
 
-public class theSamsung : MonoBehaviour
+public partial class theSamsung : MonoBehaviour
 {
     public new KMAudio audio;
     public KMBombInfo bomb;
@@ -25,7 +25,6 @@ public class theSamsung : MonoBehaviour
     public TextMesh answertext;
     public TextMesh strikeText;
     private static readonly string[] easterEggs = new[] { "43556629", "82784464", "26725463", "69", "420", "666", "177013" };
-    private static readonly float[] easterEggLengths = new[] { 8.5f, 7.5f, 9.5f, 2.5f, 3.5f, 5.5f, 4.5f };
     private bool easterEgging;
     private bool strikeAnimating;
 
@@ -184,7 +183,7 @@ public class theSamsung : MonoBehaviour
     private Coroutine voice;
 #pragma warning restore 414
     private List<Texture[]> allSymbols = new List<Texture[]>();
-    private User[] users = new User[6];
+    private user[] users = new user[6];
     private int discordStage;
     private int person1;
     private int person2;
@@ -244,7 +243,7 @@ public class theSamsung : MonoBehaviour
     public Renderer notificationlight;
     public Material notifoff;
 
-    private SamsungSettings Settings = new SamsungSettings();
+    private samsungSettings Settings = new samsungSettings();
     private Texture currentWallpaper;
     private List<int> positionNumbers = new List<int>();
     private float halfPoint;
@@ -254,10 +253,10 @@ public class theSamsung : MonoBehaviour
     private int moduleId;
     private bool moduleSolved;
 
-    void Awake()
+    private void Awake()
     {
         moduleId = moduleIdCounter++;
-        ModConfig<SamsungSettings> modConfig = new ModConfig<SamsungSettings>("SamsungSettings");
+        ModConfig<samsungSettings> modConfig = new ModConfig<samsungSettings>("SamsungSettings");
         //Read from the settings file, or create one if one doesn't exist
         Settings = modConfig.Settings;
         //Update the settings file incase there was an error during read
@@ -302,7 +301,7 @@ public class theSamsung : MonoBehaviour
         solvedlight.enabled = false;
     }
 
-    void Start()
+    private void Start()
     {
         float scalar = transform.lossyScale.x;
         solvedlight.range *= scalar;
@@ -392,7 +391,7 @@ public class theSamsung : MonoBehaviour
         Debug.LogFormat("[The Samsung #{0}] The 4 words are taken from quote {1}, and the letters are shifted forwards by {2}.", moduleId, quoteIndex, offset);
         Debug.LogFormat("[The Samsung #{0}] The solution for Kindle is {1}.", moduleId, solution[2]);
         // Authenticator
-        string[] conditionNames = new string[10] { "a digital root of 8", "a perfect square root", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "an odd result when modulod by 6" };
+        string[] conditionNames = new[] { "a digital root of 8", "a perfect square root", "division by 7", "an odd result when modulod by 5", "a digital root of 3 or 4", "division by 6", "a digital root of 7", "division by 9", "a digital root of 5", "an odd result when modulod by 6" };
         Debug.LogFormat("[The Samsung #{0}] GOOGLE AUTHENTICATOR:", moduleId);
         Debug.LogFormat("[The Samsung #{0}] Every number shown has {1}.", moduleId, conditionNames[solution[3]]);
         Debug.LogFormat("[The Samsung #{0}] Therefore, the solution for Google Authenticator is {1}.", moduleId, solution[3]);
@@ -487,7 +486,7 @@ public class theSamsung : MonoBehaviour
             startingOffset++;
         startingOffset %= 8;
         Debug.LogFormat("[The Samsung #{0}] After modifications, the initial direction is {1}.", moduleId, directionNames[startingOffset]);
-        //
+        // Ordering
         var solutionList = new List<int>();
         var clockwiseOrder = new[] { 0, 1, 2, 5, 8, 7, 6, 3 };
         for (int i = 0; i < 8; i++)
@@ -498,7 +497,7 @@ public class theSamsung : MonoBehaviour
         StartCoroutine(Authenticator());
     }
 
-    IEnumerator DisableStuff()
+    private IEnumerator DisableStuff()
     {
         yield return null;
         homebutton.gameObject.SetActive(false);
@@ -509,7 +508,7 @@ public class theSamsung : MonoBehaviour
         photomathsolutiontext.text = "";
     }
 
-    void PressResetButton()
+    private void PressResetButton()
     {
         audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, resetButton.transform);
         resetButton.AddInteractionPunch(.5f);
@@ -555,11 +554,13 @@ public class theSamsung : MonoBehaviour
         }
     }
 
-    void GenerateDiscord()
+    private void GenerateDiscord()
     {
         generating = true;
         notificationlight.material = ledcolors[1];
         pfps.SetActive(true);
+        for (int i = 0; i < 6; i++)
+            pfps.transform.GetChild(i).gameObject.SetActive(true);
         cyclingsymbol.gameObject.SetActive(false);
         call.SetActive(false);
         greencircle.SetActive(false);
@@ -570,13 +571,13 @@ public class theSamsung : MonoBehaviour
         var yfs = new[] { .0462f, .0083f, -.0296f, -.0675f };
         for (int i = 0; i < 6; i++)
         {
-            users[i] = new User { id = i, positionNumber = discordNumbers[i], userId = userNumbers[i], userName = discordNames[userNumbers[i]], x = 0f, z = 0f };
+            users[i] = new user { id = i, positionNumber = discordNumbers[i], userId = userNumbers[i], userName = discordNames[userNumbers[i]], x = 0f, z = 0f };
             pfppositions[i].localPosition = new Vector3(xfs[discordNumbers[i] % 4], .0123f, yfs[discordNumbers[i] / 4]);
             users[i].x = pfppositions[i].localPosition.x;
             users[i].z = pfppositions[i].localPosition.z;
             pfprenders[i].material.mainTexture = pfpimages[userNumbers[i]];
         }
-        var nonselves = new List<User>[6];
+        var nonselves = new List<user>[6];
         for (int i = 0; i < 6; i++)
             nonselves[i] = users.Where(u => u != users[i]).ToList();
         extremes[0] = Array.IndexOf(users, users.Where(u => nonselves[Array.IndexOf(users, u)].Any(uu => uu.z != u.z)).OrderBy(u => u.z).Last());
@@ -634,7 +635,7 @@ public class theSamsung : MonoBehaviour
         notificationlight.material = notifoff;
     }
 
-    void GeneratePhotomath()
+    private void GeneratePhotomath()
     {
         mathSymbols.Shuffle();
         startingValue = rnd.Range(1, 10);
@@ -683,7 +684,7 @@ public class theSamsung : MonoBehaviour
         Debug.LogFormat("[The Samsung #{0}] The solution for Photomath is {1}.", moduleId, solution[4]);
     }
 
-    void PressAppButton(KMSelectable button)
+    private void PressAppButton(KMSelectable button)
     {
         button.AddInteractionPunch(.1f);
         currentAppIndex = Array.IndexOf(appButtons, button);
@@ -694,7 +695,7 @@ public class theSamsung : MonoBehaviour
         apps[currentAppIndex].SetActive(true);
     }
 
-    void PressHomeButton()
+    private void PressHomeButton()
     {
         homebutton.AddInteractionPunch(.1f);
         if (cantLeave || easterEgging || strikeAnimating || generating)
@@ -706,7 +707,7 @@ public class theSamsung : MonoBehaviour
         apps[currentAppIndex].SetActive(false);
     }
 
-    void PressPlayButton()
+    private void PressPlayButton()
     {
         playbutton.AddInteractionPunch(.1f);
         if (isPlaying)
@@ -741,7 +742,7 @@ public class theSamsung : MonoBehaviour
         isPlaying = false;
     }
 
-    void PressPhotomathClearButton()
+    private void PressPhotomathClearButton()
     {
         photomathclear.AddInteractionPunch(.1f);
         audio.PlaySoundAtTransform("keyClick", photomathclear.transform);
@@ -749,7 +750,7 @@ public class theSamsung : MonoBehaviour
         photomathEntered.Clear();
     }
 
-    void PressPhotomathSubmitButton()
+    private void PressPhotomathSubmitButton()
     {
         photomathsubmit.AddInteractionPunch(.1f);
         audio.PlaySoundAtTransform("keyClick", photomathsubmit.transform);
@@ -770,7 +771,7 @@ public class theSamsung : MonoBehaviour
         }
     }
 
-    void PressPhotomathButton(KMSelectable button)
+    private void PressPhotomathButton(KMSelectable button)
     {
         button.AddInteractionPunch(.1f);
         audio.PlaySoundAtTransform("keyClick", button.transform);
@@ -781,7 +782,7 @@ public class theSamsung : MonoBehaviour
         photomathsolutiontext.text += button.GetComponentInChildren<TextMesh>().text;
     }
 
-    IEnumerator PhotomathCycle()
+    private IEnumerator PhotomathCycle()
     {
         photocycle = true;
         audio.PlaySoundAtTransform("keyClick", photomathstart.transform);
@@ -809,7 +810,7 @@ public class theSamsung : MonoBehaviour
         photocycle = false;
     }
 
-    void PressPfpButton(KMSelectable button, int ix)
+    private void PressPfpButton(KMSelectable button, int ix)
     {
         if (generating)
             return;
@@ -821,7 +822,7 @@ public class theSamsung : MonoBehaviour
         voice = StartCoroutine(DiscordVoice(users[ix].userId, ix));
     }
 
-    IEnumerator DiscordVoice(int ixuser, int ixbutton)
+    private IEnumerator DiscordVoice(int ixuser, int ixbutton)
     {
         currentIxUser = ixuser;
         currentIxButton = ixbutton;
@@ -906,7 +907,7 @@ public class theSamsung : MonoBehaviour
         greencircle.SetActive(false);
     }
 
-    IEnumerator SymbolCycle()
+    private IEnumerator SymbolCycle()
     {
         cantLeave = true;
         cyclingsymbol.material.mainTexture = allSymbols[currentSymbol][currentColor];
@@ -916,7 +917,7 @@ public class theSamsung : MonoBehaviour
             currentSymbol = (currentSymbol + 1) % 8;
             cyclingsymbol.material.mainTexture = allSymbols[currentSymbol][currentColor];
             if (TwitchPlaysActive)
-                twitchtext.text = ((int.Parse(twitchtext.text) + 1) % 8) + "";
+                twitchtext.text = currentSymbol.ToString();
             yield return new WaitForSeconds(1f);
         }
         yield return new WaitForSeconds(1f);
@@ -925,11 +926,13 @@ public class theSamsung : MonoBehaviour
         {
             currentColor = (currentColor + 1) % 6;
             cyclingsymbol.material.mainTexture = allSymbols[currentSymbol][currentColor];
+            if (GetComponent<KMColorblindMode>().ColorblindModeActive)
+                twitchtext.text = "ROYGBP"[currentColor].ToString();
             yield return new WaitForSeconds(1f);
         }
     }
 
-    void PressLeaveButton()
+    private void PressLeaveButton()
     {
         if (cantLeave)
             return;
@@ -943,7 +946,7 @@ public class theSamsung : MonoBehaviour
             StartCoroutine(HideDiscord());
     }
 
-    void PressMuteButton()
+    private void PressMuteButton()
     {
         mutebutton.AddInteractionPunch(.1f);
         if (speaking || generating)
@@ -988,7 +991,7 @@ public class theSamsung : MonoBehaviour
         }
     }
 
-    IEnumerator HideDiscord()
+    private IEnumerator HideDiscord()
     {
         StopCoroutine(SymbolCycle());
         cycle = null;
@@ -1001,7 +1004,7 @@ public class theSamsung : MonoBehaviour
         }
     }
 
-    void PressSettingsButton(KMSelectable button)
+    private void PressSettingsButton(KMSelectable button)
     {
         button.AddInteractionPunch(.1f);
         if (enteringStage > 7 || easterEgging || strikeAnimating)
@@ -1013,7 +1016,7 @@ public class theSamsung : MonoBehaviour
         enteringStage++;
     }
 
-    void PressClearButton()
+    private void PressClearButton()
     {
         clearbutton.AddInteractionPunch(.1f);
         if (easterEgging || strikeAnimating)
@@ -1024,7 +1027,7 @@ public class theSamsung : MonoBehaviour
         answertext.text = "";
     }
 
-    void PressSubmitButton()
+    private void PressSubmitButton()
     {
         submitbutton.AddInteractionPunch(.1f);
         if (easterEgging || strikeAnimating)
@@ -1058,7 +1061,7 @@ public class theSamsung : MonoBehaviour
         }
     }
 
-    IEnumerator StrikeCycle(string enteredSolutionString)
+    private IEnumerator StrikeCycle(string enteredSolutionString)
     {
         strikeAnimating = true;
         for (int i = 0; i < enteredSolutionString.Length; i++)
@@ -1074,18 +1077,18 @@ public class theSamsung : MonoBehaviour
         strikeAnimating = false;
     }
 
-    IEnumerator EasterEgg(string name, int ix)
+    private IEnumerator EasterEgg(string name, int ix)
     {
         easterEgging = true;
         audio.PlaySoundAtTransform(name, homebutton.transform);
-        yield return new WaitForSeconds(easterEggLengths[ix]);
+        yield return new WaitForSeconds(allSounds.First(sound => sound.name == name).length + .5f);
         easterEgging = false;
         enteredSolution.Clear();
         answertext.text = "";
         enteringStage = 0;
     }
 
-    IEnumerator Authenticator()
+    private IEnumerator Authenticator()
     {
         var elapsed = 0f;
         var duration = 6f;
@@ -1104,7 +1107,7 @@ public class theSamsung : MonoBehaviour
         goto restart;
     }
 
-    bool AuthCheck(int x)
+    private bool AuthCheck(int x)
     {
         if (solution[3] == 0)
             return dr(x) == 8;
@@ -1131,17 +1134,7 @@ public class theSamsung : MonoBehaviour
             return (x % 6) % 2 == 1;
     }
 
-    class User
-    {
-        public int id;
-        public int positionNumber;
-        public int userId;
-        public string userName;
-        public float x;
-        public float z;
-    }
-
-    static string Braille(int[] g)
+    private static string Braille(int[] g)
     {
         bool[] truthGrid = new bool[6];
         int[] checkGrid = new int[6] { 0, 4, 8, 1, 5, 9 };
@@ -1162,7 +1155,7 @@ public class theSamsung : MonoBehaviour
             return "F";
     }
 
-    void Update()
+    private void Update()
     {
         timeRemaining = bomb.GetTime();
         if (timeRemaining > halfPoint || timeRemaining == halfPoint)
@@ -1174,7 +1167,7 @@ public class theSamsung : MonoBehaviour
         timetext.text = DateTime.Now.ToString("hh:mm");
     }
 
-    IEnumerator FlashLed()
+    private IEnumerator FlashLed()
     {
         flashing = true;
         notificationlight.material = ledcolors.PickRandom();
@@ -1184,7 +1177,7 @@ public class theSamsung : MonoBehaviour
         flashing = false;
     }
 
-    IEnumerator Strike()
+    private IEnumerator Strike()
     {
         module.HandleStrike();
         var defaultColor = solvedthingy.material.color;
@@ -1197,14 +1190,14 @@ public class theSamsung : MonoBehaviour
         solvedthingy.material.color = defaultColor;
     }
 
-    static int mod(int x, int m)
+    private static int mod(int x, int m)
     {
         if (x < 0)
             x *= -1;
         return x % m;
     }
 
-    static int dr(int x)
+    private static int dr(int x)
     {
         return ((x - 1) % 9) + 1;
     }
@@ -1212,12 +1205,12 @@ public class theSamsung : MonoBehaviour
     // Twitch Plays
 #pragma warning disable 0649
 #pragma warning disable 414
-    bool TwitchPlaysActive;
+    private bool TwitchPlaysActive;
 
     private readonly string TwitchHelpMessage = @"!{0} open <duo/maps/kindle/auth/photo/spotify/arts/discord/settings> [Opens the specified app] | !{0} play [Presses the play button if Spotify is open] | !{0} start [Presses the start button if Photomath is open] | !{0} mathsub <digits> [Presses the specified buttons 'digits' in reading order (0-9) and submits the input to Photomath if Photomath is open] | !{0} call <user> [Calls the specified user 'user' if Discord is open] | !{0} mute <#> [Presses the mute button when the last digit of the bomb's timer is '#' if Discord is open] | !{0} symbol <#> [Presses the mute button when the specified symbol '#' is shown if Discord is open] | !{0} color <col> [Presses the mute button when the specified color 'col' is shown if Discord is open] | !{0} home [Goes back to the home screen] | !{0} submit <digits> [Submits the pin 'digits'] | !{0} regenerate [Presses the notification LED]";
 #pragma warning restore 414
 #pragma warning restore 0649
-    IEnumerator ProcessTwitchCommand(string command)
+    private IEnumerator ProcessTwitchCommand(string command)
     {
         if (Regex.IsMatch(command, @"^\s*home\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
@@ -1748,7 +1741,7 @@ public class theSamsung : MonoBehaviour
         }
     }
 
-    IEnumerator TwitchHandleForcedSolve()
+    private IEnumerator TwitchHandleForcedSolve()
     {
         if (call.activeSelf && discordStage == 0)
         {
@@ -1766,13 +1759,13 @@ public class theSamsung : MonoBehaviour
         yield return ProcessTwitchCommand("submit " + solutionString);
     }
 
-    class SamsungSettings
+    private class samsungSettings
     {
         public bool noCopyright = false;
     }
 
 #pragma warning disable 414
-    static Dictionary<string, object>[] TweaksEditorSettings = new Dictionary<string, object>[]
+    private static Dictionary<string, object>[] TweaksEditorSettings = new Dictionary<string, object>[]
     {
         new Dictionary<string, object>
         {
