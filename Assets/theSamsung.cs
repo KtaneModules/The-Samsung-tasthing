@@ -520,6 +520,7 @@ public partial class theSamsung : MonoBehaviour
                 Debug.LogFormat("[The Samsung #{0}] Discord reset.", moduleId);
                 discordStage = 0;
                 cantLeave = false;
+                endOfDiscord = false;
                 if (cycle != null)
                 {
                     StopCoroutine(cycle);
