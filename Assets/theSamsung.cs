@@ -104,6 +104,7 @@ public partial class theSamsung : MonoBehaviour
     public KMSelectable photomathclear;
     public KMSelectable[] photomathbuttons;
     public Renderer[] photomathcircles;
+    public TextMesh photomathColorblind;
     public Color[] photomathcolors;
     private List<int> photomathUsedColors = new List<int>();
 #pragma warning disable 414
@@ -797,6 +798,7 @@ public partial class theSamsung : MonoBehaviour
         {
             photomathmaintext.text = mathSymbols[values[i]];
             photomathmaintext.color = photomathcolors[photomathUsedColors[operations[i]]];
+            photomathColorblind.text = "BPGY"[photomathUsedColors[operations[i]]].ToString();
             if (i == show)
                 photomathstartingtext.text = mathSymbols[startingValue];
             else
@@ -808,6 +810,7 @@ public partial class theSamsung : MonoBehaviour
         photomathstartingtext.text = "";
         photomathstart.gameObject.SetActive(true);
         hideable.SetActive(true);
+        photomathColorblind.text = new string(photomathUsedColors.Select(x => "BPGY"[x]).ToArray());
         photocycle = false;
     }
 
