@@ -549,6 +549,7 @@ public partial class theSamsung : MonoBehaviour
                 photomathmaintext.text = "";
                 photomathstartingtext.text = "";
                 photomathsolutiontext.text = "";
+                photomathColorblind.text = "";
                 GeneratePhotomath();
                 break;
             default:
@@ -768,6 +769,7 @@ public partial class theSamsung : MonoBehaviour
             hideable.SetActive(false);
             photomathstart.gameObject.SetActive(false);
             photomathsolutiontext.text = "";
+            photomathColorblind.text = "";
             photomathmaintext.text = mathSymbols[solution[4]];
             photomathmaintext.color = photomathcolors[2];
         }
