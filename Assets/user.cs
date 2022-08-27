@@ -9,6 +9,4 @@
         public float x;
         public float z;
     }
-#pragma warning restore 414
-
 }

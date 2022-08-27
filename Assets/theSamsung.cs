@@ -201,12 +201,12 @@ public partial class theSamsung : MonoBehaviour
     private int currentColor;
     private int currentIxUser;
     private int currentIxButton;
-    private static readonly string[] discordNames = new[] { "TasThing", "Deaf", "Blananas", "Timwi", "Numdegased", "Nico Robin", "Espik", "Procyon", "eXish", "SillyPuppy" };
+    private static readonly string[] discordNames = new[] { "TasThiluna", "Deaf", "Blananas", "Timwi", "Numdegased", "Nico Robin", "Espik", "Procyon", "eXish", "SillyPuppy" };
     private static readonly string[][] checkNames = new string[][] {
-        new[] { "TasThing", "Blananas", "Numdegased", "Espik", "eXish", "SillyPuppy", "Deaf", "Timwi", "Nico Robin", "Procyon" },
-        new[] { "Timwi", "eXish", "SillyPuppy", "Nico Robin", "Procyon", "Numdegased", "Deaf", "Espik", "Blananas", "TasThing" },
-        new[] { "Deaf", "Procyon", "Espik", "Nico Robin", "Blananas", "TasThing", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
-        new[] { "Blananas", "TasThing", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Nico Robin", "Deaf", "SillyPuppy" }
+        new[] { "TasThiluna", "Blananas", "Numdegased", "Espik", "eXish", "SillyPuppy", "Deaf", "Timwi", "Nico Robin", "Procyon" },
+        new[] { "Timwi", "eXish", "SillyPuppy", "Nico Robin", "Procyon", "Numdegased", "Deaf", "Espik", "Blananas", "TasThiluna" },
+        new[] { "Deaf", "Procyon", "Espik", "Nico Robin", "Blananas", "TasThiluna", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
+        new[] { "Blananas", "TasThiluna", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Nico Robin", "Deaf", "SillyPuppy" }
     };
     private static readonly string[] busyExcuses = new[] { "she’s not really into you...", "he’s being himself.", "he’s busy modding.", "he’s at the badminton club.", "he’s watching a show.", "he can’t deal with you right now.", "he’s preoccupied.", "he’s not in the right headspace.", "he’ll be back to you later.", "he’s in the middle of something. (or someone?)" };
 
