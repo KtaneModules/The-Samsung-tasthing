@@ -24,7 +24,7 @@ public partial class theSamsung : MonoBehaviour
     public KMSelectable submitbutton;
     public TextMesh answertext;
     public TextMesh strikeText;
-    private static readonly string[] easterEggs = new[] { "43556629", "82784464", "26725463", "69", "420", "666", "177013" };
+    private static readonly string[] easterEggs = new[] { "43556629", "82784464", "26725463", "69", "420", "666", "177013", "1738", "62335463", "92259" };
     private bool easterEgging;
     private bool strikeAnimating;
 
@@ -201,14 +201,14 @@ public partial class theSamsung : MonoBehaviour
     private int currentColor;
     private int currentIxUser;
     private int currentIxButton;
-    private static readonly string[] discordNames = new[] { "TasThiluna", "Deaf", "Blananas", "Timwi", "Numdegased", "Nico Robin", "Espik", "Procyon", "eXish", "SillyPuppy" };
+    private static readonly string[] discordNames = new[] { "TasThiluna", "Deaf", "Blananas", "Timwi", "Numdegased", "Zaakeil", "Espik", "Procyon", "eXish", "SillyPuppy" };
     private static readonly string[][] checkNames = new string[][] {
-        new[] { "TasThiluna", "Blananas", "Numdegased", "Espik", "eXish", "SillyPuppy", "Deaf", "Timwi", "Nico Robin", "Procyon" },
-        new[] { "Timwi", "eXish", "SillyPuppy", "Nico Robin", "Procyon", "Numdegased", "Deaf", "Espik", "Blananas", "TasThiluna" },
-        new[] { "Deaf", "Procyon", "Espik", "Nico Robin", "Blananas", "TasThiluna", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
-        new[] { "Blananas", "TasThiluna", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Nico Robin", "Deaf", "SillyPuppy" }
+        new[] { "TasThiluna", "Blananas", "Numdegased", "Espik", "eXish", "SillyPuppy", "Deaf", "Timwi", "Zaakeil", "Procyon" },
+        new[] { "Timwi", "eXish", "SillyPuppy", "Zaakeil", "Procyon", "Numdegased", "Deaf", "Espik", "Blananas", "TasThiluna" },
+        new[] { "Deaf", "Procyon", "Espik", "Zaakeil", "Blananas", "TasThiluna", "Timwi", "eXish", "SillyPuppy", "Numdegased" },
+        new[] { "Blananas", "TasThiluna", "Timwi", "Numdegased", "eXish", "Espik", "Procyon", "Zaakeil", "Deaf", "SillyPuppy" }
     };
-    private static readonly string[] busyExcuses = new[] { "she’s not really into you...", "he’s being himself.", "he’s busy modding.", "he’s at the badminton club.", "he’s watching a show.", "he can’t deal with you right now.", "he’s preoccupied.", "he’s not in the right headspace.", "he’ll be back to you later.", "he’s in the middle of something. (or someone?)" };
+    private static readonly string[] busyExcuses = new[] { "she’s not really into you...", "he’s being himself.", "he’s busy modding.", "he’s at the badminton club.", "he’s watching a show.", "he’s going through the motions.", "he’s preoccupied.", "he’s not in the right headspace.", "he’ll be back to you later.", "he’s in the middle of something. (or someone?)" };
 
     private int currentAppIndex;
     private int[] solution = new int[8];
@@ -602,7 +602,7 @@ public partial class theSamsung : MonoBehaviour
                 Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set B.", moduleId);
                 break;
             case "C":
-                person1 = bomb.GetSerialNumberLetters().Any(x => "CORA".Contains(x)) ? extremes[2] : extremes[3];
+                person1 = bomb.GetSerialNumberLetters().Any(x => "C0RA".Contains(x)) ? extremes[2] : extremes[3];
                 Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set C.", moduleId);
                 break;
             case "D":
@@ -832,7 +832,7 @@ public partial class theSamsung : MonoBehaviour
     {
         currentIxUser = ixuser;
         currentIxButton = ixbutton;
-        var tempNames = new string[] { "tas", "deaf", "blan", "timwi", "num", "nico", "espik", "procyon", "exish", "silly" };
+        var tempNames = new string[] { "tas", "deaf", "blan", "timwi", "num", "zaak", "espik", "procyon", "exish", "silly" };
         cantLeave = true;
         speaking = true;
         greencircle.SetActive(true);
@@ -843,6 +843,10 @@ public partial class theSamsung : MonoBehaviour
             if (ixbutton != person1)
             {
                 var soundName = tempNames[ixuser] + "busy";
+                if (tempNames[ixuser] == "zaak" && rnd.Range(0, 100) == 0)
+                    soundName = "zaakbonus";
+                if (tempNames[ixuser] == "silly" && rnd.Range(0, 100) == 0)
+                    soundName = "zaakbonus";
                 audio.PlaySoundAtTransform(soundName, callpfp.transform);
                 yield return new WaitForSeconds(allSounds.First(x => x.name == soundName).length + .5f);
                 Debug.LogFormat("[The Samsung #{0}] You called {1}, but {2} Strike!", moduleId, discordNames[ixuser], busyExcuses[ixuser]);
@@ -1520,12 +1524,12 @@ public partial class theSamsung : MonoBehaviour
                 temp1 = parameters[1];
                 parameters[1] = param;
             }
-            string[] tempnames = discordNames.ToArray();
-            for (int i = 0; i < tempnames.Length; i++)
+            string[] tpNames = discordNames.ToArray();
+            for (int i = 0; i < tpNames.Length; i++)
             {
-                tempnames[i] = tempnames[i].Replace(" ", "").ToLower();
+                tpNames[i] = tpNames[i].Replace(" ", "").ToLower();
             }
-            if (!tempnames.Contains(parameters[1].ToLower()))
+            if (!tpNames.Contains(parameters[1].ToLower()))
             {
                 string prm = "";
                 for (int i = 1; i < parameters.Length; i++)
@@ -1560,7 +1564,7 @@ public partial class theSamsung : MonoBehaviour
                 bool done = false;
                 for (int i = 0; i < pfpbuttons.Length; i++)
                 {
-                    if (pfprenders[i].material.mainTexture == pfpimages[Array.IndexOf(tempnames, parameters[1].ToLower())])
+                    if (pfprenders[i].material.mainTexture == pfpimages[Array.IndexOf(tpNames, parameters[1].ToLower())])
                     {
                         done = true;
                         pfpbuttons[i].OnInteract();
