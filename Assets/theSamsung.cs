@@ -846,7 +846,7 @@ public partial class theSamsung : MonoBehaviour
                 if (tempNames[ixuser] == "zaak" && rnd.Range(0, 100) == 0)
                     soundName = "zaakbonus";
                 if (tempNames[ixuser] == "silly" && rnd.Range(0, 100) == 0)
-                    soundName = "zaakbonus";
+                    soundName = "sillybonus";
                 audio.PlaySoundAtTransform(soundName, callpfp.transform);
                 yield return new WaitForSeconds(allSounds.First(x => x.name == soundName).length + .5f);
                 Debug.LogFormat("[The Samsung #{0}] You called {1}, but {2} Strike!", moduleId, discordNames[ixuser], busyExcuses[ixuser]);
