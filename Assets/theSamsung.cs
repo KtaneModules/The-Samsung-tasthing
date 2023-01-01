@@ -602,7 +602,7 @@ public partial class theSamsung : MonoBehaviour
                 Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set B.", moduleId);
                 break;
             case "C":
-                person1 = bomb.GetSerialNumberLetters().Any(x => "C0RA".Contains(x)) ? extremes[2] : extremes[3];
+                person1 = bomb.GetSerialNumber().Any(x => "C0RA".Contains(x)) ? extremes[2] : extremes[3];
                 Debug.LogFormat("[The Samsung #{0}] The 2×3 in the top-left spells out a Braille letter in set C.", moduleId);
                 break;
             case "D":
